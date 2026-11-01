@@ -56,6 +56,15 @@ for (n, muk), it in issues.items():
     ch = next(((src[p], p) for p in PRI if p in src), None)
     mains[n] = {'n': n, 'date': ch[0] if ch else None, 'how': ch[1] if ch else None, 'it': it}
 nmax = max(mains)
+# dates of otherwise-unreadable issues taken from Resmî Gazete citations (TBMM law/decision records, web sources)
+citdec = load('citation_decisions.json', {})
+fixed = dict((load('web_citations.json', {}) or {}).get('accepted') or {})
+fixed.update(citdec.get('est_fixed') or {})   # TBMM records take precedence over web citations
+for k, v in fixed.items():
+    n = int(k)
+    if n in mains and mains[n]['how'] not in ('eskiler', 'visual', 'arsiv_ocr', 'arsiv_infer'):
+        mains[n]['date'] = v['date']; mains[n]['how'] = v.get('how', 'tbmm')
+        mains[n]['it']['notes'].append(('tarih ' + v.get('label', 'TBMM kanun/karar kaydındaki Resmî Gazete bilgisinden') + ': ' + '; '.join(v['refs'][:2])) if v.get('refs') else 'tarih atıftan')
 # main issue without a readable file but with a mükerrer whose masthead was read: same number, same day
 for (n, muk), it in issues.items():
     if muk and it.get('muk_date') and n in mains and not mains[n]['date']:
@@ -118,7 +127,7 @@ def yayin_adi(n):
     if n <= 21: return 'Ceride-i Resmiye'
     if n <= 762: return 'Resmî Ceride'
     return 'T.C. Resmî Gazete'
-TAG = {'muk_kunye': 'aynı sayının mükerrer nüshasının künyesi', 'eskiler': 'resmî site günlük sayfası', 'arsiv_ocr': 'arşiv PDF künyesi (OCR + haftanın günü kontrolü)', 'visual': 'arşiv PDF künyesi (görsel okuma)',
+TAG = {'rg_atif': 'Resmî Gazete metinlerindeki tarih–sayı atfı', 'tbmm': 'TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı)', 'web_atif': 'başka resmî metinlerde geçen tarih–sayı atfı', 'muk_kunye': 'aynı sayının mükerrer nüshasının künyesi', 'eskiler': 'resmî site günlük sayfası', 'arsiv_ocr': 'arşiv PDF künyesi (OCR + haftanın günü kontrolü)', 'visual': 'arşiv PDF künyesi (görsel okuma)',
        'arsiv_infer': 'komşu sayılardan kesin çıkarım', 'arsiv_muk': 'asıl sayının tarihi', 'lexpera': 'Lexpera günlük listesi', 'tahmin': 'komşu sayılardan tahmin (kesin değil)'}
 def url_of(r):
     u = r['it']['urls']

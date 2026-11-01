@@ -21,6 +21,7 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | [`data/yillik_ozet.csv`](data/yillik_ozet.csv) | Yıl başına asıl/mükerrer sayısı, yılın ilk ve son sayı numarası |
 | [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları |
 | [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında bulunup düzeltilen sayı numarası hataları |
+| [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki her kanun ve Meclis kararının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı) |
 | [`scripts/`](scripts/) | Verileri toplamak, ayrıştırmak ve birleştirmek için kullanılan betikler |
 
 ### CSV kolonları
@@ -62,6 +63,23 @@ numaraları resmî siteyle birebir aynı çıktı; resmî sitede Lexpera'da olma
 fazlalık (15.03.2018 tarihli "30363 1. Mükerrer") hatalı kayıt olduğu için listeye alınmadı. 2000 yılındaki örtüşme
 aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihler günlük sayfalarla aynı.
 
+**Bağımsız atıflarla doğrulama.** Liste, sayıların tarihini taşıyan iki bağımsız kaynakla karşılaştırıldı:
+
+- **TBMM kanun ve karar kayıtları.** TBMM'nin eski "Kanunlar ve Kararlar Erişim" veritabanında, 1920'den bu yana çıkan
+  her kanunun ve Meclis kararının hangi tarih ve sayılı Resmî Gazete'de yayımlandığı yazılı.
+  5.115 sayı numarası için bu kayıtlar var. Bunların 5.020 tanesinde tarih bizimkiyle birebir aynı.
+  Farklı görünen 95 kaydın 83 tanesi TBMM kaydındaki tek haneli yazım hatası (sayı ya da tarih), 12 tanesi
+  sayı sırasıyla bağdaşmayan tarih veriyor. Sıraya sığan 9 vakada künye yeniden okundu ya da resmî günlük sayfa
+  kontrol edildi; hepsinde bizim tarihimiz doğru çıktı.
+- **Resmî Gazete'nin kendi metinlerindeki atıflar.** "… tarihli ve … sayılı Resmî Gazete'de yayımlanan" kalıbındaki
+  atıflar, 2019–2026 Resmî Gazete tam metin derleminden ([moganai/turkish-resmi-gazete](https://huggingface.co/datasets/moganai/turkish-resmi-gazete))
+  ve arşiv PDF'lerinin ilk sayfalarından çıkarıldı: 4.215 sayıya yapılan atıfların 4.180 tanesi bizim tarihimizle aynı;
+  kalan 35 uyuşmazlığın 34 tanesi sayı sırasıyla bağdaşmayan bir tarih veriyor (atıf metnindeki yazım hatası
+  ya da başka bir belgeye ait numara), biri ise resmî günlük sayfanın tarihiyle çelişen bir yazım hatası.
+
+PDF'i indirilemeyen sayıların tarihi bu atıflardan kesinleştirildi: 62 sayı TBMM kayıtlarından, 22 sayı Resmî
+Gazete metinlerindeki atıflardan (atıf yalnızca komşu sayıların izin verdiği tarih aralığına düşüyorsa kabul edildi).
+
 ### `tarih_kaynagi` değerleri
 
 | Değer | Adet | Anlamı |
@@ -70,8 +88,10 @@ aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihl
 | resmî site günlük sayfası | 10.545 | resmigazete.gov.tr günlük sayfası (`eskiler/…htm`), 27.06.2000 sonrası |
 | arşiv PDF künyesi (görsel okuma) | 1.833 | Arşiv PDF'inin künyesi görüntü olarak okundu |
 | asıl sayının tarihi | 785 | Mükerrer nüsha; asıl sayıyla aynı gün |
-| komşu sayılardan tahmin (kesin değil) | 249 | PDF indirilemedi/okunamadı; olası aralık `not` kolonunda |
+| komşu sayılardan tahmin (kesin değil) | 165 | PDF indirilemedi/okunamadı; olası aralık `not` kolonunda |
+| TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı) | 62 | PDF indirilemedi; TBMM kaydındaki yayım tarihi ve sayısından |
 | aynı sayının mükerrer nüshasının künyesi | 23 | Asıl sayının PDF'i okunamadı; aynı numaralı mükerrerin künyesinden |
+| Resmî Gazete metinlerindeki tarih–sayı atfı | 22 | PDF indirilemedi; sonraki Resmî Gazete metinlerindeki atıftan |
 | komşu sayılardan kesin çıkarım | 3 | Önceki ve sonraki sayılardan tek bir tarih mümkün |
 
 ## Resmî kaynaktaki tutarsızlıklar
@@ -89,10 +109,12 @@ açıklandı:
 
 ## Bilinen sınırlamalar
 
-- **249 sayının tarihi tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların büyük kısmının arşivdeki
-  PDF'i 10 MB'tan büyük olduğu için indirilemedi; tarih, önceki ve sonraki sayıların tarihleri arasında doğrusal olarak
-  tahmin edildi ve `not` kolonunda en erken / en geç olası tarih verildi. Bunların 185'inde önceki ve sonraki sayı
-  arasında yalnızca tek bir gün boşluk var.
+- **165 sayının tarihi hâlâ tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların arşivdeki PDF'i
+  10 MB'tan büyük olduğu için indirilemedi ve başka bir kaynakta tarihli atıfları bulunamadı; tarih, önceki ve sonraki
+  sayıların tarihleri arasında doğrusal olarak tahmin edildi ve `not` kolonunda en erken / en geç olası tarih verildi.
+  Bunların 127 tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Türkiye içinden
+  `python3 scripts/kesinlestir_tahminler.py data/resmi_gazete_sayilari.csv kesinlesen.csv` komutu bu PDF'leri doğrudan
+  indirip künyeden tarihlerini çıkarır.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
   varsa listede yoktur. 10 MB'ı aşan mükerrer dosyalarının varlığı sunucu yanıtından (dosya var ama çok büyük) anlaşıldı.
 - İlk dönemin (1921–1928) günümüz Türkçesine aktarılmış nüshalarında birkaç künyede tarih ile haftanın günü birbirini
@@ -111,7 +133,9 @@ açıklandı:
 | `identity.py` | Dosyaları künyede basılı sayıya göre eşleştirir (arşivdeki yanlış adlandırmalar için) |
 | `parse_era2.py` | Günlük sayfa sonuçlarını normalize eder, ardışıklık kontrolü yapar |
 | `lexpera_scrape.py`, `parse_era3.py` | Lexpera çapraz kontrolü |
+| `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır |
 | `merge.py`, `build_outputs.py` | Kaynakları birleştirir, doğrular ve `data/` dosyalarını yazar |
+| `kesinlestir_tahminler.py` | Tahmini tarihli sayıların PDF'lerini (Türkiye içinden) indirip tarihlerini kesinleştirir |
 
 Türkiye içinden resmigazete.gov.tr'ye doğrudan erişilebiliyorsa, tahmini tarihli sayıların PDF'leri `curl` ile
 indirilip `rg_ingest.py` ve `resolve_era1.py` ile kesinleştirilebilir.
