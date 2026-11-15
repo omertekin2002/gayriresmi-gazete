@@ -1,0 +1,54 @@
+<div class="wrap">
+  <header>
+    <span class="eyebrow">T.C. Resmî Gazete · 1921 → 2026 · resmî olmayan dizin</span>
+    <h1>Gayriresmî Gazete</h1>
+    <p class="lede">Resmî Gazete'nin bugüne kadar yayımlanmış bütün sayıları, tarih sırasıyla. 7 Şubat 1921'de <i>Ceride-i Resmiye</i> adıyla çıkan 1 numaralı sayıdan bugünkü sayıya kadar her asıl sayı ve mükerrer, resmigazete.gov.tr arşivindeki kaynağıyla birlikte listelenmiştir.</p>
+    <div class="facts" id="facts"></div>
+  </header>
+
+  <section class="card" aria-labelledby="h-chart">
+    <div class="head-row">
+      <h2 id="h-chart">Yıllara göre yayın sayısı</h2>
+      <div class="legend" aria-label="Lejant">
+        <span><i class="sw" style="background:var(--s1)"></i>Asıl sayı</span>
+        <span><i class="sw" style="background:var(--s2)"></i>Mükerrer</span>
+      </div>
+    </div>
+    <div class="chart-box" id="chart"></div>
+    <p class="note-s">Bir yıla tıklayarak o yılın sayılarını aşağıdaki listede açın. 1922'de sayı yok: 21. sayı 18 Temmuz 1921'de, 22. sayı 10 Eylül 1923'te çıktı.</p>
+    <details class="yt"><summary>Yıllık tabloyu göster</summary><div class="yt-wrap"><table id="ytable"></table></div></details>
+  </section>
+
+  <section class="card" aria-labelledby="h-list">
+    <div class="head-row"><h2 id="h-list">Sayı listesi</h2></div>
+    <div class="controls">
+      <div class="field"><label for="q">Sayı numarası veya tarih</label><input type="search" id="q" placeholder="ör. 17863 · 09.11.1982 · 1982-11-09" autocomplete="off"></div>
+      <div class="field"><label for="year">Yıl</label>
+        <div class="yearnav"><button id="prev" aria-label="Önceki yıl">‹</button><select id="year"></select><button id="next" aria-label="Sonraki yıl">›</button></div>
+      </div>
+      <div class="field"><span class="eyebrow" style="font-size:11px">Göster</span>
+        <div class="chips" role="group" aria-label="Filtre">
+          <button data-f="all" aria-pressed="true">Tümü</button>
+          <button data-f="muk" aria-pressed="false">Yalnız mükerrer</button>
+          <button data-f="note" aria-pressed="false">Notlu</button>
+          <button data-f="est" aria-pressed="false">Tahmini tarih</button>
+        </div>
+      </div>
+    </div>
+    <div class="yearbar"><span class="y" id="ylabel"></span><span class="meta" id="ymeta"></span></div>
+    <div class="status" id="status" aria-live="polite"></div>
+    <div class="tbl-wrap"><table id="list"><thead><tr><th>Tarih</th><th>Gün</th><th>Sayı</th><th>Tür</th><th>Yayın adı</th><th>Tarihin kaynağı</th><th>Not</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card" aria-labelledby="h-method">
+    <h2 id="h-method">Liste nasıl çıkarıldı</h2>
+    <div class="method">
+      <div><h3>1921 – Haziran 2000</h3><p>Her sayı numarası için resmigazete.gov.tr arşivindeki PDF indirildi, <code>_1</code>, <code>_2</code> … dosyalarıyla mükerrerler arandı. Tarih ilk sayfadaki künyeden okundu: OCR adayları haftanın günü ve sayı sırasıyla süzüldü, emin olunamayanlar görüntü olarak okundu.</p></div>
+      <div><h3>Haziran 2000 – bugün</h3><p>27.06.2000'den bu yana her gün için resmî sitenin günlük sayfası ve mükerrer sayfaları (M1, M2 …) tek tek kontrol edildi. 2014 sonrası Lexpera'nın günlük listesiyle karşılaştırıldı; asıl sayılarda tek bir fark yok.</p></div>
+      <div><h3>Doğrulama</h3><p>1'den son sayıya kadar hiçbir numara eksik değil, tarih sırası hiçbir yerde geriye gitmiyor. Liste TBMM'nin kanun ve karar kayıtlarındaki 5.115 sayıya ve Resmî Gazete metinlerindeki 4.215 sayıya yapılan atıflarla karşılaştırıldı; farklı çıkan her kayıt atıf tarafındaki bir yazım hatasına ya da sırayla bağdaşmayan bir tarihe dayanıyor. Rastgele seçilen 210 sayının künyesi ayrıca görsel olarak okundu; hatalı tarih çıkmadı.</p></div>
+      <div><h3>Bilinen sınırlamalar</h3><p>Bazı arşiv PDF'leri 10 MB'tan büyük olduğu için indirilemedi. Bunların bir kısmının tarihi TBMM kayıtlarından ya da sonraki Resmî Gazete metinlerindeki atıflardan kesinleşti; kalanların tarihi komşu sayılardan tahmin edildi ve listede <span class="badge est" style="vertical-align:1px">tahmin</span> olarak işaretli. Resmî sitedeki birkaç yanlış numara ile künyesinde gün rakamı yanlış basılmış ya da kırık çıkmış iki sayı (8489, 14490) düzeltildi; açıklaması not kolonunda.</p></div>
+    </div>
+  </section>
+
+  <footer>Bu dizin resmî değildir; Cumhurbaşkanlığı Hukuk ve Mevzuat Genel Müdürlüğü ile ilgisi yoktur. Bağlayıcı metin için <a href="https://www.resmigazete.gov.tr" target="_blank" rel="noopener">resmigazete.gov.tr</a>.</footer>
+</div>

@@ -1,0 +1,5 @@
+yerel/
+__pycache__/
+*.pyc
+site/data.json
+site/gayriresmi-gazete.html

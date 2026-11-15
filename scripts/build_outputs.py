@@ -30,6 +30,7 @@ summary = {
     'kaynaklar_arasi_celiski': rep['conflicts'], 'mukerrer_tarihi_asil_sayidan_farkli': rep['mukerrer_date_differs_from_main'],
     'yalnizca_lexperada_olup_cikarilan': rep['dropped_lexpera_only'], 'tarih_kaynagi_dagilimi': dict(src),
     'tahmini_tarihli_sayilar': rep['tahmin'],
+    'atif_dogrulama': json.load(open(os.path.join(D, 'validation_stats.json'))),
 }
 json.dump(summary, open(os.path.join(REPO, 'data', 'dogrulama_raporu.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print(json.dumps({k: (v if not isinstance(v, list) else len(v)) for k, v in summary.items()}, ensure_ascii=False, indent=1))

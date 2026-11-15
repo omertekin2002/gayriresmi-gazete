@@ -22,6 +22,10 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları |
 | [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında bulunup düzeltilen sayı numarası hataları |
 | [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki her kanun ve Meclis kararının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı) |
+| [`EKSIKLER.md`](EKSIKLER.md) | **Listenin bilinen eksikleri ve açık soruları**, bunların nasıl tamamlanacağı |
+| [`data/acik_kalemler.csv`](data/acik_kalemler.csv) | Henüz tamamlanmamış her kalem (arşiv PDF'i 10 MB'tan büyük olanlar) ve olası tarih aralığı |
+| [`data/ilk100_fihrist.json`](data/ilk100_fihrist.json) | Resmî "İlk 100 Sayı" derlemesindeki sayı–tarih eşleşmeleri (karşılaştırmada kullanıldı) |
+| [`kanit/`](kanit/) | Her tarihin dayandığı ham veriler (OCR metinleri, görsel okumalar, günlük sayfalar, atıflar) |
 | [`scripts/`](scripts/) | Verileri toplamak, ayrıştırmak ve birleştirmek için kullanılan betikler |
 
 ### CSV kolonları
@@ -77,6 +81,11 @@ aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihl
   kalan {HF_FARK} uyuşmazlığın {HF_IMKANSIZ} tanesi sayı sırasıyla bağdaşmayan bir tarih veriyor (atıf metnindeki yazım hatası
   ya da başka bir belgeye ait numara), biri ise resmî günlük sayfanın tarihiyle çelişen bir yazım hatası.
 
+- **Resmî "İlk 100 Sayı" derlemesi.** Cumhurbaşkanlığı İdari İşler Başkanlığı'nın yayımladığı *T.C. Resmî Gazete İlk 100
+  Sayı* (Cilt I–II, [mevzuat.gov.tr](https://www.mevzuat.gov.tr)) içindekiler bölümünde her sayının tarihi yazılı. İlk 100
+  sayının 100'ünün tarihi de listeyle birebir aynı (`data/ilk100_fihrist.json`). 21. sayıdan (18 Temmuz 1921) sonraki
+  26 aylık boşluk gerçek: gazete Kurtuluş Savaşı sırasında 10 Eylül 1923'teki 22. sayıya kadar çıkmadı.
+
 PDF'i indirilemeyen sayıların tarihi bu atıflardan kesinleştirildi: {TBMM_COZ} sayı TBMM kayıtlarından, {RG_COZ} sayı Resmî
 Gazete metinlerindeki atıflardan (atıf yalnızca komşu sayıların izin verdiği tarih aralığına düşüyorsa kabul edildi).
 
@@ -98,6 +107,12 @@ açıklandı:
   cumadır, 14486 sayı zaten 24 Mart tarihlidir ve 14489 (27 Mart) ile 14491 (29 Mart) arasında tek gün kalır: sayı
   28 Mart 1973 çarşamba günü çıkmıştır. 8489 sayının künyesindeki gün rakamı baskıda kırık ("21" gibi görünüyor);
   künyedeki "Pazartesi" ve komşu sayılar 24 Ağustos 1953'ü verir.
+- **Künyede yanlış gün adı:** 7 sayının künyesinde basılı tarih ile gün adı birbirini tutmuyor (54, 77, 207, 259, 494,
+  635, 18223). Hepsinde basılı tarih doğru çıktı: 54 ve 77 «İlk 100 Sayı» derlemesiyle, 259 ve 635 TBMM kayıtlarıyla
+  doğrulandı; 494 ve 18223'te gün adı bir önceki sayınınki olarak kalmış (önceki ve sonraki sayıların künyeleri doğru);
+  207'de gün adının gösterdiği gün bir sonraki sayının tarihinden sonraya düşüyor.
+- **Tarihi tahmin edilen mükerrer:** 588 sayının mükerrerinin Osmanlıca künyesinde gün sayısı yok, yalnızca "Pazar,
+  Mayıs 1927" yazıyor; 589 sayı 3 Mayıs'ta çıktığından tarih 1 Mayıs 1927 (resmî çeviri de "[1] Mayıs" diyor).
 
 Resmî arşivde (`arsiv/*.pdf`) yanlış adlandırılmış dosya bulunmadı. Taramanın ilk aşamasında aynı anda birden çok
 dosya indirildiği için bazı dosyalar yanlış sayı numarasıyla eşleştirilmişti. Bundan şüphelenilen her dosya (106 dosya)
@@ -108,13 +123,10 @@ sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyal
 - **{TAHMIN} sayının tarihi hâlâ tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların arşivdeki PDF'i
   10 MB'tan büyük olduğu için indirilemedi ve başka bir kaynakta tarihli atıfları bulunamadı; tarih, önceki ve sonraki
   sayıların tarihleri arasında doğrusal olarak tahmin edildi ve `not` kolonunda en erken / en geç olası tarih verildi.
-  Bunların {TAHMIN_2GUN} tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Türkiye içinden
-  `python3 scripts/kesinlestir_tahminler.py data/resmi_gazete_sayilari.csv kesinlesen.csv` komutu bu PDF'leri doğrudan
-  indirip künyeden tarihlerini çıkarır.
+  Bunların {TAHMIN_2GUN} tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Bu ve diğer açık
+  kalemler ile bunları tamamlama yolu [`EKSIKLER.md`](EKSIKLER.md)'de.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
   varsa listede yoktur. 10 MB'ı aşan mükerrer dosyalarının varlığı sunucu yanıtından (dosya var ama çok büyük) anlaşıldı.
-- 7 sayının künyesinde basılı tarih ile haftanın günü birbirini tutmuyor (54, 77, 207, 259, 494, 635 — ilk dönemin
-  günümüz Türkçesine aktarılmış nüshaları — ve 18223); tarih sırasına uyduğu için basılı tarih kullanıldı ve not düşüldü.
 - Resmî Gazete'nin yayımlanmadığı günler (bayramlar, bazı resmî tatiller) listede doğal olarak yer almaz.
 
 ## Yeniden üretme
@@ -131,10 +143,11 @@ sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyal
 | `lexpera_scrape.py`, `parse_era3.py` | Lexpera çapraz kontrolü |
 | `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır |
 | `merge.py`, `build_outputs.py` | Kaynakları birleştirir, doğrular ve `data/` dosyalarını yazar |
-| `kesinlestir_tahminler.py` | Tahmini tarihli sayıların PDF'lerini (Türkiye içinden) indirip tarihlerini kesinleştirir |
+| `yerel_tamamla.py` | Açık kalemleri, siteye doğrudan erişilebilen bir bilgisayardan (10 MB sınırı olmadan) tamamlar; yeni sayıları ekler |
+| `render_readme.py`, `build_artifact.py` | Bu README'yi ve tek sayfalık HTML görünümünü üretir |
 
-Türkiye içinden resmigazete.gov.tr'ye doğrudan erişilebiliyorsa, tahmini tarihli sayıların PDF'leri `curl` ile
-indirilip `rg_ingest.py` ve `resolve_era1.py` ile kesinleştirilebilir.
+Listeyi güncellemek ve açık kalemleri kapatmak için `scripts/yerel_tamamla.py` yeterlidir (bkz. [`EKSIKLER.md`](EKSIKLER.md));
+ilk derleme hattının ara dosyaları depoda değil, ham kanıtları `kanit/` dizininde.
 
 ---
 

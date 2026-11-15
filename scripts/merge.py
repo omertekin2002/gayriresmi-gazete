@@ -70,8 +70,11 @@ for k, v in fixed.items():
         mains[n]['it']['notes'].append(('tarih ' + v.get('label', 'TBMM kanun/karar kaydındaki Resmî Gazete bilgisinden') + ': ' + '; '.join(v['refs'][:2])) if v.get('refs') else 'tarih atıftan')
 # masthead read, but its printed day contradicts the printed weekday and the neighbouring issues (decided by hand, see note)
 for k, v in (load('manual_dates.json', {}) or {}).items():
-    n = int(k)
-    if n in mains and mains[n]['how'] != 'eskiler':
+    n, mk = (int(x) for x in (k.split('_') + ['0'])[:2])
+    if 'date' not in v:   # yalnızca açıklama: elle yapılan künye kontrolünün sonucu
+        if (n, mk) in issues: issues[(n, mk)]['notes'].append(v['note'])
+        continue
+    if mk == 0 and n in mains and mains[n]['how'] != 'eskiler':
         mains[n]['date'] = v['date']; mains[n]['how'] = 'kunye_duzeltme'
         mains[n]['it']['notes'].append(v['note'])
 # main issue without a readable file but with a mükerrer whose masthead was read: same number, same day

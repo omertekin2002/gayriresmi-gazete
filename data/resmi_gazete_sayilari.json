@@ -537,7 +537,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/54T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | tarih, Cumhurbaşkanlığı'nın «T.C. Resmî Gazete İlk 100 Sayı» derlemesinin fihristindeki tarihle aynı; künyedeki gün adı hatalı"
 },
 {
 "sira": 55,
@@ -767,7 +767,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/77T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | tarih, Cumhurbaşkanlığı'nın «T.C. Resmî Gazete İlk 100 Sayı» derlemesinin fihristindeki tarihle aynı; künyedeki gün adı hatalı"
 },
 {
 "sira": 78,
@@ -2067,7 +2067,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/207T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «Pazartesi» 2 Kasım 1925'e denk gelir; bir sonraki sayı (208) 1 Kasım'da çıktığı için bu mümkün değil, basılı tarih tek tutarlı seçenek"
 },
 {
 "sira": 208,
@@ -2587,7 +2587,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/259T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | TBMM kaydı (Kanun 695) da 31.12.1925 tarihini veriyor; künyedeki gün adı hatalı"
 },
 {
 "sira": 260,
@@ -4937,7 +4937,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/494T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «Pazar» bir önceki sayıdan kalmış (493: «Pazar 10 Teşrinievvel 1926», 495: «Salı 12 Teşrinievvel 1926»); sayı 11 Ekim 1926 pazartesi çıkmış"
 },
 {
 "sira": 495,
@@ -5887,7 +5887,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/588_1.pdf",
 "tarih_kaynagi": "visual",
-"not": "mükerrer nüshanın künyesindeki tarih (1927-05-01) asıl sayınınkinden (1927-04-28) farklı"
+"not": "Osmanlıca asıl künyede gün sayısı yok, yalnızca «Pazar, Mayıs 1927» yazıyor (resmî çeviride «[1] Mayıs»); 589 sayı 3 Mayıs'ta çıktığından Mayıs'ın bundan önceki tek pazarı 1 Mayıs | mükerrer nüshanın künyesindeki tarih (1927-05-01) asıl sayınınkinden (1927-04-28) farklı"
 },
 {
 "sira": 590,
@@ -6357,7 +6357,7 @@
 "yayin_adi": "Resmî Ceride",
 "url": "https://www.resmigazete.gov.tr/arsiv/635T.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | 16–18 Temmuz aralığında perşembe yok; TBMM kayıtları (Kanun 1153, 1154, 1162) da 17.07.1927 tarihini veriyor"
 },
 {
 "sira": 637,
@@ -185007,7 +185007,7 @@
 "yayin_adi": "T.C. Resmî Gazete",
 "url": "https://www.resmigazete.gov.tr/arsiv/18223.pdf",
 "tarih_kaynagi": "arsiv_ocr",
-"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı"
+"not": "künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «SALI» bir önceki sayıdan kalmış (18222: «15 Kasım 1983 Salı», 18224: «17 Kasım 1983 Perşembe»); sayı 16 Kasım 1983 çarşamba çıkmış"
 },
 {
 "sira": 18502,

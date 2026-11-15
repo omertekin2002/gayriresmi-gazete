@@ -1,7 +1,12 @@
-import json, datetime, sys, re
-SCR, REPO = sys.argv[1], sys.argv[2]
+"""README.md'yi scripts/README.template.md ve data/dogrulama_raporu.json'dan üretir.
+kullanım: render_readme.py <depo>            (derleme ortamında eski biçim: render_readme.py <scratchpad> <depo>)"""
+import json, datetime, sys, re, os
+if len(sys.argv) > 2:
+    SCR, REPO = sys.argv[1], sys.argv[2]; TPL = f'{SCR}/tools/README.template.md'
+else:
+    REPO = sys.argv[1]; SCR = None; TPL = os.path.join(REPO, 'scripts', 'README.template.md')
 s = json.load(open(f'{REPO}/data/dogrulama_raporu.json'))
-tpl = open(f'{SCR}/tools/README.template.md', encoding='utf-8').read()
+tpl = open(TPL, encoding='utf-8').read()
 TR_AY = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
 def trdate(iso):
     d = datetime.date.fromisoformat(iso); return f'{d.day} {TR_AY[d.month - 1]} {d.year}'
@@ -27,7 +32,10 @@ gorsel = s['tarih_kaynagi_dagilimi'].get('arşiv PDF künyesi (görsel okuma)', 
 rep = {'{SON}': trdate(son_iso), '{SON_SAYI}': son_sayi, '{TOPLAM}': f(s['toplam_yayin']), '{ASIL}': f(s['asil_sayi']), '{MUK}': f(s['mukerrer']),
        '{OLUSTURMA}': trdate(s['olusturma_tarihi']), '{GORSEL}': f(gorsel), '{GUN_SAYISI}': f(gun), '{KAYNAK_TABLO}': rows,
        '{TAHMIN}': f(len(tah)), '{TAHMIN_2GUN}': f(two)}
-val = json.load(open(f'{SCR}/data/validation_stats.json'))
+val = dict(s.get('atif_dogrulama') or json.load(open(f'{SCR}/data/validation_stats.json')))
+dag = s['tarih_kaynagi_dagilimi']
+val['TBMM_COZ'] = dag.get('TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı)', 0)
+val['RG_COZ'] = dag.get('Resmî Gazete metinlerindeki tarih–sayı atfı', 0)
 rep.update({'{' + k + '}': f(v) if isinstance(v, int) else str(v) for k, v in val.items()})
 out = tpl
 for k, v in rep.items(): out = out.replace(k, v)

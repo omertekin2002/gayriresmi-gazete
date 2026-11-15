@@ -52,7 +52,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 51,1924-01-10,Perşembe,51,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/51T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 52,1924-01-13,Pazar,52,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/52T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 53,1924-01-17,Perşembe,53,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/53T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-54,1924-01-21,Pazartesi,54,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/54T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+54,1924-01-21,Pazartesi,54,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/54T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | tarih, Cumhurbaşkanlığı'nın «T.C. Resmî Gazete İlk 100 Sayı» derlemesinin fihristindeki tarihle aynı; künyedeki gün adı hatalı"
 55,1924-01-28,Pazartesi,55,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/55T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 56,1924-02-04,Pazartesi,56,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/56T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 57,1924-02-14,Perşembe,57,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/57T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -75,7 +75,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 74,1924-08-23,Cumartesi,74,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/74T.pdf,arşiv PDF künyesi (görsel okuma),
 75,1924-09-06,Cumartesi,75,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/75T.pdf,arşiv PDF künyesi (görsel okuma),
 76,1924-10-11,Cumartesi,76,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/76T.pdf,arşiv PDF künyesi (görsel okuma),
-77,1924-10-16,Perşembe,77,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/77T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+77,1924-10-16,Perşembe,77,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/77T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | tarih, Cumhurbaşkanlığı'nın «T.C. Resmî Gazete İlk 100 Sayı» derlemesinin fihristindeki tarihle aynı; künyedeki gün adı hatalı"
 78,1924-11-03,Pazartesi,78,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/78T.pdf,arşiv PDF künyesi (görsel okuma),
 79,1924-11-24,Pazartesi,79,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/79T.pdf,arşiv PDF künyesi (görsel okuma),
 80,1924-12-16,Salı,80,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/80T.pdf,arşiv PDF künyesi (görsel okuma),
@@ -205,7 +205,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 204,1925-10-25,Pazar,204,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/204T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 205,1925-10-26,Pazartesi,205,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/205T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 206,1925-10-28,Çarşamba,206,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/206T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-207,1925-10-31,Cumartesi,207,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/207T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+207,1925-10-31,Cumartesi,207,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/207T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «Pazartesi» 2 Kasım 1925'e denk gelir; bir sonraki sayı (208) 1 Kasım'da çıktığı için bu mümkün değil, basılı tarih tek tutarlı seçenek"
 208,1925-11-01,Pazar,208,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/208T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 209,1925-11-02,Pazartesi,209,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/209T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 210,1925-11-03,Salı,210,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/210T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -257,7 +257,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 256,1925-12-28,Pazartesi,256,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/256T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 257,1925-12-29,Salı,257,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/257T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 258,1925-12-30,Çarşamba,258,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/258T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-259,1925-12-31,Perşembe,259,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/259T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+259,1925-12-31,Perşembe,259,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/259T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | TBMM kaydı (Kanun 695) da 31.12.1925 tarihini veriyor; künyedeki gün adı hatalı
 260,1926-01-02,Cumartesi,260,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/260T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 261,1926-01-03,Pazar,261,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/261T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 262,1926-01-04,Pazartesi,262,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/262T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -492,7 +492,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 491,1926-10-07,Perşembe,491,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/491T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 492,1926-10-09,Cumartesi,492,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/492T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 493,1926-10-10,Pazar,493,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/493T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-494,1926-10-11,Pazartesi,494,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/494T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+494,1926-10-11,Pazartesi,494,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/494T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «Pazar» bir önceki sayıdan kalmış (493: «Pazar 10 Teşrinievvel 1926», 495: «Salı 12 Teşrinievvel 1926»); sayı 11 Ekim 1926 pazartesi çıkmış"
 495,1926-10-12,Salı,495,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/495T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 496,1926-10-13,Çarşamba,496,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/496T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 497,1926-10-14,Perşembe,497,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/497T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -587,7 +587,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 586,1927-04-18,Pazartesi,586,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/586T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 587,1927-04-20,Çarşamba,587,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/587T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 588,1927-04-28,Perşembe,588,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/588T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-589,1927-05-01,Pazar,588,1,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/588_1.pdf,arşiv PDF künyesi (görsel okuma),mükerrer nüshanın künyesindeki tarih (1927-05-01) asıl sayınınkinden (1927-04-28) farklı
+589,1927-05-01,Pazar,588,1,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/588_1.pdf,arşiv PDF künyesi (görsel okuma),"Osmanlıca asıl künyede gün sayısı yok, yalnızca «Pazar, Mayıs 1927» yazıyor (resmî çeviride «[1] Mayıs»); 589 sayı 3 Mayıs'ta çıktığından Mayıs'ın bundan önceki tek pazarı 1 Mayıs | mükerrer nüshanın künyesindeki tarih (1927-05-01) asıl sayınınkinden (1927-04-28) farklı"
 590,1927-05-03,Salı,589,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/589T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 591,1927-05-07,Cumartesi,590,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/590T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 592,1927-05-11,Çarşamba,591,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/591T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -634,7 +634,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 633,1927-07-13,Çarşamba,632,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/632T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 634,1927-07-14,Perşembe,633,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/633T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 635,1927-07-16,Cumartesi,634,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/634T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-636,1927-07-17,Pazar,635,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/635T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+636,1927-07-17,Pazar,635,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/635T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | 16–18 Temmuz aralığında perşembe yok; TBMM kayıtları (Kanun 1153, 1154, 1162) da 17.07.1927 tarihini veriyor"
 637,1927-07-18,Pazartesi,636,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/636T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 638,1927-07-19,Salı,637,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/637T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 639,1927-07-20,Çarşamba,638,0,Resmî Ceride,https://www.resmigazete.gov.tr/arsiv/638T.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
@@ -18499,7 +18499,7 @@ sira,tarih,gun,sayi,mukerrer,yayin_adi,url,tarih_kaynagi,not
 18498,1983-11-14,Pazartesi,18221,1,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18221_1.pdf,asıl sayının tarihi,
 18499,1983-11-14,Pazartesi,18221,2,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18221_2.pdf,asıl sayının tarihi,
 18500,1983-11-15,Salı,18222,0,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18222.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
-18501,1983-11-16,Çarşamba,18223,0,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18223.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı
+18501,1983-11-16,Çarşamba,18223,0,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18223.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),"künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı | künyedeki «SALI» bir önceki sayıdan kalmış (18222: «15 Kasım 1983 Salı», 18224: «17 Kasım 1983 Perşembe»); sayı 16 Kasım 1983 çarşamba çıkmış"
 18502,1983-11-17,Perşembe,18224,0,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18224.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 18503,1983-11-18,Cuma,18225,0,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18225.pdf,arşiv PDF künyesi (OCR + haftanın günü kontrolü),
 18504,1983-11-18,Cuma,18225,1,T.C. Resmî Gazete,https://www.resmigazete.gov.tr/arsiv/18225_1.pdf,asıl sayının tarihi,

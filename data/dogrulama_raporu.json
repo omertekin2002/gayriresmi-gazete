@@ -1301,5 +1301,18 @@
     "2000-06-19"
    ]
   ]
- ]
+ ],
+ "atif_dogrulama": {
+  "TBMM_SAYI": 5115,
+  "TBMM_AYNI": 5020,
+  "TBMM_FARK": 95,
+  "TBMM_TYPO": 83,
+  "TBMM_IMKANSIZ": 12,
+  "HF_SAYI": 4215,
+  "HF_AYNI": 4180,
+  "HF_FARK": 35,
+  "TBMM_COZ": 62,
+  "RG_COZ": 22,
+  "HF_IMKANSIZ": 34
+ }
 }
