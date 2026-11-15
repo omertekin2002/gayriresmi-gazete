@@ -178,7 +178,7 @@ Gerekenler:
 - Windows'ta `python3` yerine `py` yazın.
 
 ```bash
-git checkout claude/resmi-gazete-tum-sayilar && git pull
+git checkout main && git pull
 python3 scripts/yerel_tamamla.py baglanti        # erişim ve araç kontrolü, "TAMAM" demeli
 python3 scripts/yerel_tamamla.py indir_oku       # 418 PDF'i sırayla indirir ve okur; kesilirse kaldığı yerden devam eder
 python3 scripts/yerel_tamamla.py durum           # otomatik karar verilemeyenleri yerel/gorsel_gerekli.txt'ye yazar
@@ -215,7 +215,7 @@ Aşağıdaki metin, depoyu Türkiye'deki bir bilgisayarda açan bir Claude Code 
 
 ```text
 You are continuing work on the dataset in this repository (GitHub: omertekin2002/gayriresmi-gazete, branch
-claude/resmi-gazete-tum-sayilar). It is a complete chronological list of every issue of the Turkish Official Gazette
+main). It is a complete chronological list of every issue of the Turkish Official Gazette
 (T.C. Resmî Gazete), 1921 → 2026: data/resmi_gazete_sayilari.csv (+ .json), with evidence in kanit/ and scripts in
 scripts/. Everything user-facing in the repo is written in Turkish; keep it that way (notes, docs, commit messages).
 
@@ -227,7 +227,7 @@ Read first: EKSIKLER.md (what is open and why), the docstring at the top of scri
 yerel/gorsel.json format), and data/acik_kalemler.csv (the work list: 158 "tahmin", 105 "atif", 155 "buyuk_mukerrer").
 
 Steps:
-1. Clone the repo if it is not here yet, then: git checkout claude/resmi-gazete-tum-sayilar && git pull (on Windows
+1. Clone the repo if it is not here yet, then: git checkout main && git pull (on Windows
    use `py` instead of `python3` in the commands below). Make sure poppler (pdftotext/pdftoppm/pdfinfo) or PyMuPDF
    is installed. Run `python3 scripts/yerel_tamamla.py baglanti`. It must print TAMAM. If the site is unreachable,
    stop and tell me. Do not use proxies, VPNs or mirror sites to get around it.
@@ -268,8 +268,8 @@ Steps:
    rebuild the HTML view: `python3 scripts/build_artifact.py data/resmi_gazete_sayilari.csv site`. Its outputs
    site/data.json and site/gayriresmi-gazete.html are gitignored; site/head.html, body.html and app.js are tracked.
    Tell me if the published page should be updated. Commit in small logical commits with Turkish
-   messages. Never commit yerel/ or any PDFs. Push to claude/resmi-gazete-tum-sayilar. Do not open a pull request
-   unless I ask.
+   messages. Never commit yerel/ or any PDFs. Push directly to main. Do not create other branches
+   or open a pull request unless I ask.
 
 Done means: data/acik_kalemler.csv contains only items that are genuinely unresolvable, each explained in EKSIKLER.md;
 the list runs to the latest published issue; validation passes; everything is pushed. Finish with a short summary:
