@@ -1,8 +1,8 @@
 {
- "olusturma_tarihi": "2026-11-01",
- "toplam_yayin": 35422,
+ "olusturma_tarihi": "2026-11-15",
+ "toplam_yayin": 35420,
  "asil_sayi": 33417,
- "mukerrer": 2005,
+ "mukerrer": 2003,
  "ilk": "1921-02-07 / Sayı 1",
  "son": "2026-11-01 / Sayı 33417",
  "eksik_sayi_numarasi": [],
@@ -25,13 +25,14 @@
   }
  ],
  "tarih_kaynagi_dagilimi": {
-  "arşiv PDF künyesi (OCR + haftanın günü kontrolü)": 21984,
-  "arşiv PDF künyesi (görsel okuma)": 1833,
+  "arşiv PDF künyesi (OCR + haftanın günü kontrolü)": 21995,
+  "arşiv PDF künyesi (görsel okuma)": 1828,
   "komşu sayılardan kesin çıkarım": 3,
   "TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı)": 62,
-  "komşu sayılardan tahmin (kesin değil)": 165,
-  "asıl sayının tarihi": 785,
-  "aynı sayının mükerrer nüshasının künyesi": 23,
+  "komşu sayılardan tahmin (kesin değil)": 158,
+  "asıl sayının tarihi": 783,
+  "künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık)": 2,
+  "aynı sayının mükerrer nüshasının künyesi": 22,
   "Resmî Gazete metinlerindeki tarih–sayı atfı": 22,
   "resmî site günlük sayfası": 10545
  },
@@ -50,14 +51,6 @@
    [
     "1939-04-25",
     "1939-04-27"
-   ]
-  ],
-  [
-   8489,
-   "1953-08-22",
-   [
-    "1953-08-19",
-    "1953-08-25"
    ]
   ],
   [
@@ -309,14 +302,6 @@
    ]
   ],
   [
-   14490,
-   "1973-03-28",
-   [
-    "1973-03-27",
-    "1973-03-29"
-   ]
-  ],
-  [
    14497,
    "1973-04-04",
    [
@@ -405,6 +390,14 @@
    ]
   ],
   [
+   15389,
+   "1975-10-20",
+   [
+    "1975-10-19",
+    "1975-10-21"
+   ]
+  ],
+  [
    15786,
    "1976-12-11",
    [
@@ -490,46 +483,6 @@
    [
     "1978-06-01",
     "1978-06-03"
-   ]
-  ],
-  [
-   16322,
-   "1978-06-20",
-   [
-    "1978-06-19",
-    "1978-06-21"
-   ]
-  ],
-  [
-   16406,
-   "1978-09-16",
-   [
-    "1978-09-15",
-    "1978-09-18"
-   ]
-  ],
-  [
-   16407,
-   "1978-09-17",
-   [
-    "1978-09-15",
-    "1978-09-18"
-   ]
-  ],
-  [
-   16409,
-   "1978-09-19",
-   [
-    "1978-09-18",
-    "1978-09-20"
-   ]
-  ],
-  [
-   16424,
-   "1978-10-04",
-   [
-    "1978-10-03",
-    "1978-10-05"
    ]
   ],
   [
@@ -1034,14 +987,6 @@
    [
     "1995-08-26",
     "1995-08-28"
-   ]
-  ],
-  [
-   22495,
-   "1995-12-16",
-   [
-    "1995-12-15",
-    "1995-12-17"
    ]
   ],
   [

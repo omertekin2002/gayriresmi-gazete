@@ -5,12 +5,12 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 
 | | |
 |---|---|
-| Toplam yayın | **35.422** |
+| Toplam yayın | **35.420** |
 | Asıl sayı (1 → 33417, numara atlanmadan) | **33.417** |
-| Mükerrer sayı | **2.005** |
+| Mükerrer sayı | **2.003** |
 | İlk sayı | 7 Şubat 1921 — *Ceride-i Resmiye*, Sayı 1 |
 | Son sayı | 1 Kasım 2026 — Sayı 33417 |
-| Liste tarihi | 1 Kasım 2026 |
+| Liste tarihi | 15 Kasım 2026 |
 
 ## Dosyalar
 
@@ -22,7 +22,6 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları |
 | [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında bulunup düzeltilen sayı numarası hataları |
 | [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki her kanun ve Meclis kararının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı) |
-| [`kanit/`](kanit/) | Listedeki her tarihin dayandığı ham veriler: arşiv PDF'lerinin ilk sayfa OCR metni, günlük sayfa sonuçları, görsel okumalar, atıflar |
 | [`scripts/`](scripts/) | Verileri toplamak, ayrıştırmak ve birleştirmek için kullanılan betikler |
 
 ### CSV kolonları
@@ -51,7 +50,7 @@ denenerek mükerrer nüshalar arandı. Tarih, PDF'in ilk sayfasındaki künyeden
 - OCR metninden tarih adayları çıkarıldı (eski ay adları — *Teşrinievvel, Kânunusani, Birincikânun* … — ve 1336–1341
   Rumi yılları dahil). Künyedeki **haftanın günü** ile tutan ve sayı sırasıyla çelişmeyen aday seçildi
   (sayı numarası arttıkça tarih geriye gidemez).
-- OCR'ın kesin bir tarih vermediği 1.833 sayının künyesi görüntü olarak okundu. Okunan tarih, ancak basılı sayı
+- OCR'ın kesin bir tarih vermediği 1.828 sayının künyesi görüntü olarak okundu. Okunan tarih, ancak basılı sayı
   numarası ve haftanın günü de tutuyorsa kabul edildi.
 - **Bağımsız denetim:** OCR ile tarihlendirilmiş sayılardan rastgele seçilen 210 sayı ayrıca görsel olarak okundu;
   209'u birebir tuttu, 1'i düşük güvenle okunduğu için kabul edilmedi (hatalı tarih çıkmadı).
@@ -85,15 +84,16 @@ Gazete metinlerindeki atıflardan (atıf yalnızca komşu sayıların izin verdi
 
 | Değer | Adet | Anlamı |
 |---|---:|---|
-| arşiv PDF künyesi (OCR + haftanın günü kontrolü) | 21.984 | Arşiv PDF'inin künyesi; OCR + haftanın günü + sıra kontrolü |
+| arşiv PDF künyesi (OCR + haftanın günü kontrolü) | 21.995 | Arşiv PDF'inin künyesi; OCR + haftanın günü + sıra kontrolü |
 | resmî site günlük sayfası | 10.545 | resmigazete.gov.tr günlük sayfası (`eskiler/…htm`), 27.06.2000 sonrası |
-| arşiv PDF künyesi (görsel okuma) | 1.833 | Arşiv PDF'inin künyesi görüntü olarak okundu |
-| asıl sayının tarihi | 785 | Mükerrer nüsha; asıl sayıyla aynı gün |
-| komşu sayılardan tahmin (kesin değil) | 165 | PDF indirilemedi/okunamadı; olası aralık `not` kolonunda |
+| arşiv PDF künyesi (görsel okuma) | 1.828 | Arşiv PDF'inin künyesi görüntü olarak okundu |
+| asıl sayının tarihi | 783 | Mükerrer nüsha; asıl sayıyla aynı gün |
+| komşu sayılardan tahmin (kesin değil) | 158 | PDF indirilemedi/okunamadı; olası aralık `not` kolonunda |
 | TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı) | 62 | PDF indirilemedi; TBMM kaydındaki yayım tarihi ve sayısından |
-| aynı sayının mükerrer nüshasının künyesi | 23 | Asıl sayının PDF'i okunamadı; aynı numaralı mükerrerin künyesinden |
+| aynı sayının mükerrer nüshasının künyesi | 22 | Asıl sayının PDF'i okunamadı; aynı numaralı mükerrerin künyesinden |
 | Resmî Gazete metinlerindeki tarih–sayı atfı | 22 | PDF indirilemedi; sonraki Resmî Gazete metinlerindeki atıftan |
 | komşu sayılardan kesin çıkarım | 3 | Önceki ve sonraki sayılardan tek bir tarih mümkün |
+| künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık) | 2 | Künyedeki gün rakamı baskı hatası/kırık; künyedeki haftanın günü ve komşu sayılardan (gerekçe `not` kolonunda) |
 
 ## Resmî kaynaktaki tutarsızlıklar
 
@@ -103,17 +103,21 @@ açıklandı:
 - **Günlük sayfalarda yanlış sayı numarası:** ör. 18.11.2000 sayfasında *24334* yazıyor (doğrusu 24234, çünkü önceki gün
   24233, sonraki gün 24235); 22.01.2001 sayfasında *29425* (doğrusu 24295); 04.05.2001 ve 28.11.2003'te bir önceki sayının
   numarası tekrarlanmış. 29.10.2002 sayfasında bir numara görünse de o gün gazete yayımlanmamış.
-- **Arşivde yanlış adlandırılmış PDF'ler:** bazı dosyalar başka bir sayının künyesini taşıyor. Ör. `17639.pdf` aslında
-  17640'ı, `17640.pdf` 17641'i, `17641.pdf` 17639'u içeriyor; Aralık 1997'de `23207_1.pdf` → 23208, `23208_1.pdf` → 23209
-  asıl sayıları; `14001_1.pdf` ise 14003'ün mükerreri. Bu dosyalar künyede basılı sayıya göre doğru yere yerleştirildi
-  (OCR ve görsel okuma aynı sayıda uyuşmadıkça dosya adına güvenildi).
+- **Künyede basılı yanlış gün:** 14490 sayılı gazetenin künyesinde "23 Mart 1973 Çarşamba" basılı; ancak 23 Mart 1973
+  cumadır, 14486 sayı zaten 24 Mart tarihlidir ve 14489 (27 Mart) ile 14491 (29 Mart) arasında tek gün kalır: sayı
+  28 Mart 1973 çarşamba günü çıkmıştır. 8489 sayının künyesindeki gün rakamı baskıda kırık ("21" gibi görünüyor);
+  künyedeki "Pazartesi" ve komşu sayılar 24 Ağustos 1953'ü verir.
+
+Resmî arşivde (`arsiv/*.pdf`) yanlış adlandırılmış dosya bulunmadı. Taramanın ilk aşamasında aynı anda birden çok
+dosya indirildiği için bazı dosyalar yanlış sayı numarasıyla eşleştirilmişti. Bundan şüphelenilen her dosya (106 dosya)
+sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyalar kullanıldı.
 
 ## Bilinen sınırlamalar
 
-- **165 sayının tarihi hâlâ tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların arşivdeki PDF'i
+- **158 sayının tarihi hâlâ tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların arşivdeki PDF'i
   10 MB'tan büyük olduğu için indirilemedi ve başka bir kaynakta tarihli atıfları bulunamadı; tarih, önceki ve sonraki
   sayıların tarihleri arasında doğrusal olarak tahmin edildi ve `not` kolonunda en erken / en geç olası tarih verildi.
-  Bunların 127 tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Türkiye içinden
+  Bunların 123 tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Türkiye içinden
   `python3 scripts/kesinlestir_tahminler.py data/resmi_gazete_sayilari.csv kesinlesen.csv` komutu bu PDF'leri doğrudan
   indirip künyeden tarihlerini çıkarır.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
@@ -131,7 +135,7 @@ açıklandı:
 | `rg_ingest.py` | İndirilen arşiv PDF'inden ilk sayfa metnini ve künye görüntüsünü çıkarır |
 | `rgdate.py` | Gürültülü OCR metninden tarih, haftanın günü ve sayı adaylarını çıkarır |
 | `resolve_era1.py` | Arşiv sayılarına, sıralama ve haftanın günü kısıtlarıyla tarih atar |
-| `identity.py` | Dosyaları künyede basılı sayıya göre eşleştirir (arşivdeki yanlış adlandırmalar için) |
+| `identity.py` | Dosyaları künyede basılı sayıya göre eşleştirir (indirme sırasında yanlış numarayla eşleşen dosyaları yakalamak için) |
 | `parse_era2.py` | Günlük sayfa sonuçlarını normalize eder, ardışıklık kontrolü yapar |
 | `lexpera_scrape.py`, `parse_era3.py` | Lexpera çapraz kontrolü |
 | `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır |

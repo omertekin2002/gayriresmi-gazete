@@ -14,9 +14,23 @@ for f in sorted(glob.glob(os.path.join(D, 'era1', '*.jsonl'))):
         k = r['key']; old = recs.get(k)
         if old is None or (old.get('status') != 'ok' and r.get('status') == 'ok') or (old.get('status') == r.get('status') == 'ok'):
             recs[k] = r
+
+# Sequential re-downloads (one URL per request) override earlier parallel-batch records for the same key,
+# because parallel batches occasionally paired a downloaded file with the wrong key.
+VERIFIED = set()
+for _f in sorted(glob.glob(os.path.join(D, 'verify', '*.jsonl'))):
+    for _l in open(_f, encoding='utf-8'):
+        try: _r = json.loads(_l)
+        except Exception: continue
+        if _r.get('status') == 'error' and 'maxContent' not in (_r.get('error') or ''): continue
+        if _r['key'] in VERIFIED and recs[_r['key']].get('status') == 'ok' and _r.get('status') != 'ok': continue
+        recs[_r['key']] = _r; VERIFIED.add(_r['key'])
+
 res = json.load(open(os.path.join(D, 'era1_resolved.json')))
 vr = json.load(open(os.path.join(D, 'visual_results.json')))
 vd = json.load(open(os.path.join(D, 'visual_dates.json')))
+_stale = set(json.load(open(os.path.join(D, 'stale_visual_keys.json')))) if os.path.exists(os.path.join(D, 'stale_visual_keys.json')) else set()
+vr = {k: v for k, v in vr.items() if k not in _stale}; vd = {k: v for k, v in vd.items() if k not in _stale}
 main_date = {m['n']: (m.get('date'), m.get('how')) for m in res['mains']}
 
 def kp(k):
@@ -62,7 +76,7 @@ for k, r in recs.items():
     if not date and kind == 'main' and idn == n:
         date, how = main_date.get(n, (None, None))
     files.append({'key': k, 'n': n, 'kmuk': muk, 'T': t, 'idn': idn, 'idsrc': idsrc, 'kind': kind, 'date': date, 'how': how,
-                  'bytes': r.get('bytes'), 'url': r.get('url'), 's_ocr': s_ocr, 's_vis': s_vis, 'printed_muk': printed_muk})
+                  'bytes': (r.get('bytes'), hash((r.get('text1') or '')[:3000])), 'url': r.get('url'), 's_ocr': s_ocr, 's_vis': s_vis, 'printed_muk': printed_muk})
 
 # group by identity
 mains = collections.defaultdict(list); muks = collections.defaultdict(list)
@@ -95,20 +109,22 @@ for n in range(1, nmax + 1):
     ml = sorted(muks.get(n, []), key=lambda f: (f['n'] != n, f['kmuk']))
     seen_bytes = set(); seen_keys = set(); k = 0
     ml.sort(key=lambda f: (f['n'] != n, f['kmuk'], f['T']))   # original scan before its transcription
+    mrows = []   # (sort key, row): numbered afterwards in file-suffix order (_1, _2, …), readable or oversized
     for f in ml:
         if f['bytes'] in seen_bytes or (f['n'], f['kmuk']) in seen_keys: continue
-        seen_bytes.add(f['bytes']); seen_keys.add((f['n'], f['kmuk'])); k += 1
-        mr = {'n': n, 'muk': k, 'files': [f['key']], 'url': f['url'], 'date': f['date'], 'how': f['how'] or 'main', 'notes': []}
+        seen_bytes.add(f['bytes']); seen_keys.add((f['n'], f['kmuk']))
+        mr = {'n': n, 'files': [f['key']], 'url': f['url'], 'date': f['date'], 'how': f['how'] or 'main', 'notes': []}
         if f['n'] != n: mr['notes'].append(f"resmî arşivde {f['url'].rsplit('/', 1)[-1]} adı altında")
-        out.append(mr)
+        mrows.append(((f['n'] != n, f['kmuk']), mr))
     # oversized mükerrer files (exist on server, not downloadable): count them as mükerrer of n
     for kk in range(1, 10):
         r = recs.get(f'{n}_{kk}')
         if r is None: break
         if is_big(r) and not any(f['key'] == f'{n}_{kk}' for f in ml):
-            k += 1
-            out.append({'n': n, 'muk': k, 'files': [f'{n}_{kk}'], 'url': f'https://www.resmigazete.gov.tr/arsiv/{n}_{kk}.pdf', 'date': None, 'how': 'main',
-                        'notes': ['PDF 10 MB sınırını aştığı için indirilemedi; tarihi asıl sayınınki kabul edildi']})
+            mrows.append(((False, kk), {'n': n, 'files': [f'{n}_{kk}'], 'url': f'https://www.resmigazete.gov.tr/arsiv/{n}_{kk}.pdf', 'date': None, 'how': 'main',
+                                        'notes': ['PDF 10 MB sınırını aştığı için indirilemedi; tarihi asıl sayınınki kabul edildi']}))
+    for k, (_, mr) in enumerate(sorted(mrows, key=lambda x: x[0]), 1):
+        mr['muk'] = k; out.append(mr)
 json.dump(out, open(os.path.join(D, 'era1_identity.json'), 'w'), ensure_ascii=False, indent=0)
 c = collections.Counter('main' if r['muk'] == 0 else 'muk' for r in out)
 print(c, 'mains without file:', collections.Counter(r.get('why') for r in out if r['muk'] == 0 and not r.get('files')))

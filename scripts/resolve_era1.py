@@ -22,6 +22,18 @@ for f in sorted(glob.glob(os.path.join(DATA, 'era1', '*.jsonl'))):
         if old is None or (old.get('status') != 'ok' and r.get('status') == 'ok') or (old.get('status') == r.get('status')):
             recs[k] = r
 
+
+# Sequential re-downloads (one URL per request) override earlier parallel-batch records for the same key,
+# because parallel batches occasionally paired a downloaded file with the wrong key.
+VERIFIED = set()
+for _f in sorted(glob.glob(os.path.join(DATA, 'verify', '*.jsonl'))):
+    for _l in open(_f, encoding='utf-8'):
+        try: _r = json.loads(_l)
+        except Exception: continue
+        if _r.get('status') == 'error' and 'maxContent' not in (_r.get('error') or ''): continue
+        if _r['key'] in VERIFIED and recs[_r['key']].get('status') == 'ok' and _r.get('status') != 'ok': continue
+        recs[_r['key']] = _r; VERIFIED.add(_r['key'])
+
 def keyparse(k):
     m = re.fullmatch(r'(\d+)(?:_(\d+))?(T?)', k)
     if not m: return None
@@ -47,6 +59,7 @@ for (n, muk), d in issues.items():
     r = best_rec(d)
     status = 'ok' if r else ('404' if all(x.get('status') == '404' for x in d.values()) else 'error')
     ent = {'n': n, 'muk': muk, 'status': status, 'srcs': {t: x.get('url') for t, x in d.items() if x.get('status') == 'ok'}}
+    if r: ent['thash'] = hash((r.get('text1') or '')[:3000])
     if r:
         txt = (r.get('text1') or '') + '\n' + (r.get('text2') or '')
         c, w, s, mk = candidates(txt)
@@ -60,7 +73,7 @@ import collections as _c
 _by = _c.defaultdict(list)
 for (n, muk), e in info.items():
     if e['status'] == 'ok' and e.get('bytes'):
-        _by[(e['bytes'], e.get('pages'))].append((n, muk))
+        _by[(e['bytes'], e.get('pages'), e.get('thash'))].append((n, muk))   # same size alone is not proof of a copy
 dupinfo = {}
 for k, members in _by.items():
     if len(members) < 2: continue

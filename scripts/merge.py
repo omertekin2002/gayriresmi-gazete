@@ -65,6 +65,12 @@ for k, v in fixed.items():
     if n in mains and mains[n]['how'] not in ('eskiler', 'visual', 'arsiv_ocr', 'arsiv_infer'):
         mains[n]['date'] = v['date']; mains[n]['how'] = v.get('how', 'tbmm')
         mains[n]['it']['notes'].append(('tarih ' + v.get('label', 'TBMM kanun/karar kaydındaki Resmî Gazete bilgisinden') + ': ' + '; '.join(v['refs'][:2])) if v.get('refs') else 'tarih atıftan')
+# masthead read, but its printed day contradicts the printed weekday and the neighbouring issues (decided by hand, see note)
+for k, v in (load('manual_dates.json', {}) or {}).items():
+    n = int(k)
+    if n in mains and mains[n]['how'] != 'eskiler':
+        mains[n]['date'] = v['date']; mains[n]['how'] = 'kunye_duzeltme'
+        mains[n]['it']['notes'].append(v['note'])
 # main issue without a readable file but with a mükerrer whose masthead was read: same number, same day
 for (n, muk), it in issues.items():
     if muk and it.get('muk_date') and n in mains and not mains[n]['date']:
@@ -127,7 +133,7 @@ def yayin_adi(n):
     if n <= 21: return 'Ceride-i Resmiye'
     if n <= 762: return 'Resmî Ceride'
     return 'T.C. Resmî Gazete'
-TAG = {'rg_atif': 'Resmî Gazete metinlerindeki tarih–sayı atfı', 'tbmm': 'TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı)', 'web_atif': 'başka resmî metinlerde geçen tarih–sayı atfı', 'muk_kunye': 'aynı sayının mükerrer nüshasının künyesi', 'eskiler': 'resmî site günlük sayfası', 'arsiv_ocr': 'arşiv PDF künyesi (OCR + haftanın günü kontrolü)', 'visual': 'arşiv PDF künyesi (görsel okuma)',
+TAG = {'kunye_duzeltme': 'künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık)', 'rg_atif':'Resmî Gazete metinlerindeki tarih–sayı atfı', 'tbmm': 'TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı)', 'web_atif': 'başka resmî metinlerde geçen tarih–sayı atfı', 'muk_kunye': 'aynı sayının mükerrer nüshasının künyesi', 'eskiler': 'resmî site günlük sayfası', 'arsiv_ocr': 'arşiv PDF künyesi (OCR + haftanın günü kontrolü)', 'visual': 'arşiv PDF künyesi (görsel okuma)',
        'arsiv_infer': 'komşu sayılardan kesin çıkarım', 'arsiv_muk': 'asıl sayının tarihi', 'lexpera': 'Lexpera günlük listesi', 'tahmin': 'komşu sayılardan tahmin (kesin değil)'}
 def url_of(r):
     u = r['it']['urls']
