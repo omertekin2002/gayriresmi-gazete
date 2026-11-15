@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Era-1 (archive PDFs): decide which issue each downloaded file really is, using the printed masthead
-(OCR text + visual reading) instead of trusting the file name, because the official archive has
-misfiled entries (e.g. 17639.pdf holds issue 17640, 22493_1.pdf holds main issue 22494)."""
+(OCR text + visual reading) instead of trusting the file name. This guards against files paired with the wrong
+number during download (parallel batches did this; such files were later re-downloaded one by one, see verify/*.jsonl).
+After re-verification no file in the official archive was found to be misfiled."""
 import json, os, sys, glob, re, datetime, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rgdate import candidates, norm_text

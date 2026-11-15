@@ -54,8 +54,10 @@ denenerek mükerrer nüshalar arandı. Tarih, PDF'in ilk sayfasındaki künyeden
 - OCR metninden tarih adayları çıkarıldı (eski ay adları — *Teşrinievvel, Kânunusani, Birincikânun* … — ve 1336–1341
   Rumi yılları dahil). Künyedeki **haftanın günü** ile tutan ve sayı sırasıyla çelişmeyen aday seçildi
   (sayı numarası arttıkça tarih geriye gidemez).
-- OCR'ın kesin bir tarih vermediği 1.828 sayının künyesi görüntü olarak okundu. Okunan tarih, ancak basılı sayı
-  numarası ve haftanın günü de tutuyorsa kabul edildi.
+- OCR'ın kesin bir tarih vermediği 1.828 künye görüntü olarak (Claude modelleriyle) okundu. Okunan tarih, künyedeki
+  haftanın günü ve sayı sırasıyla tutuyorsa kabul edildi. Basılı sayı numarası bunların 1.807'sinde de doğrulandı;
+  20'sinde numaranın bir hanesi baskıda kırık, silik ya da yanlış basılmış, 9870'te gün adı silik (açıklamaları `not`
+  kolonunda).
 - **Bağımsız denetim:** OCR ile tarihlendirilmiş sayılardan rastgele seçilen 210 sayı ayrıca görsel olarak okundu;
   209'u birebir tuttu, 1'i düşük güvenle okunduğu için kabul edilmedi (hatalı tarih çıkmadı).
 
@@ -63,8 +65,10 @@ denenerek mükerrer nüshalar arandı. Tarih, PDF'in ilk sayfasındaki künyeden
 `eskiler/YYYY/AA/YYYYAAGG.htm` sayfası ve `...M1.htm`, `M2.htm` … mükerrer sayfaları kontrol edildi.
 
 **Çapraz kontrol.** 2014–2026 için Lexpera'nın günlük Resmî Gazete listesi ayrıca tarandı: asıl sayıların tarih ve
-numaraları resmî siteyle birebir aynı çıktı; resmî sitede Lexpera'da olmayan 20 mükerrer bulundu, Lexpera'daki tek
-fazlalık (15.03.2018 tarihli "30363 1. Mükerrer") hatalı kayıt olduğu için listeye alınmadı. 2000 yılındaki örtüşme
+numaraları resmî siteyle aynı çıktı (Lexpera'nın 31.10.2026 sayfasında 33416 henüz yoktu; 04.08.2016 sayfasındaki
+"2016084" kaydı bir ayrıştırma hatası). Resmî sitede Lexpera'da olmayan 20 mükerrer nüsha (18 güne ait) bulundu.
+Lexpera'daki tek fazla mükerrer (15.03.2018 tarihli "30363 1. Mükerrer") hatalı kayıt olduğu için listeye alınmadı;
+o günün resmî mükerrer sayfası 30361'e ait. 2000 yılındaki örtüşme
 aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihler günlük sayfalarla aynı.
 
 **Bağımsız atıflarla doğrulama.** Liste, sayıların tarihini taşıyan iki bağımsız kaynakla karşılaştırıldı:

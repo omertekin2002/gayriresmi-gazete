@@ -9,7 +9,7 @@ pdftoppm) ya da PyMuPDF (`pip install pymupdf`) gerekir.
 Komutlar (depo kökünden çalıştırın):
   python3 scripts/yerel_tamamla.py baglanti            # siteye erişimi ve PDF araçlarını sınar
   python3 scripts/yerel_tamamla.py liste               # data/acik_kalemler.csv'yi yeniden üretir
-  python3 scripts/yerel_tamamla.py indir_oku [--tur tahmin,atif,buyuk_mukerrer,kontrol] [--bekle 1.5] [--sakla]
+  python3 scripts/yerel_tamamla.py indir_oku [--tur tahmin,atif,buyuk_mukerrer,kontrol] [--bekle 1.5] [--sakla] [--sinir N]
   python3 scripts/yerel_tamamla.py durum               # okunanların özeti; görsel kontrol gerekenleri listeler
   python3 scripts/yerel_tamamla.py uygula [--kuru]     # okumaları listeye işler, tüm çıktıları yeniden yazar
   python3 scripts/yerel_tamamla.py yeni [--bitis YYYY-MM-DD]   # listenin son tarihinden bugüne yeni sayılar
@@ -28,7 +28,10 @@ yerel/gorsel.json biçimi (anahtar → okuma):
   {"15389":   {"tarih": "1975-10-20", "kunyedeki_gun": "Pazartesi", "kunyedeki_sayi": 15389, "mukerrer": false},
    "17915_1": {"tarih": "1982-12-31", "kunyedeki_gun": "Cuma", "kunyedeki_sayi": 17915, "mukerrer": true, "not": "..."},
    "8244":    {"karar": "listede_birak", "not": "künye okunaklı değil"}}
-  - "tarih" künyede basılı tarihtir (miladi, YYYY-MM-DD). Basılı tarih açıkça hatalıysa "zorla": true ve "not" ile gerekçe yazın.
+  - "tarih" künyede basılı tarihtir (miladi, YYYY-MM-DD; Rumi 1336–1341 yılları için +584). `uygula` tarihi komşu sayıların
+    verdiği aralıkla (en_erken…en_gec), gün adıyla ve künyedeki sayı numarasıyla denetler; tutmayan kayıt reddedilir.
+  - Basılı tarih açıkça bir baskı hatasıysa (ör. gün adı ve komşu sayılar başka bir günü gösteriyorsa) "tarih"e listeye
+    yazılacak DOĞRU tarihi koyun, "zorla": true ekleyin ve "not" alanına kanıtı yazın; "not" boşsa kayıt reddedilir.
   - "karar": "listede_birak" kalemi değiştirmeden kapatır (gerekçesi kanit/yerel_okumalar.jsonl.gz'ye yazılır).
 """
 import argparse, collections, csv, datetime, gzip, html, json, os, re, shutil, subprocess, sys, time
@@ -120,7 +123,11 @@ def indir(url, hedef, deneme=3):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': UA})
             with urllib.request.urlopen(req, timeout=900) as r, open(hedef + '.part', 'wb') as f:
+                beklenen = r.headers.get('Content-Length')
                 shutil.copyfileobj(r, f, 1 << 20)
+            alinan = os.path.getsize(hedef + '.part')
+            if beklenen and beklenen.isdigit() and alinan != int(beklenen):
+                raise IOError(f'eksik indirme: {alinan}/{beklenen} bayt')
             os.replace(hedef + '.part', hedef)
             return 200, os.path.getsize(hedef)
         except urllib.error.HTTPError as e:
@@ -171,14 +178,32 @@ def pdf_goruntu(yol, hedef, genislik, yukseklik=None):
 
 
 # ----------------------------------------------------------------------------- açık kalemler
+_BUYUK = None
+
+
+def buyuk_dosyalar():
+    """Bulut taramasında sunucunun var olduğunu bildirdiği ama 10 MB sınırı yüzünden indirilemeyen arşiv dosyaları."""
+    global _BUYUK
+    if _BUYUK is None:
+        _BUYUK = set()
+        yol = os.path.join(REPO, 'kanit', 'arsiv_pdf_ilk_sayfa.jsonl.gz')
+        for l in gzip.open(yol, 'rt', encoding='utf-8'):
+            if '"error"' in l:
+                r = json.loads(l)
+                if r.get('status') == 'error' and re.search(r'maxContent|10 ?MB', r.get('error') or ''):   # identity.py ile aynı kural
+                    _BUYUK.add(r['key'])
+    return _BUYUK
+
+
 def acik_kalemler(rows):
     """Listedeki her açık kalemi ve tarih aralığını (önceki/sonraki kesin tarihli asıl sayı) üretir."""
     kapali = set()
     if os.path.exists(KANIT):
         for l in gzip.open(KANIT, 'rt', encoding='utf-8'):
             r = json.loads(l)
-            if r.get('sonuc') in ('uygulandi', 'listede_birak', 'dogrulandi'):
+            if r.get('sonuc') in ('listede_birak', 'dogrulandi'):   # 'uygulandi' kalemler kaynak etiketi değiştiği için zaten düşer
                 kapali.add(r['anahtar'])
+    buyuk = buyuk_dosyalar()
     mains = {int(r['sayi']): r for r in rows if r['mukerrer'] == '0'}
     nmax = max(mains)
     guvenilir = lambda r: KOD.get(r['tarih_kaynagi']) != 'tahmin'
@@ -199,7 +224,7 @@ def acik_kalemler(rows):
             tur, acik = 'tahmin', 'arşiv PDF\'i 10 MB\'tan büyük; tarih komşu sayılardan tahmin'
         elif muk == 0 and kod in ATIF_KODLARI and n >= 300:   # 293'ün künyesinde gün basılı değil, atıf tarihi kalır
             tur, acik = 'atif', f'arşiv PDF\'i 10 MB\'tan büyük; tarih atıftan ({r["tarih_kaynagi"]}), künyeyle doğrulanmadı'
-        elif muk and BUYUK_NOT in (r['not'] or ''):
+        elif muk and key in buyuk and kod == 'arsiv_muk':   # sunucu "çok büyük" dedi ve künyesi henüz okunmadı
             tur, acik = 'buyuk_mukerrer', 'mükerrer PDF\'i 10 MB\'tan büyük; içeriği görülmedi, tarihi asıl sayınınki kabul edildi'
         elif key in KONTROL:
             tur, acik = 'kontrol', KONTROL[key]
@@ -332,14 +357,13 @@ def not_parcalari(s):
     return [p for p in (s or '').split(' | ') if p]
 
 
-def yaz_ciktilar(rows, ek_rapor=None):
-    """rows: CSV satırları (dict). Sıralar, sıra numarası verir, doğrular ve data/ dosyalarını yazar."""
-    for r in rows:
-        r['gun'] = GUN[iso(r['tarih']).weekday()]
-    rows.sort(key=lambda r: (r['tarih'], int(r['sayi']), int(r['mukerrer'])))
-    for i, r in enumerate(rows, 1):
-        r['sira'] = str(i)
-    # doğrulama
+def dogrula(rows):
+    """Listenin bütünlüğünü denetler; sorun varsa hiçbir şey yazmadan çıkar."""
+    try:
+        for r in rows:
+            iso(r['tarih'])
+    except ValueError as e:
+        raise SystemExit(f'DOĞRULAMA BAŞARISIZ, hiçbir dosya yazılmadı: geçersiz tarih ({e})')
     mains = sorted((int(r['sayi']), r['tarih']) for r in rows if r['mukerrer'] == '0')
     nums = [n for n, _ in mains]
     hatalar = []
@@ -357,6 +381,17 @@ def yaz_ciktilar(rows, ek_rapor=None):
         hatalar.append(f'çift kayıt: {cift[:5]}')
     if hatalar:
         raise SystemExit('DOĞRULAMA BAŞARISIZ, hiçbir dosya yazılmadı:\n  ' + '\n  '.join(hatalar))
+
+
+def yaz_ciktilar(rows, ek_rapor=None):
+    """rows: CSV satırları (dict). Doğrular, sıralar, sıra numarası verir ve data/ dosyalarını yazar."""
+    dogrula(rows)
+    for r in rows:
+        r['gun'] = GUN[iso(r['tarih']).weekday()]
+    rows.sort(key=lambda r: (r['tarih'], int(r['sayi']), int(r['mukerrer'])))
+    for i, r in enumerate(rows, 1):
+        r['sira'] = str(i)
+    nums = [int(r['sayi']) for r in rows if r['mukerrer'] == '0']
     alanlar = ['sira', 'tarih', 'gun', 'sayi', 'mukerrer', 'yayin_adi', 'url', 'tarih_kaynagi', 'not']
     with open(LISTE, 'w', newline='', encoding='utf-8') as f:
         w = csv.writer(f); w.writerow(alanlar)
@@ -436,9 +471,12 @@ def cmd_uygula(a):
         if d and gun and GUN_NO.get(fold(gun)) is not None and GUN_NO[fold(gun)] != d.weekday():
             sorun.append(f'künyedeki gün {gun}, {tarih} ise {GUN[d.weekday()]}')
         if sayi not in (None, '') and int(sayi) != n:
-            sorun.append(f'künyedeki sayı {sayi} ≠ {n}')
+            sorun.append(f'künyedeki sayı {sayi}, beklenen {n}')
         if m and muk is False:
             sorun.append('mükerrer olması beklenen dosyada mükerrer ibaresi yok')
+        if gv and gv.get('zorla') and not (gv.get('not') or '').strip():
+            sorun.append('"zorla" için gerekçe ("not") yazılmamış')
+            reddedilen.append((key, '; '.join(sorun))); ev['sonuc'] = 'reddedildi'; ev['sorun'] = sorun; kanit.append(ev); continue
         if sorun and not (gv and gv.get('zorla')):
             reddedilen.append((key, '; '.join(sorun))); ev['sonuc'] = 'reddedildi'; ev['sorun'] = sorun; kanit.append(ev); continue
         eski_t, eski_e = row['tarih'], row['tarih_kaynagi']
@@ -459,7 +497,7 @@ def cmd_uygula(a):
             parcalar.append(p)
         bas = 'arşiv PDF\'i 10 MB\'tan büyük; künye yerel indirmeyle okundu' if k['tur'] != 'kontrol' else 'künye yerel indirmeyle yeniden okundu'
         if gv and gv.get('zorla'):
-            bas += '; basılı tarih kullanılmadı: ' + (gv.get('not') or 'gerekçe yazılmamış')
+            bas += '; tarih elle verildi, künye denetimi geçmedi (' + '; '.join(sorun or ['—']) + '): ' + gv['not']
         elif gv and gv.get('not'):
             bas += '; ' + gv['not']
         if m and tarih != by_key.get(str(n), {}).get('tarih'):
@@ -476,6 +514,7 @@ def cmd_uygula(a):
         print('--kuru: hiçbir dosya yazılmadı'); return
     if not degisen and not any(e.get('sonuc') == 'listede_birak' for e in kanit):
         print('değişiklik yok'); return
+    dogrula(rows)   # önce bütünlük denetimi: başarısızsa ne liste ne kanıt dosyası yazılır
     eski = []
     if os.path.exists(KANIT):
         eski = [json.loads(l) for l in gzip.open(KANIT, 'rt', encoding='utf-8')]
@@ -546,17 +585,23 @@ def cmd_yeni(a):
             print(f'{d}: Resmî Gazete yayımlanmamış', file=sys.stderr); d += datetime.timedelta(days=1); continue
         if p['tarih'] != d.isoformat() or p['sayi'] != bekleyen:
             raise SystemExit(f'{d}: beklenmeyen künye {p} (beklenen sayı {bekleyen}); elle inceleyin: {gunluk_url(d)}')
-        yeni.append({'tarih': d.isoformat(), 'sayi': str(p['sayi']), 'mukerrer': '0', 'url': gunluk_url(d)})
+        gun_satirlari = [{'tarih': d.isoformat(), 'sayi': str(p['sayi']), 'mukerrer': '0', 'url': gunluk_url(d)}]
         k = 1
         while True:
             st, b = istek(gunluk_url(d, k)); time.sleep(a.bekle)
-            if st != 200:
+            if st in (404, 410):
                 break
+            if st != 200:
+                raise SystemExit(f'{gunluk_url(d, k)}: {st} {b[:200]!r} — mükerrer yoklaması tamamlanamadı, '
+                                 'hiçbir şey yazılmadı; daha sonra yeniden çalıştırın')
             pm = gunluk_oku(b)
-            if pm['sayi'] not in (None, p['sayi']):
-                raise SystemExit(f'{gunluk_url(d, k)}: mükerrer sayfasında farklı sayı {pm}')
-            yeni.append({'tarih': d.isoformat(), 'sayi': str(p['sayi']), 'mukerrer': str(k), 'url': gunluk_url(d, k)})
+            if pm['sayi'] != p['sayi'] or pm['tarih'] not in (None, d.isoformat()):
+                raise SystemExit(f'{gunluk_url(d, k)}: sayfa bu günün mükerreri gibi görünmüyor {pm}; elle inceleyin')
+            if k > 10:
+                raise SystemExit(f'{d}: 10\'dan fazla mükerrer sayfası; elle inceleyin')
+            gun_satirlari.append({'tarih': d.isoformat(), 'sayi': str(p['sayi']), 'mukerrer': str(k), 'url': gunluk_url(d, k)})
             k += 1
+        yeni += gun_satirlari
         print(f'{d}: sayı {p["sayi"]}, {k - 1} mükerrer', file=sys.stderr)
         bekleyen += 1
         d += datetime.timedelta(days=1)
@@ -588,6 +633,8 @@ def cmd_mukerrer_tara(a):
                     if st not in (200, 206):
                         break
                     k += 1
+                    if k >= 10:
+                        st = 'en_az_10'; break
                 if st not in (200, 206, 404, 410):
                     f.write(f'{d},hata,{st}\n')
                 else:
@@ -617,6 +664,8 @@ def cmd_arsiv_mukerrer_tara(a):
                 if st not in (200, 206):
                     break
                 k += 1
+                if k >= 10:
+                    st = 'en_az_10'; break
             f.write(f'{n},{k if st in (404, 410) else "hata"},{liste.get(n, 0)}\n'); f.flush()
     fark = [l.strip() for l in open(out, encoding='utf-8') if l.split(',')[1] != l.strip().split(',')[2]]
     print(f'{out}: sayi,arsivdeki_mukerrer,listedeki_mukerrer · uyuşmayan/hatalı {len(fark)}')
@@ -646,6 +695,11 @@ def cmd_baglanti(a):
 
 
 def main():
+    for akis in (sys.stdout, sys.stderr):
+        try:
+            akis.reconfigure(errors='replace')
+        except Exception:
+            pass
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest='cmd', required=True)
     sp.add_parser('baglanti')

@@ -20,8 +20,9 @@ istemi [4. bölümde](#4-yerel-bilgisayarda-tamamlama) ve [5. bölümde](#5-clau
 | 3 | Tarihi atıftan alınan asıl sayılar | **105** | Tarih büyük olasılıkla doğru, künyeden doğrulanmadı | `indir_oku` |
 | 4 | İçeriği görülmemiş mükerrerler | **155** | Var oldukları kesin; tarih ve "mükerrer" olduğu varsayım | `indir_oku` |
 | 5 | "17914 Mükerrer" sorusu | 1 | TBMM kaydı var, arşivde dosyası yok | `indir_oku` + `arsiv_mukerrer_tara` |
+| 6a | 15164'ün tarihi | 1 | TBMM kaydı komşu sayılarla çelişiyor | `indir_oku` (zaten iş listesinde) |
 | 6 | 2000–2013 mükerrerleri | 496 | Tek kaynaktan (resmî günlük sayfalar) | `mukerrer_tara` (isteğe bağlı) |
-| 7 | 2000 öncesi mükerrer yoklaması | 784 | Paralel indirmeyle tek kez yoklandı | `arsiv_mukerrer_tara` (isteğe bağlı) |
+| 7 | 27 Haziran 2000 öncesi mükerrer yoklaması | 784 | Paralel indirmeyle tek kez yoklandı | `arsiv_mukerrer_tara` (isteğe bağlı) |
 
 2–4. satırlardaki 418 kalemin her biri, olası tarih aralığıyla birlikte
 [`data/acik_kalemler.csv`](data/acik_kalemler.csv) dosyasında. Bu dosya `yerel_tamamla.py` betiğinin iş listesidir.
@@ -34,13 +35,17 @@ gününden bugüne kadar her günün `eskiler/YYYY/AA/YYYYAAGG.htm` sayfasını 
 
 ### 1.2 Tarihi tahmin olan 158 asıl sayı
 
-Arşiv PDF'leri 10 MB'tan büyük ve başka hiçbir kaynakta tarihli bir atıf bulunamadı. Tarih, önceki ve sonraki
-sayının tarihleri arasından tahmin edildi (`tarih_kaynagi = komşu sayılardan tahmin (kesin değil)`; olası en erken ve en
+Arşiv PDF'leri 10 MB'tan büyük ve 157'si için başka hiçbir kaynakta tarihli bir atıf bulunamadı. Tarih, önceki ve
+sonraki sayının tarihleri arasından tahmin edildi (`tarih_kaynagi = komşu sayılardan tahmin (kesin değil)`; olası en erken ve en
 geç tarih `not` kolonunda).
 
 - Belirsizlik küçük: 123 sayıda önceki ve sonraki sayı arasında yalnızca 2 gün var, 26'sında 3, 6'sında 4, 3'ünde 6.
 - Dönemlere dağılım: 1930'lar 2, 1950'ler 1, 1960'lar 17, 1970'ler 53, 1980'ler 29, 1990'lar 53, 2000 3.
-- Örnek: 15389 (künyesi 19–21 Ekim 1975 arasında; tahmin 20 Ekim).
+- Örnek: 15389 (komşu sayılara göre en erken 19, en geç 21 Ekim 1975; tahmin 20 Ekim).
+- **15164 için çelişen bir atıf var.** TBMM kaydı 1867 sayılı Kanun'un (Karayolları 1975 bütçesi) 03.03.1975 tarihli
+  15164 sayılı Resmî Gazete'de yayımlandığını söylüyor. Oysa 15163 28 Şubat, 15165 2 Mart, 15166 3 Mart tarihli (üçü de
+  künyeden, gün adı kontrolüyle). 3 Mart, 15164 için mümkün değil; büyük olasılıkla TBMM kaydındaki tarih 15166'nınki
+  ile karışmış. Bu yüzden atıf kullanılmadı, tarih tahmin olarak kaldı (1 Mart). Künye okununca kesinleşir.
 
 ### 1.3 Tarihi atıftan alınan 105 asıl sayı
 
@@ -76,24 +81,29 @@ TBMM kaydına göre 2766 sayılı Kanun (13.5.1971 tarihli Sıkıyönetim Kanunu
 2. 17914'ün mükerreri arşive hiç yüklenmemiş,
 3. TBMM kaydındaki "Mükerrer" ibaresi hatalı (TBMM aynı kanun için ibaresiz bir kayıt da tutuyor).
 
-`17915_1.pdf`'in künyesi bu soruyu büyük olasılıkla çözer. `indir_oku` bu dosyayı zaten indirir: künyede 17914
+Arşivdeki asıl 17914 sayısının ilk sayfası (`kanit/arsiv_pdf_ilk_sayfa.jsonl.gz`, anahtar `17914`) zaten "Kanun No.
+2766, Kabul Tarihi: 28/12/1982" metniyle başlıyor ve künyesinde "Mükerrer" ibaresi yok. Yani kanun asıl sayıda
+yayımlanmış; en olası açıklama 3. seçenek (TBMM'nin ikinci kaydındaki "Mükerrer" ibaresi hatalı). Yine de
+`17915_1.pdf`'in künyesine bakmak soruyu kapatır. `indir_oku` bu dosyayı zaten indirir: künyede 17914
 yazıyorsa sayı uyuşmazlığı nedeniyle kalemi otomatik uygulamaz ve karar için ayırır.
 
 ### 1.6 2000–2013 mükerrerleri
 
 27 Haziran 2000 – 31 Aralık 2013 arasındaki 496 mükerrer yalnızca resmî günlük sayfalardan (`…M1.htm`, `…M2.htm`)
-bulundu. 2014'ten sonrası Lexpera'nın günlük listesiyle karşılaştırıldı: asıl sayılar birebir aynı; resmî sitede
-Lexpera'da olmayan 20 mükerrer var, tersi yalnızca bir hatalı kayıt. 2000–2013 için böyle ikinci bir kaynak kullanılmadı. Bulutta mükerrer sayfaları bir yapay zekâ ajanı aracılığıyla yoklandı. `mukerrer_tara` her günün
+bulundu. 2014'ten sonrası Lexpera'nın günlük listesiyle karşılaştırıldı: asıl sayılar aynı (Lexpera'nın 31.10.2026
+sayfasında 33416 henüz yoktu; 04.08.2016 sayfasındaki "2016084" kaydı bir ayrıştırma hatası); resmî sitede Lexpera'da
+olmayan 20 mükerrer nüsha (18 güne ait) var, tersi yalnızca bir hatalı kayıt (bkz. 3. bölüm). 2000–2013 için böyle ikinci bir kaynak kullanılmadı. Bulutta mükerrer sayfaları bir yapay zekâ ajanı aracılığıyla yoklandı. `mukerrer_tara` her günün
 mükerrer sayfalarını doğrudan yeniden yoklar ve listeyle karşılaştırır. Listeyi değiştirmez, yalnızca uyuşmayan
 günleri raporlar. 4.936 günün her biri için en az bir istek atar (toplam ~5.400; saniyede bir istekle ~1,5–2 saat).
 
 ### 1.7 2000 öncesi mükerrer yoklaması
 
-1921–2000 arasındaki 784 mükerrer, arşivde her sayı için `_1`, `_2` … dosyalarının denenmesiyle bulundu. Bu yoklama
-bulutta paralel indirmeyle tek kez yapıldı. Bazı dosyaların yanlış numarayla eşleştirildiği anlaşılınca şüpheli 106
-dosya tek tek yeniden indirildi. Hepsi doğru çıktı, ama 404 yanıtları ayrıca yeniden yoklanmadı. TBMM kayıtları
-dolaylı bir kontrol sağlıyor: bir kanunun mükerrer sayıda yayımlandığını söyleyen 364 TBMM kaydının 361'i listedeki
-bir mükerrerle eşleşiyor. Kalan üçünden ikisi TBMM kaydındaki sayı yazım hatası (19237 → 19327, 23792 → 23729;
+27 Haziran 2000'den önceki 784 mükerrer, arşivde her sayı için `_1`, `_2` … dosyalarının denenmesiyle bulundu. Bu
+yoklama bulutta paralel indirmeyle tek kez yapıldı. Bazı dosyaların yanlış numarayla eşleştirildiği anlaşılınca şüpheli
+106 dosya tek tek yeniden indirildi: 73'ü açıldı ve künyeleri dosya adlarıyla tuttu, 32'si 404 döndü (o adla dosya yok),
+15389 ise 10 MB'ı aştı. Geri kalan 404 yanıtları ayrıca yeniden yoklanmadı. TBMM kayıtları dolaylı bir kontrol sağlıyor:
+`ek` alanında "mükerrer" geçen 364 TBMM kaydının (yalnızca "Mükerrer" yazan 332 kaydın 329'u dahil) 361'i, aynı
+numaralı sayının listede en az bir mükerreri olduğunu doğruluyor. Kalan üçünden ikisi TBMM kaydındaki sayı yazım hatası (19237 → 19327, 23792 → 23729;
 ikisinin de o tarihte mükerreri var), üçüncüsü yukarıdaki 17914 sorusu.
 
 `arsiv_mukerrer_tara` her sayı için `_1.pdf`'i (ve varsa devamını) dosyanın yalnızca ilk kilobaytını okuyarak yoklar.
@@ -101,47 +111,59 @@ Yaklaşık 25.000 istek atar (saniyede bir istekle ~7–8 saat), uyuşmayanları
 
 ## 2. Araçla kapanmayan, bilinen belirsizlikler
 
-- **Görüntüden okunan tarihler.** 1.828 tarih, künye görüntüsünün bir yapay zekâ modeliyle okunmasından geliyor. Her
-  biri basılı sayı numarası, haftanın günü ve sayı sırası kontrolünden geçti. OCR ile tarihlendirilmiş 210 rastgele
-  sayıda yapılan görsel denetimde 209'u birebir tuttu, biri düşük güvenle okunduğu için kabul edilmedi. Hatalı bir
-  okumanın bu üç kontrolü birden geçmesi pek olası değil, ama sıfır değil.
+- **Görüntüden okunan tarihler.** 1.828 tarih, künye görüntüsünün Claude modelleriyle (Opus ve Haiku) okunmasından
+  geliyor. Hepsi künyedeki gün adı ve sayı sırasıyla tutuyor. Basılı sayı numarası 1.807'sinde de doğrulandı. 20'sinde
+  numaranın bir hanesi okunamadı ya da farklı okundu. Bunlara 400 dpi'da yeniden bakıldı: 9345 ve 9792'nin numarası
+  doğru çıktı; 11487'nin künyesinde "14487", 8865'inkinde "8365" basılı (baskı hatası); kalan 16'sında hane baskıda
+  kırık ya da silik (çoğu 3/8, 5/3, 0/6 karışıklığı). 9870'te gün adı silik. Her birinin açıklaması `not` kolonunda.
+  OCR ile tarihlendirilmiş 210 rastgele sayıda yapılan görsel denetimde 209'u birebir tuttu, biri düşük güvenle
+  okunduğu için kabul edilmedi.
 - **Arşive hiç yüklenmemiş mükerrerler.** 2000 öncesi için tek kaynak arşiv. Arşivde dosyası olmayan bir mükerrer
   listede de yok. Yalnızca TBMM kayıtlarındaki kanun ve kararlar için dolaylı kontrol var (1.7).
-- **2000–2013 asıl sayıları tek kaynaklı.** 27.06.2000–31.12.2013 arasındaki 4.777 asıl sayının tarihi (2000'deki ilk
-  dört sayı hariç; onlar arşiv PDF'leriyle de doğrulandı) yalnızca resmî günlük sayfadan geliyor. Sayı sırası
+- **2000–2013 asıl sayıları tek kaynaklı.** 27.06.2000–31.12.2013 arasındaki 4.777 asıl sayının tarihi resmî günlük
+  sayfadan geliyor; bunlardan yalnızca 24092–24095 (27–30 Haziran 2000) arşiv PDF'leriyle de karşılaştırıldı. Sayı sırası
   kesintisiz ve TBMM kayıtları ile Resmî Gazete atıflarıyla genel uyum çok yüksek (aşağıda), ama 2014 sonrasındaki
   gibi gün gün ikinci bir kaynak yok.
+- **Ayrı numaralı ekler listede yok.** Liste numaralı sayıları ve mükerrerleri kapsar. "İlk 100 Sayı" derlemesinde,
+  10–27 Eylül 1923 arasında çıkan ve kendi numarası (1–6) olan 6 "Gayr-ı Resmî Kısım (Resmî Ceride'nin İlavesi)" var;
+  bunlar arşivde ayrı dosya olarak bulunmadı ve listeye alınmadı. Sonraki yıllarda başka ayrı numaralı ek olup
+  olmadığı araştırılmadı.
 - **Yayımlanmayan günler.** Gazetenin çıkmadığı günler listede yer almaz. 2000 sonrası için resmî sayfa "yayımlanmamaktadır"
   diyor; daha öncesi için yalnızca sayı numarasının kesintisiz olması, hiçbir asıl sayının eksik olmadığını gösteriyor.
 - **Basılı bilgisi eksik ya da hatalı künyeler** (tarihleri gerekçeleriyle `not` kolonunda):
-  - 293 (Şubat 1926): künyede gün sayısı yok, yalnızca "Salı, Şubat 1926". Tarih (9 Şubat 1926) üç TBMM kanun kaydından.
+  - 293 (Şubat 1926): künyede gün sayısı yok, yalnızca "Salı, Şubat 1926" (`kanit/gorsel_okumalar.json.gz`). Tarih
+    (9 Şubat 1926) üç TBMM kanun kaydından (727, 728, 729).
   - 588'in mükerreri: Osmanlıca künyede yalnızca "Pazar, Mayıs 1927". 589 sayı 3 Mayıs'ta çıktığından tek olasılık 1 Mayıs.
   - 8489: gün rakamının ikinci hanesi baskıda kırık. Künyedeki "Pazartesi" ve komşu sayılar 24 Ağustos 1953'ü verir.
   - 14490: künyede "23 Mart 1973 Çarşamba" basılı, ama sayı sırası ve gün adı 28 Mart 1973'ü gösteriyor (baskı hatası).
 
 ## 3. Kapatılanlar ve sorun olmadığı anlaşılanlar
 
-- **1921–1923 arasındaki 26 aylık boşluk gerçek.** 21. sayı 18 Temmuz 1921, 22. sayı 10 Eylül 1923 tarihli. Gazete Kurtuluş
-  Savaşı sırasında çıkmadı.
+- **1921–1923 arasındaki yaklaşık 26 aylık (784 günlük) boşluk gerçek.** 21. sayı 18 Temmuz 1921, 22. sayı 10 Eylül 1923
+  tarihli; "İlk 100 Sayı" derlemesi de aynı numaralandırmayı veriyor. Yayının bu dönemde savaş nedeniyle durduğu
+  ([Vikipedi: Resmî Gazete](https://tr.wikipedia.org/wiki/Resm%C3%AE_Gazete_(T%C3%BCrkiye))) genel kabul görüyor.
 - **İlk 100 sayı resmî derlemeyle birebir aynı.** Cumhurbaşkanlığı İdari İşler Başkanlığı'nın *T.C. Resmî Gazete İlk 100
   Sayı* (Cilt I–II) derlemesinin içindekiler bölümündeki 100 tarihin 100'ü listeyle aynı
   ([`data/ilk100_fihrist.json`](data/ilk100_fihrist.json)). Derlemede bu dönem için mükerrer yok, listede de yok.
 - **"Arşivde yanlış adlandırılmış dosyalar" iddiası geri çekildi.** Bulutta dosyalar paralel indirilirken bazıları yanlış
-  sayı numarasıyla eşleştirilmişti. Şüpheli 106 dosya tek tek yeniden indirildi ve hepsinin adı doğru çıktı. Bu yüzden
-  22494 ve 23942'nin var sanılan mükerrerleri listeden çıkarıldı, 17 satırın bağlantısı doğru dosyaya döndü.
+  sayı numarasıyla eşleştirilmişti. Şüpheli 106 dosya tek tek yeniden indirildi; açılabilenlerin hepsinin adı doğru
+  çıktı. Bu yüzden 22494 ve 23942'nin var sanılan mükerrerleri listeden çıkarıldı, 17 satırın bağlantısı doğru dosyaya
+  döndü (commit `88fbd6b`).
 - **Künyesinde gün adı tarihle tutmayan 7 sayı:** hepsinde basılı tarih doğru çıktı.
   - 54 ve 77: İlk 100 Sayı derlemesiyle doğrulandı.
   - 259 ve 635: TBMM kayıtlarıyla doğrulandı.
   - 494 ve 18223: gün adı bir önceki sayınınki olarak kalmış (önceki ve sonraki sayıların künyeleri doğru).
   - 207: gün adının gösterdiği gün (2 Kasım 1925), bir sonraki sayının tarihinden (1 Kasım) sonraya düşüyor.
-- **OCR'ın haftanın gününü okuyamadığı 5 sayı** (8244, 8257, 8266, 8290, 8291): künyelere bakıldı. Basılı gün adları
-  tarihlerle tutuyor.
+- **OCR'ın haftanın gününü okuyamadığı 5 sayı** (8244, 8257, 8266, 8290, 8291): künye görüntülerine bakıldı, basılı gün
+  adları tarihlerle tutuyor (okunan gün adları `not` kolonunda ve `kanit/kunye_duzeltmeleri.json.gz`'de).
 - **Resmî sitedeki hatalar** düzeltildi ve açıklandı (ör. 18.11.2000 sayfasında 24334 yazıyor, doğrusu 24234). Liste
   için [README](README.md#resmî-kaynaktaki-tutarsızlıklar).
 - **Lexpera'daki tek fazlalık** (15.03.2018, "30363 1. Mükerrer") resmî günlük sayfada olmadığı için listeye alınmadı.
-- **Bağımsız atıflarla genel uyum:** TBMM kayıtlarındaki 5.115 sayının 5.020'sinde tarih aynı. Farklı 95 kaydın 83'ü
-  TBMM kaydındaki tek haneli yazım hatası, 12'si sayı sırasıyla bağdaşmıyor. Resmî Gazete metinlerindeki atıflarda
-  4.215 sayının 4.180'i aynı.
+- **Bağımsız atıflarla genel uyum** (`scripts/adjudicate.py`; atıflar `kanit/atiflar.json.gz`'de): tarihi künyeden
+  ya da günlük sayfadan gelen ve TBMM kaydı bulunan 5.115 sayının 5.020'sinde tarih aynı. Farklı 95 sayının 83'ünde TBMM
+  kaydında tek haneli bir yazım hatası var, 12'si sayı sırasıyla bağdaşmıyor. Ayrıca PDF'i okunamayan ama TBMM kaydı bulunan 63
+  sayının 62'sinin tarihi bu kayıttan kesinleşti, biri (15164) çelişiyor (1.2). Resmî Gazete metinlerindeki atıflarda 4.215 sayının
+  4.180'i aynı.
 
 ## 4. Yerel bilgisayarda tamamlama
 
@@ -175,8 +197,12 @@ künyedeki gün adıyla tutuyorsa, künyede okunan sayı numarası doğruysa ve 
 kendiliğinden kabul edilir. Atıftan tarihlendirilmiş bir sayıda künye farklı bir tarih verirse kalem `celiski` olarak
 ayrılır. Diğer her durumda kalem görsel kontrole kalır. `uygula`, görsel okumaları da aynı kurallarla denetler.
 Aralık dışı bir tarih, tutmayan bir gün adı ya da farklı bir sayı numarası, açıkça `"zorla": true` ve gerekçe yazılmadıkça
-reddedilir. Yazmadan önce listenin bütünlüğü denetlenir: numaralar kesintisiz olmalı, tarih geriye gitmemeli, her
+reddedilir; "zorla" ile verilen tarih (basılı tarih bir baskı hatasıysa doğru tarih) gerekçesiyle birlikte nota
+yazılır. Yazmadan önce listenin bütünlüğü denetlenir: numaralar kesintisiz olmalı, tarih geriye gitmemeli, her
 mükerrerin asıl sayısı bulunmalı.
+
+Bütünlük denetimi başarısız olursa hiçbir dosya (kanıt dosyası dahil) yazılmaz; `gorsel.json`'u düzeltip `uygula`'yı
+yeniden çalıştırın.
 
 Siteye karşı nazik olun: betik istekleri sırayla ve aralarında bekleyerek gönderir (`--bekle`, varsayılan 1–1,5 saniye).
 Birden çok kopyayı aynı anda çalıştırmayın.
@@ -213,28 +239,36 @@ Steps:
    yerel/kunye/<key>.png (and yerel/sayfa1/<key>.png if the masthead is not in the crop) and add an entry to
    yerel/gorsel.json. Record what is PRINTED: date (YYYY-MM-DD, Gregorian; Rumi years 1336–1341 = +584), weekday name,
    issue number, and whether "Mükerrer" is printed. The date must fall within the row's en_erken…en_gec window, which
-   comes from the neighbouring issues. If the printed date is clearly a misprint, put the corrected date with
-   "zorla": true and a Turkish "not" explaining the evidence. If the file is not what its name says (different issue
-   number, or a "mükerrer" file without the Mükerrer marker), do NOT force it. Leave it out of gorsel.json and list it
-   for me. If there are more than ~40 images, use subagents in batches of ~20 that return JSON entries, then look at
-   a random 10% of their images yourself and re-check any batch with a mismatch.
-   Special case: 17915_1. TBMM records say Law 2766 was published in "17914 Mükerrer" on 1982-12-30, but the archive
-   has no 17914_1.pdf. Check whether the 17915_1 masthead says 17914 Mükerrer or 17915 Mükerrer, and also run
-   `python3 scripts/yerel_tamamla.py arsiv_mukerrer_tara --bas 17914 --son 17915`. Report what you find.
-   If a mükerrer turns out to belong to a different issue, fix the CSV by hand (sayi, mukerrer, tarih, url, note) and
-   run `python3 scripts/yerel_tamamla.py yeniden_yaz`, which re-sorts, validates and rewrites every output.
+   comes from the neighbouring issues. If the printed date is clearly a misprint (the printed weekday and the
+   neighbouring issues point to another day), put the CORRECTED date in "tarih" with "zorla": true and a Turkish
+   "not" giving the evidence. The script rejects "zorla" without a "not". If there are more than ~40 images, use
+   subagents in batches of ~20 that return JSON entries, then look at a random 10% of their images yourself and
+   re-check any batch with a mismatch.
+   Rule for surprises: if a file is not what its name says (a different issue number, a "mükerrer" file without the
+   Mükerrer marker, a mükerrer that belongs to another issue), never "zorla" it and do not edit anything for it; leave
+   it out of gorsel.json. List it for me with
+   the evidence and wait for my decision. After I approve a hand edit to data/resmi_gazete_sayilari.csv, run
+   `python3 scripts/yerel_tamamla.py yeniden_yaz`, which validates, re-sorts and rewrites every output.
+   Special cases: (a) 17915_1. TBMM says Law 2766 was published in "17914 Mükerrer" on 1982-12-30, the archive has
+   no 17914_1.pdf, and the main 17914 issue already carries Law 2766 with no Mükerrer marker. Check whether the
+   17915_1 masthead says 17914 or 17915 Mükerrer, run
+   `python3 scripts/yerel_tamamla.py arsiv_mukerrer_tara --bas 17914 --son 17915`, and report. (b) 15164. TBMM gives
+   1975-03-03, which is impossible between 15163 (28 Feb) and 15165 (2 Mar). Report what its masthead says.
 4. Run `python3 scripts/yerel_tamamla.py uygula --kuru`, review the planned changes and the REDDEDİLDİ (rejected) lines,
-   fix gorsel.json where needed, then run `python3 scripts/yerel_tamamla.py uygula`. It refuses to write if validation
-   fails: numbers 1..N with no gaps, dates never going backwards, every mükerrer has its main issue.
+   fix gorsel.json where needed, then run `python3 scripts/yerel_tamamla.py uygula`. If validation fails (numbers 1..N
+   with no gaps, dates never going backwards, every mükerrer has its main issue), nothing is written, not even the
+   evidence file. Fix the offending gorsel.json entry and run it again.
 5. Run `python3 scripts/yerel_tamamla.py yeni` to add issues from 2026-11-02 up to today. It first re-reads the last
    three known days as a self-test. If that fails, the daily page HTML has changed: fix gunluk_oku() in the script
-   (pages may be UTF-8 or Windows-1254) and rerun. Never invent rows.
+   (pages may be UTF-8 or Windows-1254) and rerun. It also stops, writing nothing, if a mükerrer page returns an
+   error or does not match the day. Rerun later or inspect that page. Never invent rows.
 6. Optional, if I agree (long-running, report-only): `mukerrer_tara --bas 2000-06-27 --son 2013-12-31` (~1.5 h) and
    `arsiv_mukerrer_tara --bas 1 --son 24095` (~7 h). Investigate every mismatch by opening the page or PDF before
    changing the list.
 7. Update EKSIKLER.md: new numbers, closed items moved to section 3, anything still unresolved with the reason. Then
    rebuild the HTML view: `python3 scripts/build_artifact.py data/resmi_gazete_sayilari.csv site` (site/*.html is
-   gitignored; tell me if the published page should be updated). Commit in small logical commits with Turkish
+   site/data.json and site/gayriresmi-gazete.html are generated and gitignored; site/head.html, body.html and
+   app.js are tracked. Tell me if the published page should be updated. Commit in small logical commits with Turkish
    messages. Never commit yerel/ or any PDFs. Push to claude/resmi-gazete-tum-sayilar. Do not open a pull request
    unless I ask.
 
