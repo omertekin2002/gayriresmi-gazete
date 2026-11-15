@@ -246,8 +246,7 @@ Steps:
    re-check any batch with a mismatch.
    Rule for surprises: if a file is not what its name says (a different issue number, a "mükerrer" file without the
    Mükerrer marker, a mükerrer that belongs to another issue), never "zorla" it and do not edit anything for it; leave
-   it out of gorsel.json. List it for me with
-   the evidence and wait for my decision. After I approve a hand edit to data/resmi_gazete_sayilari.csv, run
+   it out of gorsel.json. List it for me with the evidence and wait for my decision. After I approve a hand edit to data/resmi_gazete_sayilari.csv, run
    `python3 scripts/yerel_tamamla.py yeniden_yaz`, which validates, re-sorts and rewrites every output.
    Special cases: (a) 17915_1. TBMM says Law 2766 was published in "17914 Mükerrer" on 1982-12-30, the archive has
    no 17914_1.pdf, and the main 17914 issue already carries Law 2766 with no Mükerrer marker. Check whether the
@@ -266,9 +265,9 @@ Steps:
    `arsiv_mukerrer_tara --bas 1 --son 24095` (~7 h). Investigate every mismatch by opening the page or PDF before
    changing the list.
 7. Update EKSIKLER.md: new numbers, closed items moved to section 3, anything still unresolved with the reason. Then
-   rebuild the HTML view: `python3 scripts/build_artifact.py data/resmi_gazete_sayilari.csv site` (site/*.html is
-   site/data.json and site/gayriresmi-gazete.html are generated and gitignored; site/head.html, body.html and
-   app.js are tracked. Tell me if the published page should be updated. Commit in small logical commits with Turkish
+   rebuild the HTML view: `python3 scripts/build_artifact.py data/resmi_gazete_sayilari.csv site`. Its outputs
+   site/data.json and site/gayriresmi-gazete.html are gitignored; site/head.html, body.html and app.js are tracked.
+   Tell me if the published page should be updated. Commit in small logical commits with Turkish
    messages. Never commit yerel/ or any PDFs. Push to claude/resmi-gazete-tum-sayilar. Do not open a pull request
    unless I ask.
 
