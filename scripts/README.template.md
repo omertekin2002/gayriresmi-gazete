@@ -113,8 +113,8 @@ sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyal
   indirip künyeden tarihlerini çıkarır.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
   varsa listede yoktur. 10 MB'ı aşan mükerrer dosyalarının varlığı sunucu yanıtından (dosya var ama çok büyük) anlaşıldı.
-- İlk dönemin (1921–1928) günümüz Türkçesine aktarılmış nüshalarında birkaç künyede tarih ile haftanın günü birbirini
-  tutmuyor; bu sayılarda basılı tarih kullanıldı ve not düşüldü.
+- 7 sayının künyesinde basılı tarih ile haftanın günü birbirini tutmuyor (54, 77, 207, 259, 494, 635 — ilk dönemin
+  günümüz Türkçesine aktarılmış nüshaları — ve 18223); tarih sırasına uyduğu için basılı tarih kullanıldı ve not düşüldü.
 - Resmî Gazete'nin yayımlanmadığı günler (bayramlar, bazı resmî tatiller) listede doğal olarak yer almaz.
 
 ## Yeniden üretme

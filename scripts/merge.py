@@ -56,6 +56,9 @@ for (n, muk), it in issues.items():
     ch = next(((src[p], p) for p in PRI if p in src), None)
     mains[n] = {'n': n, 'date': ch[0] if ch else None, 'how': ch[1] if ch else None, 'it': it}
 nmax = max(mains)
+for m in e1['mains']:
+    if m.get('wd_ok') is False and m['n'] in mains and mains[m['n']]['how'] == 'arsiv_ocr' and mains[m['n']]['date'] == m.get('date'):
+        mains[m['n']]['it']['notes'].append('künyede basılı tarih ile haftanın günü birbirini tutmuyor; basılı tarih kullanıldı')
 # dates of otherwise-unreadable issues taken from Resmî Gazete citations (TBMM law/decision records, web sources)
 citdec = load('citation_decisions.json', {})
 fixed = dict((load('web_citations.json', {}) or {}).get('accepted') or {})
