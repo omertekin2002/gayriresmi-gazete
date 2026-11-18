@@ -1,4 +1,7 @@
 yerel/
+non-ocr/
+.DS_Store
+*.tmp
 __pycache__/
 *.pyc
 site/data.json
