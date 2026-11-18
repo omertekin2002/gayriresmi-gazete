@@ -1,31 +1,31 @@
 # Gayriresmî Gazete
 
 T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** kronolojik listesi:
-7 Şubat 1921'de *Ceride-i Resmiye* adıyla çıkan 1 numaralı sayıdan, 1 Kasım 2026 tarihli 33417 sayılı Resmî Gazete'ye kadar.
+7 Şubat 1921'de *Ceride-i Resmiye* adıyla çıkan 1 numaralı sayıdan, 18 Kasım 2026 tarihli 33434 sayılı Resmî Gazete'ye kadar.
 
 | | |
 |---|---|
-| Toplam yayın | **35.420** |
-| Asıl sayı (1 → 33417, numara atlanmadan) | **33.417** |
+| Toplam yayın | **35.437** |
+| Asıl sayı (1 → 33434, numara atlanmadan) | **33.434** |
 | Mükerrer sayı | **2.003** |
 | İlk sayı | 7 Şubat 1921 — *Ceride-i Resmiye*, Sayı 1 |
-| Son sayı | 1 Kasım 2026 — Sayı 33417 |
-| Liste tarihi | 15 Kasım 2026 |
+| Son sayı | 18 Kasım 2026 — Sayı 33434 |
+| Liste tarihi | 18 Kasım 2026 |
 
 ## Dosyalar
 
 | Dosya | İçerik |
 |---|---|
 | [`data/resmi_gazete_sayilari.csv`](data/resmi_gazete_sayilari.csv) | Tüm yayınlar, tarih → sayı → mükerrer sırasıyla |
-| [`data/resmi_gazete_sayilari.json`](data/resmi_gazete_sayilari.json) | Aynı liste, JSON |
+| [`data/resmi_gazete_sayilari.json`](data/resmi_gazete_sayilari.json) | Aynı liste, JSON (`gun` alanı yoktur; `tarih_kaynagi` aşağıdaki tabloda verilen kısa kodlarla yazılır, boş not `null`) |
 | [`data/yillik_ozet.csv`](data/yillik_ozet.csv) | Yıl başına asıl/mükerrer sayısı, yılın ilk ve son sayı numarası |
 | [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları |
-| [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında bulunup düzeltilen sayı numarası hataları |
+| [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında ve mükerrer sayfalarında bulunup düzeltilen sayı numarası hataları |
 | [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki her kanun ve Meclis kararının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı) |
-| [`EKSIKLER.md`](EKSIKLER.md) | **Listenin bilinen eksikleri ve açık soruları**, bunların nasıl tamamlanacağı |
-| [`data/acik_kalemler.csv`](data/acik_kalemler.csv) | Henüz tamamlanmamış her kalem (arşiv PDF'i 10 MB'tan büyük olanlar) ve olası tarih aralığı |
+| [`EKSIKLER.md`](EKSIKLER.md) | **Kapatılan açık kalemler, kalan belirsizlikler** ve listenin nasıl güncel tutulacağı |
+| [`data/acik_kalemler.csv`](data/acik_kalemler.csv) | Künyesi henüz görülmemiş kalemlerin iş listesi (`scripts/yerel_tamamla.py` üretir; Kasım 2026'daki yerel tamamlamadan sonra boş) |
 | [`data/ilk100_fihrist.json`](data/ilk100_fihrist.json) | Resmî "İlk 100 Sayı" derlemesindeki sayı–tarih eşleşmeleri (karşılaştırmada kullanıldı) |
-| [`kanit/`](kanit/) | Her tarihin dayandığı ham veriler (OCR metinleri, görsel okumalar, günlük sayfalar, atıflar) |
+| [`kanit/`](kanit/) | Her tarihin dayandığı ham veriler (OCR metinleri, görsel okumalar, günlük sayfalar, atıflar, yerel tamamlama kayıtları) |
 | [`scripts/`](scripts/) | Verileri toplamak, ayrıştırmak ve birleştirmek için kullanılan betikler |
 
 ### CSV kolonları
@@ -42,10 +42,16 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | `tarih_kaynagi` | Tarihin nereden alındığı (aşağıya bakın) |
 | `not` | Düzeltme, belirsizlik veya arşivdeki tutarsızlıklarla ilgili açıklama |
 
+`yayin_adi` sayı numarası aralığına göre atanır. Resmî çevriyazılarda 27, 28, 32–39 ve 46 numaralı sayıların (27 Eylül –
+6 Aralık 1923) künyesinde hâlâ «Ceride-i Resmiy(y)e» yazar.
+
 ## Yöntem
 
-Tüm sayılar **resmigazete.gov.tr** üzerinden tek tek tarandı; site Türkiye dışından doğrudan erişime kapalı olduğu için
-indirmeler bir web-getirme aracı üzerinden yapıldı.
+Tüm sayılar **resmigazete.gov.tr** üzerinden tek tek tarandı. İlk derleme (Ekim–Kasım 2026) bulutta yapıldı: site Türkiye
+dışından doğrudan erişime kapalı olduğu için indirmeler bir web-getirme aracı üzerinden yapıldı ve bu araç 10 MB'tan büyük
+dosyaları kabul etmedi. Bu yüzden açılamayan 420 arşiv PDF'i ve 1 Kasım 2026'dan sonraki sayılar, 17–18 Kasım 2026'da siteye
+doğrudan erişebilen bir bilgisayardan [`scripts/yerel_tamamla.py`](scripts/yerel_tamamla.py) ile tamamlandı (aşağıda
+«Yerel tamamlama»).
 
 **1921 – Haziran 2000 (Sayı 1 – 24095): arşiv PDF'leri.** Her sayı numarası için `arsiv/<sayı>.pdf` indirildi
 (ilk 1053 sayı için günümüz Türkçesine aktarılmış `arsiv/<sayı>T.pdf`), ardından `arsiv/<sayı>_1.pdf`, `_2.pdf` …
@@ -54,59 +60,95 @@ denenerek mükerrer nüshalar arandı. Tarih, PDF'in ilk sayfasındaki künyeden
 - OCR metninden tarih adayları çıkarıldı (eski ay adları — *Teşrinievvel, Kânunusani, Birincikânun* … — ve 1336–1341
   Rumi yılları dahil). Künyedeki **haftanın günü** ile tutan ve sayı sırasıyla çelişmeyen aday seçildi
   (sayı numarası arttıkça tarih geriye gidemez).
-- OCR'ın kesin bir tarih vermediği 1.828 künye görüntü olarak (Claude modelleriyle) okundu. Okunan tarih, künyedeki
-  haftanın günü ve sayı sırasıyla tutuyorsa kabul edildi. Basılı sayı numarası bunların 1.807'sinde de doğrulandı;
-  20'sinde numaranın bir hanesi baskıda kırık, silik ya da yanlış basılmış, 9870'te gün adı silik (açıklamaları `not`
-  kolonunda).
+- İlk derlemede OCR'ın kesin bir tarih vermediği 1.828 künye görüntü olarak (Claude modelleriyle) okundu. Okunan tarih,
+  künyedeki haftanın günü ve sayı sırasıyla tutuyorsa kabul edildi. Basılı sayı numarası bunların 1.808'inde okunan değerle
+  aynı; 2'sinde (9345, 9792) görüntüye yeniden bakılınca doğru çıktı; 18'inde numaranın bir hanesi baskıda kırık, silik ya da
+  yanlış basılmış; ayrıca 9870'te gün adı silik (hepsinin açıklaması `not` kolonunda). Bugün `tarih_kaynagi` değeri görsel
+  okuma olan 1.865 satırın geri kalanı, yerel tamamlamada görüntüden okunan künyelerdir.
 - **Bağımsız denetim:** OCR ile tarihlendirilmiş sayılardan rastgele seçilen 210 sayı ayrıca görsel olarak okundu;
   209'u birebir tuttu, 1'i düşük güvenle okunduğu için kabul edilmedi (hatalı tarih çıkmadı).
+- **Yerel tamamlama (17–18 Kasım 2026).** Bulutta açılamayan 420 büyük PDF (263 asıl sayı, 157 mükerrer) siteden sırayla
+  indirildi ve künyeleri okundu. 418'i iş listesindeydi: 384'ünde tarih PDF'in metin katmanından otomatik çıktı (komşu
+  sayıların izin verdiği aralıkta, künyedeki gün adıyla tutan tek tarih adayı; sayı numarası ve mükerrer ibaresi de
+  tutuyor), 34'ü görüntüden okundu. Bu 418 künyenin hepsi ayrıca, dosya adını ve beklenen tarihi bilmeyen bağımsız okuyuculara (Claude)
+  **kör** olarak okutuldu (556 okuma, `kanit/yerel_kor_okumalar.json.gz`); 15873'ün künyesinde yanlış basılmış numara (15973,
+  aşağıda) dışında listeyle çelişen tek bir tarih, sayı numarası ya da mükerrer ibaresi çıkmadı. Sonuç:
+  - tarihi komşu sayılardan **tahmin** edilmiş 158 sayıdan 149 tanesinde tahmin doğru çıktı; 9 tanesinde künye
+    1–2 gün farklı bir tarih verdi (2900, 12791, 13373, 13503, 16641, 21683, 22266, 23321, 23995) ve liste düzeltildi;
+  - tarihi **atıftan** alınmış 105 sayıdan 105 tanesinde künye, atıfla aynı tarihi verdi;
+  - içeriği görülmemiş 155 **mükerrer** dosyasının hepsinin künyesinde dosya adındaki sayı numarası, «Mükerrer» ibaresi ve
+    asıl sayıyla aynı tarih var (23923'ün ikinci mükerrerinde «2. Mükerrer»); günlük sayfadan tarihlenen iki mükerrerin
+    (24273, 24281) büyük arşiv PDF'leri de günlük sayfayla aynı sonucu verdi.
+- **İlk derlemenin üç tarih hatası düzeltildi.** 6126, 10908 ve 11979'da OCR metninin gövdesinde geçen başka bir tarih,
+  künyedeki tarihin yerine seçilmişti (liste tarihi künyede basılı gün adıyla tutmuyordu; üçü de bir gün kaydı). Bu hata
+  türü için arşivdeki bütün asıl sayıların OCR metni (23.828 kayıt) yeniden tarandı: künyedeki gün adı liste tarihiyle
+  tutmayan başka sayı çıkmadı (gün adı künyede yanlış basılmış 7 sayı aşağıda).
+- **Künyelerdeki yıl ayrıca denetlendi (18 Kasım 2026).** İlk derleme, OCR'ın okuduğu gün ve aya yılı komşu sayılardan da
+  verebiliyordu; künyesi görüntüden okunan sayılarda da okuyucu beklenen tarihi biliyordu. Bu yüzden künyesinde yılı yanlış
+  basılmış, hiç basılmamış ya da kırık çıkmış sayılar, açıklama düşülmeden (doğru) tarihlenmişti. Arşivdeki 24.091 asıl
+  sayının 22.652'sinde liste tarihi, yılıyla birlikte, beklenen tarihi bilmeyen bir okumada geçiyor (PDF'in metin katmanı ya
+  da yerel tamamlamanın okumaları). Kalan 1.439 sayıdan görüntüsü olan 1.435'inin künye görüntüsü ikinci kez
+  OCR'landı; 873'ünde aynı tarih yılıyla çıktı.
+  Son 566 künye gözle okundu: 251'i ilk derlemenin künye görüntüsünden, rastgele adlarla ve beklenen tarih verilmeden;
+  görüntüsü olmayan 4'ü PDF'ten; ilk derlemede görüntüden okunmuş 311'i, yeniden indirilen PDF'in 2600 piksel genişlikteki
+  künye görüntüsünden, yine beklenen tarih verilmeden. İlk okumada yılı «şüpheli» bulunanlarla birlikte toplam 408 künyenin
+  PDF'i yeniden indirilip yüksek çözünürlükte okundu (`kanit/yerel_yil_okumalari.json.gz`). Kırık, silik ya da mürekkeple
+  dolmuş bir hane için ölçüt: beklenen tarihi bilmeyen üç okuyucudan en az ikisi yılı listedeki gibi okuyamadıysa (yıl olarak
+  ya da kendi yazdığı tarih satırında başka bir şey kaydettiyse) satıra açıklama düşüldü. Sonuç: 49 künyede yıl sorunlu (5 künyede yanlış basılmış, 7 künyede hiç
+  basılı değil, 37 künyede bir ya da iki hanesi başka bir rakam gibi görünüyor ya da okunamıyor; aşağıda). Hepsinde
+  gün, ay ve gün adı listeyle aynı; hiçbir liste tarihi değişmedi, satırlara açıklama eklendi. Sınırı: yılı OCR'da ya da yerel
+  tamamlamanın okumalarında doğru çıkan 23.525 künyeye, tek tek ele alınan birkaçı dışında, yıl denetiminde topluca bakılmadı
+  (baskısı kusurlu olup OCR'ın ya da okuyucunun yine de doğru okuduğu künyeler, 5180 ve 23494 dışında, bu listede yoktur) ve
+  hanesi kusurlu olduğu hâlde okuyucuların çoğunun doğru okuduğu künyelere açıklama düşülmedi (ayrıntı [`EKSIKLER.md`](EKSIKLER.md)'de).
 
-**Haziran 2000 – bugün (Sayı 24092 → 33417): günlük sayfalar.** 9.624 günün her biri için
+**Haziran 2000 – bugün (Sayı 24092 → 33434): günlük sayfalar.** 9.641 günün her biri için
 `eskiler/YYYY/AA/YYYYAAGG.htm` sayfası ve `...M1.htm`, `M2.htm` … mükerrer sayfaları kontrol edildi.
 
-**Çapraz kontrol.** 2014–2026 için Lexpera'nın günlük Resmî Gazete listesi ayrıca tarandı: asıl sayıların tarih ve
-numaraları resmî siteyle aynı çıktı (Lexpera'nın 31.10.2026 sayfasında 33416 henüz yoktu; 04.08.2016 sayfasındaki
-"2016084" kaydı bir ayrıştırma hatası). Resmî sitede Lexpera'da olmayan 20 mükerrer nüsha (18 güne ait) bulundu.
-Lexpera'daki tek fazla mükerrer (15.03.2018 tarihli "30363 1. Mükerrer") hatalı kayıt olduğu için listeye alınmadı;
-o günün resmî mükerrer sayfası 30361'e ait. 2000 yılındaki örtüşme
+**Çapraz kontrol.** 1 Ocak 2014 – 31 Ekim 2026 için Lexpera'nın günlük Resmî Gazete listesi ayrıca tarandı: asıl sayıların
+tarih ve numaraları resmî siteyle aynı çıktı (Lexpera'nın 31.10.2026 sayfasında 33416 henüz yoktu; 04.08.2016 sayfasındaki
+"2016084" kaydı bir ayrıştırma hatası). Lexpera taraması 31.10.2026'da biter; 33416 ve sonraki sayılar bu karşılaştırmanın
+dışındadır. Resmî sitede Lexpera'da hiç olmayan 19 mükerrer nüsha (19 güne ait) bulundu.
+Lexpera'nın 15.03.2018 tarihli "30363 1. Mükerrer" kaydı yanlış numaralı: o günün resmî mükerrer sayfası 30361'e ait
+ve listede 30361'in mükerreri olarak yer alıyor. 2000 yılındaki örtüşme
 aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihler günlük sayfalarla aynı.
 
 **Bağımsız atıflarla doğrulama.** Liste, sayıların tarihini taşıyan iki bağımsız kaynakla karşılaştırıldı:
 
 - **TBMM kanun ve karar kayıtları.** TBMM'nin eski "Kanunlar ve Kararlar Erişim" veritabanında, 1920'den bu yana çıkan
   her kanunun ve Meclis kararının hangi tarih ve sayılı Resmî Gazete'de yayımlandığı yazılı.
-  5.115 sayı numarası için bu kayıtlar var. Bunların 5.020 tanesinde tarih bizimkiyle birebir aynı.
-  Farklı görünen 95 kaydın 83 tanesi TBMM kaydındaki tek haneli yazım hatası (sayı ya da tarih), 12 tanesi
+  Tarihi künyeden ya da günlük sayfadan gelen 5.177 sayı numarası için bu kayıtlar var. Bunların 5.081 tanesinde tarih bizimkiyle birebir aynı.
+  Farklı görünen 96 kaydın 84 tanesi TBMM kaydındaki tek haneli yazım hatası (sayı ya da tarih), 12 tanesi
   sayı sırasıyla bağdaşmayan tarih veriyor. Sıraya sığan 9 vakada künye yeniden okundu ya da resmî günlük sayfa
   kontrol edildi; hepsinde bizim tarihimiz doğru çıktı.
 - **Resmî Gazete'nin kendi metinlerindeki atıflar.** "… tarihli ve … sayılı Resmî Gazete'de yayımlanan" kalıbındaki
-  atıflar, 2019–2026 Resmî Gazete tam metin derleminden ([moganai/turkish-resmi-gazete](https://huggingface.co/datasets/moganai/turkish-resmi-gazete))
-  ve arşiv PDF'lerinin ilk sayfalarından çıkarıldı: 4.215 sayıya yapılan atıfların 4.180 tanesi bizim tarihimizle aynı;
-  kalan 35 uyuşmazlığın 34 tanesi sayı sırasıyla bağdaşmayan bir tarih veriyor (atıf metnindeki yazım hatası
-  ya da başka bir belgeye ait numara), biri ise resmî günlük sayfanın tarihiyle çelişen bir yazım hatası.
+  atıflar iki derlemden çıkarıldı. 2019–2026 Resmî Gazete tam metin derleminde
+  ([moganai/turkish-resmi-gazete](https://huggingface.co/datasets/moganai/turkish-resmi-gazete)) 4.234 sayıya yapılan
+  atıfların 4.199 tanesi bizim tarihimizle aynı; kalan 35 uyuşmazlığın 34 tanesi sayı sırasıyla bağdaşmayan bir tarih
+  veriyor (atıf metnindeki yazım hatası ya da başka bir belgeye ait numara), 1 tanesi ise resmî günlük sayfanın tarihiyle
+  çelişen bir yazım hatası. Arşiv PDF'lerinin ilk sayfalarındaki atıflarda 442 sayının 419 tanesi aynı; kalan 23
+  uyuşmazlığın 23 tanesi sayı sırasıyla bağdaşmıyor.
 
 - **Resmî "İlk 100 Sayı" derlemesi.** Cumhurbaşkanlığı İdari İşler Başkanlığı'nın yayımladığı *T.C. Resmî Gazete İlk 100
   Sayı* (Cilt I–II, [mevzuat.gov.tr](https://www.mevzuat.gov.tr)) içindekiler bölümünde her sayının tarihi yazılı. İlk 100
   sayının 100'ünün tarihi de listeyle birebir aynı (`data/ilk100_fihrist.json`). 21. sayıdan (18 Temmuz 1921) sonraki
   26 aylık boşluk gerçek: gazete Kurtuluş Savaşı sırasında 10 Eylül 1923'teki 22. sayıya kadar çıkmadı.
 
-PDF'i indirilemeyen sayıların tarihi bu atıflardan kesinleştirildi: 62 sayı TBMM kayıtlarından, 22 sayı Resmî
-Gazete metinlerindeki atıflardan (atıf yalnızca komşu sayıların izin verdiği tarih aralığına düşüyorsa kabul edildi).
+İlk derlemede PDF'i açılamayan 105 sayının tarihi bu atıflardan (61 TBMM kaydı, 22 Resmî Gazete atfı) ve aynı numaralı
+mükerrerin künyesinden (22) alınmıştı; yerel tamamlamada hepsinin künyesi okundu ve 105 tanesinde aynı tarih çıktı.
+Bugün tarihi atıfa dayanan 1 sayı var: 293. Künyesinde (çevriyazıda da Osmanlıca aslında da) gün rakamı basılı değil;
+9 Şubat 1926 tarihi üç TBMM kaydından geliyor, künyedeki «Salı» ve komşu sayılar (292: 8 Şubat, 294: 10 Şubat) aynı günü veriyor.
 
 ### `tarih_kaynagi` değerleri
 
-| Değer | Adet | Anlamı |
-|---|---:|---|
-| arşiv PDF künyesi (OCR + haftanın günü kontrolü) | 21.995 | Arşiv PDF'inin künyesi; OCR + haftanın günü + sıra kontrolü |
-| resmî site günlük sayfası | 10.545 | resmigazete.gov.tr günlük sayfası (`eskiler/…htm`), 27.06.2000 sonrası |
-| arşiv PDF künyesi (görsel okuma) | 1.828 | Arşiv PDF'inin künyesi görüntü olarak okundu |
-| asıl sayının tarihi | 783 | Mükerrer nüsha; asıl sayıyla aynı gün |
-| komşu sayılardan tahmin (kesin değil) | 158 | PDF indirilemedi/okunamadı; olası aralık `not` kolonunda |
-| TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı) | 62 | PDF indirilemedi; TBMM kaydındaki yayım tarihi ve sayısından |
-| aynı sayının mükerrer nüshasının künyesi | 22 | Asıl sayının PDF'i okunamadı; aynı numaralı mükerrerin künyesinden |
-| Resmî Gazete metinlerindeki tarih–sayı atfı | 22 | PDF indirilemedi; sonraki Resmî Gazete metinlerindeki atıftan |
-| komşu sayılardan kesin çıkarım | 3 | Önceki ve sonraki sayılardan tek bir tarih mümkün |
-| künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık) | 2 | Künyedeki gün rakamı baskı hatası/kırık; künyedeki haftanın günü ve komşu sayılardan (gerekçe `not` kolonunda) |
+| Değer | JSON kodu | Adet | Anlamı |
+|---|---|---:|---|
+| arşiv PDF künyesi (OCR + haftanın günü kontrolü) | `arsiv_ocr` | 22.376 | Arşiv PDF'inin künyesi; OCR + haftanın günü + sıra kontrolü |
+| resmî site günlük sayfası | `eskiler` | 10.562 | resmigazete.gov.tr günlük sayfası (`eskiler/…htm`), 27.06.2000 sonrası |
+| arşiv PDF künyesi (görsel okuma) | `visual` | 1.865 | Arşiv PDF'inin künyesi görüntü olarak okundu |
+| asıl sayının tarihi | `arsiv_muk` | 628 | Mükerrer nüsha; asıl sayıyla aynı gün (kendi künyesi de okundu, tarih aynı çıktı) |
+| komşu sayılardan kesin çıkarım | `arsiv_infer` | 3 | Künyedeki gün adı (varsa gün rakamı) ile önceki ve sonraki sayılardan tek bir tarih mümkün |
+| künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık) | `kunye_duzeltme` | 2 | Künyedeki gün rakamı baskı hatası/kırık; künyedeki haftanın günü ve komşu sayılardan (gerekçe `not` kolonunda) |
+| TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı) | `tbmm` | 1 | Künyeden tarih okunamadı (293'ün künyesinde gün rakamı basılı değil); TBMM kaydındaki yayım tarihi ve sayısından |
 
 ## Resmî kaynaktaki tutarsızlıklar
 
@@ -114,32 +156,66 @@ Tarama sırasında resmî sitenin kendisinde bazı hatalar bulundu; listede doğ
 açıklandı:
 
 - **Günlük sayfalarda yanlış sayı numarası:** ör. 18.11.2000 sayfasında *24334* yazıyor (doğrusu 24234, çünkü önceki gün
-  24233, sonraki gün 24235); 22.01.2001 sayfasında *29425* (doğrusu 24295); 04.05.2001 ve 28.11.2003'te bir önceki sayının
-  numarası tekrarlanmış. 29.10.2002 sayfasında bir numara görünse de o gün gazete yayımlanmamış.
-- **Künyede basılı yanlış gün:** 14490 sayılı gazetenin künyesinde "23 Mart 1973 Çarşamba" basılı; ancak 23 Mart 1973
-  cumadır, 14486 sayı zaten 24 Mart tarihlidir ve 14489 (27 Mart) ile 14491 (29 Mart) arasında tek gün kalır: sayı
-  28 Mart 1973 çarşamba günü çıkmıştır. 8489 sayının künyesindeki gün rakamı baskıda kırık ("21" gibi görünüyor);
-  künyedeki "Pazartesi" ve komşu sayılar 24 Ağustos 1953'ü verir.
+  24233, sonraki gün 24235); 22.01.2001 sayfasında *29425* (doğrusu 24295); 30.12.2000 ve 04.05.2001'de bir önceki sayının
+  numarası tekrarlanmış; 28.11.2003 sayfasında *25298* yazıyor (doğrusu 25300). 29.10.2002 sayfasında bir numara görünse de
+  o gün gazete yayımlanmamış. İki mükerrer sayfasında da numara yanlış: 29.12.2001 mükerrerinde *27625* (doğrusu 24625),
+  08.03.2003 mükerrerinde *25034* (doğrusu 25042). 30.12.2000'in doğru numarası (24273) o günün mükerrerinin arşiv PDF'indeki
+  künyeyle de doğrulandı.
+- **Karşılığı bulunmayan mükerrer duyurusu:** 12.06.2010 günlük sayfasında «27609 Sayılı Mükerrer Resmî Gazete'de 5996 sayılı Kanun
+  yayımlanmıştır» notu ve eski sunucuya (rega.basbakanlik.gov.tr) giden bir bağlantı var. Resmî sitede böyle bir mükerrer
+  sayfası yok; 5996 sayılı Kanun 13.06.2010 tarihli 27610 sayıda yayımlandı (günlük sayfa ve TBMM kaydı). Listeye mükerrer
+  eklenmedi.
+- **Künyede yanlış basılmış sayı numarası:** 15873 sayılı gazetenin (9 Mart 1977) künyesinde «Sayı: 15973» basılı; TBMM
+  kayıtları da (2039–2066 arasındaki 17 kanun) bu yanlış numarayı taşıyor. Gerçek 15973, 21 Haziran 1977 tarihlidir. İlk derlemede bulunan
+  benzer iki örnek: 11487'nin künyesinde 14487, 8865'inkinde 8365 basılı.
+- **Künyede yanlış basılmış ay, eksik gün rakamı:** 244'ün künyesinde (Osmanlıca aslında da) «Pazartesi, 14 Teşrinievvel
+  1341 / 27 Rebiülahir 1344» basılı; iki ay adı da yanlış, doğrusu 14 Kânunuevvel 1341 / 27 Cemaziyelevvel 1344'tür (243: 13 Aralık, 245: 15 Aralık 1925; 14 Aralık pazartesi). 293 (Şubat 1926) ile
+  Latin harfli ilk sayılardan 1054 ve 1056'nın (Aralık 1928) künyesinde gün rakamı hiç basılı değil, yalnızca ay ve gün adı
+  var; tarihleri künyedeki gün adı ve komşu sayılardan (293 için ayrıca TBMM kayıtlarından) geliyor.
+- **Künyede kırık gün rakamı:** 14490 sayılı gazetenin künyesi «23 Mart 1973 Çarşamba» gibi okunuyor (PDF'in metin katmanı da
+  23 okuyor); ancak 23 Mart 1973 cumadır, 14486 sayı zaten 24 Mart tarihlidir ve 14489 (27 Mart) ile 14491 (29 Mart) arasında
+  tek gün kalır: sayı 28 Mart 1973 çarşamba günü çıkmıştır. Künyeye yüksek çözünürlükte bakıldı: gün rakamının ikinci hanesi
+  aynı satırdaki 1973'ün 3'üne benzemiyor, üst yarısı kapalı bir halka (alt yarısının solu çıkmamış bir 8); ilk derlemede bu
+  bir baskı hatası sayılmıştı. 8489 sayının künyesindeki gün rakamı da baskıda kırık ("21" gibi görünüyor);
+  künyedeki "Pazartesi" ve komşu sayılar 24 Ağustos 1953'ü verir. Yıl denetimi sırasında başka künyelerde de kırık ya da
+  mürekkeple dolmuş gün rakamına rastlandı; okuyucuların çoğunun okuyamadığı üçü: 10480'in künyesi «11 Nisan 1960» gibi
+  okunuyor (14'ün 4'ünden yalnızca dikey çizgi çıkmış; künyede Perşembe yazıyor, 14 Nisan 1960 perşembe), 15890'ınkinde gün
+  rakamının ikinci hanesi okunamıyor («2. Mart 1977»; künyede Cumartesi yazıyor, 15889 25 Mart, 15891 27 Mart tarihli),
+  16168'inkinde de öyle («1. Ocak 1978»; künyede Cuma yazıyor, 16167 12 Ocak, 16169 14 Ocak tarihli). Gün rakamları ayrıca
+  taranmadı.
+- **Künyede yanlış basılmış, eksik ya da kırık yıl** (49 sayı). 5 sayının künyesinde gün, ay ve gün adı
+  doğru, yıl yanlış: 81'de (7 Ocak 1925) «7 Kânunusani 1340» (doğrusu 1341; Osmanlıca aslının arşivdeki nüshasında basılı yıl
+  elle çizilip yanına 1341 yazılmış, çizilen yılın son hanesi mürekkep lekesinin altında; 1340 resmî çevriyazıdaki okuma),
+  8530'da «10 Ekim 1952» (doğrusu 1953), 8585'te «17 Aralık 1593» (1953), 12830'da «19 Şubat 1969» (1968), 13823'te
+  «30 Nisan 1970» (1971). 7 sayının künyesinde yıl hiç basılı değil: 3319 («2 Haziran, Salı»; 1936), art arda beş
+  sayı, 8099–8103 (2–7 Mayıs 1952) ve 23494 («15 Ekim, Perşembe»; 1998). 37 sayıda yılın bir ya da iki hanesi
+  kırık, aşınmış ya da mürekkeple dolmuş; yıl başka bir yıl gibi okunuyor ya da okunamıyor: 2002, 3933, 4658, 4676, 4705, 4784, 4932, 4933, 4946, 4973, 5012, 5180, 5248, 5267, 5303, 5310, 5377, 5408, 5470, 5551, 5590, 6608, 6631, 11004, 11049, 11786, 11851, 11892, 16296, 16758, 17060, 17224, 17253, 17724, 17738, 17739, 17826. En sık
+  görüleni, 1940–1943 arasındaki künyelerde 4 rakamının ince çizgilerinin çıkmaması (yıl «1910», «1911», «1912», «1913» gibi
+  okunuyor); 1962 ve 1964'teki dört künyede 6 rakamı 5 gibi görünüyor («1952», «1954»); 1943'teki üç künyede ve 1978–1982
+  arasındaki dokuz künyede hane mürekkeple dolmuş. Her künyede ne okunduğu `not` kolonunda. Hepsinde yıl, önceki ve sonraki sayının
+  tarihlerinden kesin (81 için: 80 16 Aralık 1924, 82 14 Ocak 1925) ve künyedeki gün adı o yılda tutuyor.
 - **Künyede yanlış gün adı:** 7 sayının künyesinde basılı tarih ile gün adı birbirini tutmuyor (54, 77, 207, 259, 494,
   635, 18223). Hepsinde basılı tarih doğru çıktı: 54 ve 77 «İlk 100 Sayı» derlemesiyle, 259 ve 635 TBMM kayıtlarıyla
   doğrulandı; 494 ve 18223'te gün adı bir önceki sayınınki olarak kalmış (önceki ve sonraki sayıların künyeleri doğru);
   207'de gün adının gösterdiği gün bir sonraki sayının tarihinden sonraya düşüyor.
-- **Tarihi tahmin edilen mükerrer:** 588 sayının mükerrerinin Osmanlıca künyesinde gün sayısı yok, yalnızca "Pazar,
+- **Künyesinde gün rakamı olmayan mükerrer:** 588 sayının mükerrerinin Osmanlıca künyesinde gün sayısı yok, yalnızca "Pazar,
   Mayıs 1927" yazıyor; 589 sayı 3 Mayıs'ta çıktığından tarih 1 Mayıs 1927 (resmî çeviri de "[1] Mayıs" diyor).
 
 Resmî arşivde (`arsiv/*.pdf`) yanlış adlandırılmış dosya bulunmadı. Taramanın ilk aşamasında aynı anda birden çok
 dosya indirildiği için bazı dosyalar yanlış sayı numarasıyla eşleştirilmişti. Bundan şüphelenilen her dosya (106 dosya)
-sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyalar kullanıldı.
+sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyalar kullanıldı. Yerel tamamlamada indirilen 420
+büyük dosyanın da hepsinin künyesi dosya adındaki sayıyı taşıyor (15873'teki baskı hatası dışında). TBMM kaydındaki
+«17914 Mükerrer» (2766 sayılı Kanun) ise bir kayıt hatası: kanun 30.12.1982 tarihli asıl 17914 sayıda yayımlanmış, arşivde
+17914'ün mükerreri yok ve `17915_1.pdf` gerçekten 17915'in mükerreri.
 
 ## Bilinen sınırlamalar
 
-- **158 sayının tarihi hâlâ tahminidir** (`tarih_kaynagi = komşu sayılardan tahmin`). Bunların arşivdeki PDF'i
-  10 MB'tan büyük olduğu için indirilemedi ve başka bir kaynakta tarihli atıfları bulunamadı; tarih, önceki ve sonraki
-  sayıların tarihleri arasında doğrusal olarak tahmin edildi ve `not` kolonunda en erken / en geç olası tarih verildi.
-  Bunların 123 tanesinde önceki ve sonraki sayı arasında yalnızca tek bir gün boşluk var. Bu ve diğer açık
-  kalemler ile bunları tamamlama yolu [`EKSIKLER.md`](EKSIKLER.md)'de.
+- **Tahminî tarih kalmadı** (0 satır). İlk derlemede 158 sayının tarihi komşu sayılardan tahmin edilmişti; hepsinin künyesi
+  Kasım 2026'da okundu (yukarıda «Yerel tamamlama»). Künyesinde tam tarih basılı olmayan, kırık çıkmış ya da yanlış basılmış 59 yayın
+  (gün ya da ay: 244, 293, 588'in mükerreri, 1054, 1056, 8489, 10480, 14490, 15890, 16168; yıl: 81, 2002, 3319, 3933, 4658, 4676, 4705, 4784, 4932, 4933, 4946, 4973, 5012, 5180, 5248, 5267, 5303, 5310, 5377, 5408, 5470, 5551, 5590, 6608, 6631, 8099–8103, 8530, 8585, 11004, 11049, 11786, 11851, 11892, 12830, 13823, 16296, 16758, 17060, 17224, 17253, 17724, 17738, 17739, 17826, 23494)
+  künyedeki gün adı ve komşu sayılarla tarihlendi; gerekçeleri `not` kolonunda. Kalan belirsizlikler ve kapatılan kalemler [`EKSIKLER.md`](EKSIKLER.md)'de.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
-  varsa listede yoktur. 10 MB'ı aşan mükerrer dosyalarının varlığı sunucu yanıtından (dosya var ama çok büyük) anlaşıldı.
+  varsa listede yoktur. 18 Kasım 2026 itibarıyla arşivdeki `N_1.pdf`, `N_2.pdf` … adresleri 1–24095 arasındaki 24.095 sayı numarası için, ayrıca 27 Haziran 2000 – 17 Kasım 2026 arasındaki 9.640 günün `M1`, `M2` … mükerrer sayfaları siteden doğrudan yeniden yoklandı; bulunan mükerrer adedi her yerde listeyle aynı çıktı.
 - Resmî Gazete'nin yayımlanmadığı günler (bayramlar, bazı resmî tatiller) listede doğal olarak yer almaz.
 
 ## Yeniden üretme
@@ -156,11 +232,12 @@ sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyal
 | `lexpera_scrape.py`, `parse_era3.py` | Lexpera çapraz kontrolü |
 | `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır |
 | `merge.py`, `build_outputs.py` | Kaynakları birleştirir, doğrular ve `data/` dosyalarını yazar |
-| `yerel_tamamla.py` | Açık kalemleri, siteye doğrudan erişilebilen bir bilgisayardan (10 MB sınırı olmadan) tamamlar; yeni sayıları ekler |
+| `yerel_tamamla.py` | Siteye doğrudan erişilebilen bir bilgisayardan çalışır: yeni sayıları ekler (`yeni`), büyük PDF'leri indirip künyelerini okur, okumaları listeye işler, mükerrer yoklamaları yapar. Kasım 2026'daki tamamlama bununla yapıldı |
+| `atif_dogrula.py` | Bağımsız atıf istatistiklerini (`data/dogrulama_raporu.json` → `atif_dogrulama`) depodaki kanıt dosyalarından yeniden hesaplar |
 | `render_readme.py`, `build_artifact.py` | Bu README'yi ve tek sayfalık HTML görünümünü üretir |
 
-Listeyi güncellemek ve açık kalemleri kapatmak için `scripts/yerel_tamamla.py` yeterlidir (bkz. [`EKSIKLER.md`](EKSIKLER.md));
-ilk derleme hattının ara dosyaları depoda değil, ham kanıtları `kanit/` dizininde.
+Listeyi güncel tutmak için siteye erişebilen bir bilgisayarda `python3 scripts/yerel_tamamla.py yeni` çalıştırmak yeterlidir
+(bkz. [`EKSIKLER.md`](EKSIKLER.md)); ilk derleme hattının ara dosyaları depoda değil, ham kanıtları `kanit/` dizininde.
 
 ---
 
