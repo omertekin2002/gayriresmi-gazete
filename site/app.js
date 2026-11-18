@@ -29,6 +29,8 @@
   const allYears = []; for (let y = Y0; y <= Y1; y++) allYears.push(y);
   const mains = rows.filter(r => !r.k).length, muks = rows.length - mains, est = rows.filter(r => r.s === 6).length;
   const first = rows[0], last = rows[rows.length - 1];
+  // tahminî tarihli satır kalmadıysa "Tahmini tarih" süzgecini gösterme
+  if (!est) { const b = document.querySelector('.chips button[data-f="est"]'); if (b) b.hidden = true; }
   document.getElementById('facts').innerHTML =
     `<span><b>${fmt(rows.length)}</b> yayın</span><span><b>${fmt(mains)}</b> asıl sayı</span><span><b>${fmt(muks)}</b> mükerrer</span>` +
     `<span>ilk: <b>${first.d} ${AY[first.m - 1]} ${first.y}</b> · Sayı 1</span><span>son: <b>${last.d} ${AY[last.m - 1]} ${last.y}</b> · Sayı ${last.n}</span>`;
