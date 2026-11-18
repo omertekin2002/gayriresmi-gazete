@@ -4,5 +4,7 @@
  "2001-01-22": {"n": 24295, "note": "resmigazete.gov.tr günlük sayfasında sayı 29425 olarak yazılı; 21.01.2001=24294 ve 23.01.2001=24296 arasında, doğrusu 24295"},
  "2001-05-04": {"n": 24392, "note": "resmigazete.gov.tr günlük sayfasında ve fihristte sayı 24391 olarak yazılı (03.05.2001 ile aynı); 05.05.2001=24393 olduğundan doğrusu 24392"},
  "2002-10-29": {"n": null, "note": "Cumhuriyet Bayramı: fihrist sayfası bu gün Resmî Gazete yayımlanmadığını belirtiyor; eskiler sayfasındaki 25008 hatalı"},
- "2003-11-28": {"n": 25300, "note": "resmigazete.gov.tr günlük sayfasında ve fihristte sayı 25298 olarak yazılı; 24.11.2003=25299 ve 29.11.2003=25301 arasında, doğrusu 25300"}
+ "2003-11-28": {"n": 25300, "note": "resmigazete.gov.tr günlük sayfasında ve fihristte sayı 25298 olarak yazılı; 24.11.2003=25299 ve 29.11.2003=25301 arasında, doğrusu 25300"},
+ "2001-12-29 M1": {"n": 24625, "mukerrer": 1, "note": "resmigazete.gov.tr mükerrer sayfasında (20011229M1.htm) sayı 27625 olarak yazılı; aynı günün asıl sayısı 24625 ve mükerrer asıl sayının numarasını taşır, doğrusu 24625"},
+ "2003-03-08 M1": {"n": 25042, "mukerrer": 1, "note": "resmigazete.gov.tr mükerrer sayfasında (20030308M1.htm) sayı 25034 olarak yazılı; aynı günün asıl sayısı 25042 (25034, 28.02.2003 tarihli), doğrusu 25042"}
 }
