@@ -3,7 +3,7 @@
   const NOTES = D.notes;
   const GUN = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
   const AY = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
-  const SRC = ['Resmî günlük sayfa', 'Künye (OCR)', 'Künye (görsel okuma)', 'Asıl sayıyla aynı gün', 'Mükerrer künyesinden', 'Komşu sayılardan kesin', 'Tahmin', 'TBMM kaydı', 'Resmî Gazete atfı', 'Künye düzeltmesi'];
+  const SRC = ['Resmî günlük sayfa', 'Künye (OCR)', 'Künye (görsel okuma)', 'Asıl sayıyla aynı gün', 'Mükerrer künyesinden', 'Komşu sayılardan kesin', 'Tahmin', 'TBMM kaydı', 'Resmî Gazete atfı', 'Künye düzeltmesi', 'Lexpera listesi', 'Başka resmî metin atfı'];
   const fmt = n => n.toLocaleString('tr-TR');
   // rows: [yyyymmdd, n, muk, src, noteIdx?, url?]
   const rows = D.rows.map(r => {
@@ -34,6 +34,11 @@
   document.getElementById('facts').innerHTML =
     `<span><b>${fmt(rows.length)}</b> yayın</span><span><b>${fmt(mains)}</b> asıl sayı</span><span><b>${fmt(muks)}</b> mükerrer</span>` +
     `<span>ilk: <b>${first.d} ${AY[first.m - 1]} ${first.y}</b> · Sayı 1</span><span>son: <b>${last.d} ${AY[last.m - 1]} ${last.y}</b> · Sayı ${last.n}</span>`;
+  // body.html'deki duruk metinlerin (yedek) yerine veriden: yıl aralığının sonu, son sayı ve tarihi
+  const fill = (id, text) => { const e = document.getElementById(id); if (e) e.textContent = text; };
+  fill('y-son', Y1);
+  fill('son-sayi', `${last.d} ${AY[last.m - 1]} ${last.y} tarihli ${last.n} numaralı sayıya`);
+  fill('ay-son', `${AY[last.m - 1]} ${last.y}`);
 
   // ---------- chart
   const box = document.getElementById('chart');
@@ -41,12 +46,14 @@
   const NS = 'http://www.w3.org/2000/svg';
   const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
   let svg;
+  // y ekseninin üst sınırı: en kalabalık yılın toplamı, yüzlüğe yuvarlanmış
+  const maxV = Math.max(100, Math.ceil(Math.max(...[...years.values()].map(e => e.a + e.m)) / 100) * 100);
   function drawChart() {
     if (svg) svg.remove();
     const W = Math.max(320, box.clientWidth), H = W < 560 ? 220 : 280;
     const m = { l: 36, r: 6, t: 26, b: 24 };
     const iw = W - m.l - m.r, ih = H - m.t - m.b;
-    const maxV = 500, band = iw / allYears.length, bw = Math.max(1.5, band * (band > 6 ? 0.72 : 0.86));
+    const band = iw / allYears.length, bw = Math.max(1.5, band * (band > 6 ? 0.72 : 0.86));
     const yv = v => m.t + ih - ih * v / maxV;
     svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Yıllara göre Resmî Gazete asıl ve mükerrer sayı adetleri, 1921–' + Y1 });
     const g = el('g', {});
