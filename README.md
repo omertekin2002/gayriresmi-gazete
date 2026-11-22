@@ -19,9 +19,9 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | [`data/resmi_gazete_sayilari.csv`](data/resmi_gazete_sayilari.csv) | Tüm yayınlar, tarih → sayı → mükerrer sırasıyla |
 | [`data/resmi_gazete_sayilari.json`](data/resmi_gazete_sayilari.json) | Aynı liste, JSON (`gun` alanı yoktur; `tarih_kaynagi` aşağıdaki tabloda verilen kısa kodlarla yazılır, boş not `null`) |
 | [`data/yillik_ozet.csv`](data/yillik_ozet.csv) | Yıl başına asıl/mükerrer sayısı, yılın ilk ve son sayı numarası |
-| [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları |
+| [`data/dogrulama_raporu.json`](data/dogrulama_raporu.json) | Tutarlılık kontrollerinin sonuçları ve atıf istatistikleri. Liste sayılarını, kontrolleri, `tarih_kaynagi` dağılımını ve atıf istatistiklerini `scripts/yerel_tamamla.py` listeyi her yazışında yeniden hesaplar (mükerrer yoklamalarının özetini `yoklama_ozeti` yazar); `kaynaklar_arasi_celiski` ve `yalnizca_lexperada_olup_cikarilan` ise ilk derlemenin son birleştirmesinden (`kanit/birlestirme_raporu.json.gz`) kalmadır, yeniden hesaplanmaz |
 | [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) | Resmî sitenin günlük sayfalarında ve mükerrer sayfalarında bulunup düzeltilen sayı numarası hataları |
-| [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki her kanun ve Meclis kararının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı) |
+| [`data/tbmm_rg_atiflari.csv`](data/tbmm_rg_atiflari.csv) | TBMM kayıtlarındaki kanun ve Meclis kararlarının yayımlandığı Resmî Gazete tarihi ve sayısı (karşılaştırmada kullanıldı): ham kayıtlardan bu bilgiyi «tarih No: sayı» biçiminde taşıyan 19.070 kayıt, en yenisi 28 Temmuz 2021. 767 satır, TBMM'nin aynı sorgu yanıtında aynı kaydı birden çok kez vermesinden gelen birebir tekrar; Resmî Gazete bilgisi olmayan kanun ve kararlar dosyada yok (aşağıda «Bağımsız atıflarla doğrulama») |
 | [`EKSIKLER.md`](EKSIKLER.md) | **Kapatılan açık kalemler, kalan belirsizlikler** ve listenin nasıl güncel tutulacağı |
 | [`data/acik_kalemler.csv`](data/acik_kalemler.csv) | Künyesi henüz görülmemiş kalemlerin iş listesi (`scripts/yerel_tamamla.py` üretir; Kasım 2026'daki yerel tamamlamadan sonra boş) |
 | [`data/ilk100_fihrist.json`](data/ilk100_fihrist.json) | Resmî "İlk 100 Sayı" derlemesindeki sayı–tarih eşleşmeleri (karşılaştırmada kullanıldı) |
@@ -90,8 +90,9 @@ denenerek mükerrer nüshalar arandı. Tarih, PDF'in ilk sayfasındaki künyeden
   da yerel tamamlamanın okumaları). Kalan 1.439 sayıdan görüntüsü olan 1.435'inin künye görüntüsü ikinci kez
   OCR'landı; 873'ünde aynı tarih yılıyla çıktı.
   Son 566 künye gözle okundu: 251'i ilk derlemenin künye görüntüsünden, rastgele adlarla ve beklenen tarih verilmeden;
-  görüntüsü olmayan 4'ü PDF'ten; ilk derlemede görüntüden okunmuş 311'i, yeniden indirilen PDF'in 2600 piksel genişlikteki
-  künye görüntüsünden, yine beklenen tarih verilmeden. İlk okumada yılı «şüpheli» bulunanlarla birlikte toplam 408 künyenin
+  görüntüsü olmayan 4'ü PDF'ten; ilk derlemede görüntüden okunmuş 311'i, yeniden indirilen PDF'in künye görüntüsünden, yine
+  beklenen tarih verilmeden (307'si ikinci turda 2600 piksel genişlikte, 4'ü — 4946, 11004, 11007, 11049 — birinci turda
+  yüksek çözünürlükte). İlk okumada yılı «şüpheli» bulunanlarla birlikte toplam 408 künyenin
   PDF'i yeniden indirilip yüksek çözünürlükte okundu (`kanit/yerel_yil_okumalari.json.gz`). Kırık, silik ya da mürekkeple
   dolmuş bir hane için ölçüt: beklenen tarihi bilmeyen üç okuyucudan en az ikisi yılı listedeki gibi okuyamadıysa (yıl olarak
   ya da kendi yazdığı tarih satırında başka bir şey kaydettiyse) satıra açıklama düşüldü. Sonuç: 49 künyede yıl sorunlu (5 künyede yanlış basılmış, 7 künyede hiç
@@ -114,19 +115,30 @@ aralığında (24092–24095 ve mükerrerleri) arşiv PDF'lerinden okunan tarihl
 
 **Bağımsız atıflarla doğrulama.** Liste, sayıların tarihini taşıyan iki bağımsız kaynakla karşılaştırıldı:
 
-- **TBMM kanun ve karar kayıtları.** TBMM'nin eski "Kanunlar ve Kararlar Erişim" veritabanında, 1920'den bu yana çıkan
-  her kanunun ve Meclis kararının hangi tarih ve sayılı Resmî Gazete'de yayımlandığı yazılı.
+- **TBMM kanun ve karar kayıtları.** TBMM'nin eski "Kanunlar ve Kararlar Erişim" veritabanında kanunların ve Meclis
+  kararlarının hangi tarih ve sayılı Resmî Gazete'de yayımlandığı yazılı. Depodaki kayıtlar (`kanit/tbmm_*.jsonl.gz`)
+  hepsini kapsamıyor: en yeni atıf 28 Temmuz 2021 tarihli 31551 sayıya yapılmış (kararlarda 19 Temmuz 2021 tarihli 31546),
+  sonraki sayılar için TBMM atfı yok; karar sorguları 1600 numarada bitiyor ve 28 Nisan 1948'den Eylül 1960'a kadar kabul
+  edilmiş hiçbir karar kayıtlarda yok; kayıtlardaki 15.292 kanunun 658'inde, 4.499 kararın 2.914'ünde de «tarih No: sayı»
+  biçiminde bir Resmî Gazete bilgisi yok (çoğunda yalnızca «Kanun Metni» ya da «Karar Metni» yazıyor; 84 kanunda «geri gönderme»).
   Tarihi künyeden ya da günlük sayfadan gelen 5.177 sayı numarası için bu kayıtlar var. Bunların 5.081 tanesinde tarih bizimkiyle birebir aynı.
-  Farklı görünen 96 kaydın 84 tanesi TBMM kaydındaki tek haneli yazım hatası (sayı ya da tarih), 12 tanesi
-  sayı sırasıyla bağdaşmayan tarih veriyor. Sıraya sığan 9 vakada künye yeniden okundu ya da resmî günlük sayfa
-  kontrol edildi; hepsinde bizim tarihimiz doğru çıktı.
+  Farklı görünen 96 sayının 84 tanesi TBMM kaydındaki tek haneli yazım hatası (sayı ya da tarih), 12 tanesi
+  sayı sırasıyla bağdaşmayan tarih veriyor.
+  Sıraya sığan 9 vakanın hepsi bu tek haneli yazım hatalarından (5 tanesinde TBMM kaydındaki sayı, 4 tanesinde tarih yanlış yazılmış); bizim tarihimiz 7 tanesinde arşiv PDF'inin ilk sayfa metnindeki künyeden (OCR), 2 tanesinde resmî günlük sayfadan geliyor; bu vakalarda künyenin yeniden okunduğuna ya da günlük sayfanın yeniden kontrol edildiğine dair kayıt depoda yok.
+  Bir sayı, TBMM atıflarından en az birinin tarihi listedeki tarihle aynıysa «aynı» sayılır
+  ([`scripts/atif_dogrula.py`](scripts/atif_dogrula.py)); «aynı» sayılan 83 sayıda listedeki tarihle çelişen
+  108 TBMM kaydı daha var (100 tanesi tek haneli yazım hatası gibi, 8 tanesi sayı sırasıyla bağdaşmıyor). Tarihi ayrıştırılamayan 52 kayıt (çoğu «22-25.09.1962»
+  gibi birden çok sayıya yapılmış atıf) ile numarası son sayıdan büyük 6 sayıya yapılmış 7 kayıt (111446, 240004, 274168, 278889, 300018, 300278)
+  karşılaştırmaya girmedi.
 - **Resmî Gazete'nin kendi metinlerindeki atıflar.** "… tarihli ve … sayılı Resmî Gazete'de yayımlanan" kalıbındaki
   atıflar iki derlemden çıkarıldı. 2019–2026 Resmî Gazete tam metin derleminde
   ([moganai/turkish-resmi-gazete](https://huggingface.co/datasets/moganai/turkish-resmi-gazete)) 4.234 sayıya yapılan
   atıfların 4.199 tanesi bizim tarihimizle aynı; kalan 35 uyuşmazlığın 34 tanesi sayı sırasıyla bağdaşmayan bir tarih
   veriyor (atıf metnindeki yazım hatası ya da başka bir belgeye ait numara), 1 tanesi ise resmî günlük sayfanın tarihiyle
   çelişen bir yazım hatası. Arşiv PDF'lerinin ilk sayfalarındaki atıflarda 442 sayının 419 tanesi aynı; kalan 23
-  uyuşmazlığın 23 tanesi sayı sırasıyla bağdaşmıyor.
+  uyuşmazlığın 23 tanesi sayı sırasıyla bağdaşmıyor. Aynı tanımla «aynı» sayılan sayılarda da listedeki tarihle
+  çelişen atıflar var: derlemde 66 sayıda 91 atıf (75 tanesi tek haneli yazım hatası gibi, 16 tanesi sayı sırasıyla bağdaşmıyor), arşiv sayfalarında 2 atıf
+  (hepsi tek haneli yazım hatası gibi). Derlemdeki numarası son sayıdan büyük 1 atıf (40425) karşılaştırmaya girmedi.
 
 - **Resmî "İlk 100 Sayı" derlemesi.** Cumhurbaşkanlığı İdari İşler Başkanlığı'nın yayımladığı *T.C. Resmî Gazete İlk 100
   Sayı* (Cilt I–II, [mevzuat.gov.tr](https://www.mevzuat.gov.tr)) içindekiler bölümünde her sayının tarihi yazılı. İlk 100
@@ -149,6 +161,9 @@ Bugün tarihi atıfa dayanan 1 sayı var: 293. Künyesinde (çevriyazıda da Osm
 | komşu sayılardan kesin çıkarım | `arsiv_infer` | 3 | Künyedeki gün adı (varsa gün rakamı) ile önceki ve sonraki sayılardan tek bir tarih mümkün |
 | künyedeki haftanın günü + komşu sayılar (künyedeki gün rakamı hatalı/kırık) | `kunye_duzeltme` | 2 | Künyedeki gün rakamı baskı hatası/kırık; künyedeki haftanın günü ve komşu sayılardan (gerekçe `not` kolonunda) |
 | TBMM kanun/karar kaydı (Resmî Gazete tarih ve sayısı) | `tbmm` | 1 | Künyeden tarih okunamadı (293'ün künyesinde gün rakamı basılı değil); TBMM kaydındaki yayım tarihi ve sayısından |
+
+Künyesinde gün, ay ya da yıl eksik, kırık ya da yanlış basılmış 59 yayının (aşağıda «Bilinen sınırlamalar») tarihi
+künyedeki gün adı ve komşu sayılarla tamamlandı. Bunların 53 tanesi, tarihin geri kalanı ve gün adı künyeden okunduğu için künye okumasının etiketini taşır (`arsiv_ocr` 38, `visual` 15); ayrı etiketli olanlar yalnızca 244, 1054, 1056 (`arsiv_infer`), 293 (`tbmm`) ve 8489, 14490 (`kunye_duzeltme`). Bu satırları `tarih_kaynagi` değil `not` kolonu ayırt eder.
 
 ## Resmî kaynaktaki tutarsızlıklar
 
@@ -201,7 +216,10 @@ açıklandı:
 - **Künyesinde gün rakamı olmayan mükerrer:** 588 sayının mükerrerinin Osmanlıca künyesinde gün sayısı yok, yalnızca "Pazar,
   Mayıs 1927" yazıyor; 589 sayı 3 Mayıs'ta çıktığından tarih 1 Mayıs 1927 (resmî çeviri de "[1] Mayıs" diyor).
 
-Resmî arşivde (`arsiv/*.pdf`) yanlış adlandırılmış dosya bulunmadı. Taramanın ilk aşamasında aynı anda birden çok
+Resmî arşivde (`arsiv/*.pdf`), künyede basılı numarası okunan dosyalar arasında yanlış adlandırılmış dosya bulunmadı. İlk
+derlemede 2.531 asıl sayı dosyasında (578'i çevriyazı) künyedeki numara ne OCR'dan ne görsel okumadan dosya adındaki numara
+olarak çıktı; bunlar dosya adıyla eşleştirildi (`scripts/identity.py`). Yaklaşık 500'ünün basılı numarası depodaki hiçbir
+okumada geçmiyor: bunlar için yalnızca tarih sırası ve kopya dosya kontrolleri var (`scripts/resolve_era1.py`). Taramanın ilk aşamasında aynı anda birden çok
 dosya indirildiği için bazı dosyalar yanlış sayı numarasıyla eşleştirilmişti. Bundan şüphelenilen her dosya (106 dosya)
 sonradan tek tek yeniden indirildi ve listede yalnızca bu doğrulanmış dosyalar kullanıldı. Yerel tamamlamada indirilen 420
 büyük dosyanın da hepsinin künyesi dosya adındaki sayıyı taşıyor (15873'teki baskı hatası dışında). TBMM kaydındaki
@@ -215,8 +233,11 @@ büyük dosyanın da hepsinin künyesi dosya adındaki sayıyı taşıyor (15873
   (gün ya da ay: 244, 293, 588'in mükerreri, 1054, 1056, 8489, 10480, 14490, 15890, 16168; yıl: 81, 2002, 3319, 3933, 4658, 4676, 4705, 4784, 4932, 4933, 4946, 4973, 5012, 5180, 5248, 5267, 5303, 5310, 5377, 5408, 5470, 5551, 5590, 6608, 6631, 8099–8103, 8530, 8585, 11004, 11049, 11786, 11851, 11892, 12830, 13823, 16296, 16758, 17060, 17224, 17253, 17724, 17738, 17739, 17826, 23494)
   künyedeki gün adı ve komşu sayılarla tarihlendi; gerekçeleri `not` kolonunda. Kalan belirsizlikler ve kapatılan kalemler [`EKSIKLER.md`](EKSIKLER.md)'de.
 - 1921–2000 dönemindeki mükerrerler arşivdeki `_1`, `_2` … dosyalarından bulundu; arşive hiç yüklenmemiş bir mükerrer
-  varsa listede yoktur. 18 Kasım 2026 itibarıyla arşivdeki `N_1.pdf`, `N_2.pdf` … adresleri 1–24095 arasındaki 24.095 sayı numarası için, ayrıca 27 Haziran 2000 – 17 Kasım 2026 arasındaki 9.640 günün `M1`, `M2` … mükerrer sayfaları siteden doğrudan yeniden yoklandı; bulunan mükerrer adedi her yerde listeyle aynı çıktı.
-- Resmî Gazete'nin yayımlanmadığı günler (bayramlar, bazı resmî tatiller) listede doğal olarak yer almaz.
+  varsa listede yoktur. TBMM kayıtlarındaki mükerrer işaretleriyle yapılan dolaylı kontrol ([`EKSIKLER.md`](EKSIKLER.md))
+  1951'den önce hiçbir şeyi doğrulamıyor (işaretli ilk TBMM atfı 28 Şubat 1951 tarihli 7746 sayıya); 1921–1950 mükerrerleri
+  için dayanak yalnızca arşiv yoklaması, 1–100 arası sayılar için ayrıca «İlk 100 Sayı» derlemesi. 18 Kasım 2026 itibarıyla arşivdeki `N_1.pdf`, `N_2.pdf` … adresleri 1–24095 arasındaki 24.095 sayı numarası için, ayrıca 27 Haziran 2000 – 17 Kasım 2026 arasındaki 9.640 günün `M1`, `M2` … mükerrer sayfaları siteden doğrudan yeniden yoklandı; bulunan mükerrer adedi her yerde listeyle aynı çıktı.
+- Resmî Gazete'nin yayımlanmadığı günler (hafta tatili, bayramlar, bazı resmî tatiller) listede doğal olarak yer almaz:
+  7 Haziran 1935'ten önce hiçbir cuma günü, 26 Mayıs 1935 ile 21 Haziran 1970 arasında da hiçbir pazar günü sayı çıkmadı.
 
 ## Yeniden üretme
 
@@ -225,19 +246,28 @@ büyük dosyanın da hepsinin künyesi dosya adındaki sayıyı taşıyor (15873
 | Betik | Görev |
 |---|---|
 | `rg_ingest.py` | İndirilen arşiv PDF'inden ilk sayfa metnini ve künye görüntüsünü çıkarır |
+| `era1_remaining.py` | Arşiv taramasında sonucu henüz alınmamış sayı numaralarını bulur ve paralel indirme için gruplara böler |
+| `find_masthead.py` | İndirilen bir PDF'in ilk sayfalarının üst kısmını görsel okuma için PNG'ye çevirir |
 | `rgdate.py` | Gürültülü OCR metninden tarih, haftanın günü ve sayı adaylarını çıkarır |
 | `resolve_era1.py` | Arşiv sayılarına, sıralama ve haftanın günü kısıtlarıyla tarih atar |
+| `collect_visual.py` | Görsel okuma sonuçlarını iş günlüklerinden (`journal.jsonl`) toplar; basılı sayı ve haftanın günüyle tutan tarihleri kabul eder |
 | `identity.py` | Dosyaları künyede basılı sayıya göre eşleştirir (indirme sırasında yanlış numarayla eşleşen dosyaları yakalamak için) |
+| `collect_era2.py` | Günlük sayfa taramasının sonuçlarını iş günlüklerinden (`journal.jsonl`) tek dosyada toplar |
 | `parse_era2.py` | Günlük sayfa sonuçlarını normalize eder, ardışıklık kontrolü yapar |
 | `lexpera_scrape.py`, `parse_era3.py` | Lexpera çapraz kontrolü |
-| `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır |
-| `merge.py`, `build_outputs.py` | Kaynakları birleştirir, doğrular ve `data/` dosyalarını yazar |
+| `tbmm_citations.py`, `mine_citations.py`, `citations.py`, `adjudicate.py` | TBMM kayıtlarından ve metinlerden tarih–sayı atıflarını toplar, listeyle karşılaştırır (`kanit/tbmm_*.jsonl.gz`'deki ham kayıtları `tbmm_citations.py` indirir) |
+| `merge.py`, `build_outputs.py` | Yalnızca ilk derlemede: kaynakları birleştirir, doğrular ve `data/` dosyalarını yazar. Girdileri depoda yok ve yerel tamamlamanın okumalarını bilmezler; bugünkü listeyi üretmezler, listeyi artık `yerel_tamamla.py` yazar |
 | `yerel_tamamla.py` | Siteye doğrudan erişilebilen bir bilgisayardan çalışır: yeni sayıları ekler (`yeni`), büyük PDF'leri indirip künyelerini okur, okumaları listeye işler, mükerrer yoklamaları yapar. Kasım 2026'daki tamamlama bununla yapıldı |
-| `atif_dogrula.py` | Bağımsız atıf istatistiklerini (`data/dogrulama_raporu.json` → `atif_dogrulama`) depodaki kanıt dosyalarından yeniden hesaplar |
+| `atif_dogrula.py` | TBMM ve Resmî Gazete metni karşılaştırmasının dokuz sayısını (`--detail` ile ayrıntı listelerini de) depodaki kanıt dosyalarından yeniden hesaplar; hiçbir dosyaya yazmaz. `data/dogrulama_raporu.json` → `atif_dogrulama` bloğunu `yerel_tamamla.py` listeyi her yazışında bu betiğin sonucuyla ve kendi hesapladığı sayılarla (atıftan ya da tahminden künyeye geçen tarihler, `tarih_kaynagi` dağılımı) yeniden yazar |
 | `render_readme.py`, `build_artifact.py` | Bu README'yi ve tek sayfalık HTML görünümünü üretir |
 
 Listeyi güncel tutmak için siteye erişebilen bir bilgisayarda `python3 scripts/yerel_tamamla.py yeni` çalıştırmak yeterlidir
 (bkz. [`EKSIKLER.md`](EKSIKLER.md)); ilk derleme hattının ara dosyaları depoda değil, ham kanıtları `kanit/` dizininde.
+Kasım 2026'daki kör okumaların (`kanit/yerel_kor_okumalar.json.gz`), ikinci OCR'ın (tesseract) ve yıl denetiminin
+(`kanit/yerel_yil_okumalari.json.gz`) araçları da depoda yok, yalnızca sonuçları var; yıl denetiminden ve Kasım 2026'daki
+öbür incelemelerden çıkan `not` değişiklikleri CSV elle düzenlenip `python3 scripts/yerel_tamamla.py yeniden_yaz` çalıştırılarak işlendi (raporda
+`yerel_tamamlama` → `elle_duzeltme`). `data/tbmm_rg_atiflari.csv`, `data/ilk100_fihrist.json` ve
+`data/resmi_site_duzeltmeleri.json`'u üreten betik de depoda yok.
 
 ---
 

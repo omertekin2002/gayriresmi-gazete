@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Given a downloaded gazette PDF, render the top part of the first pages to PNGs for visual reading.
 Usage: python3 -I find_masthead.py KEY /path/to/saved.pdf OUTDIR
-Prints, per page (max 4), the PNG path and the first 200 chars of OCR text; deletes the PDF afterwards."""
+Prints, per page (max 4), the PNG path and the first 200 chars of OCR text; deletes the PDF afterwards.
+
+İlk derleme (15 Kasım 2026) hattının görsel okuma yardımcısı: indirilen bir arşiv PDF'inin ilk (en çok 4) sayfasının üst
+kısmını 1100 piksel genişlikte, 760 piksel yükseklikte gri PNG olarak yazar. PDF'ler depoda yok (arsiv/<sayı>.pdf adresinden
+yeniden indirilebilir); poppler (pdfinfo, pdftoppm, pdftotext) gerekir. Yerel tamamlamada benzer künye görüntülerini
+scripts/yerel_tamamla.py indir_oku üretir (yerel/kunye/)."""
 import sys, os, subprocess, re
 key, pdf, outdir = sys.argv[1], sys.argv[2], sys.argv[3]
 os.makedirs(outdir, exist_ok=True)

@@ -1,3 +1,11 @@
+"""İlk derlemenin (15 Kasım 2026) arşiv taramasında (era 1: resmigazete.gov.tr/arsiv/…pdf) henüz bitmemiş sayı numaralarını
+bulur ve kalan işi paralel indirme iş akışlarına böler. Yalnızca iş planlamasına yarar; listeyi etkilemez.
+kullanım: era1_remaining.py <D> <LO> <HI> <CHUNK> <NWF>
+
+<D>/era1/*.jsonl'deki indirme kayıtlarına bakar: bir sayı numarası, asıl dosyası (1053'e kadar önce <n>T.pdf) okunmuş, 404
+dönmüş ya da 10 MB sınırını aşmışsa ve mükerrer dosyaları (<n>_1.pdf, <n>_2.pdf …) ilk 404'e kadar hatasız denenmişse bitmiştir.
+LO–HI arasında kalanları en çok CHUNK numaralık aralıklara ayırıp NWF gruba dağıtır ve <D>/era1_groups.json'a yazar (özet
+stderr'e). <D> depoda yok; indirme kayıtlarının son hâli kanit/arsiv_pdf_ilk_sayfa.jsonl.gz'dedir."""
 import json, glob, os, re, sys
 DATA = sys.argv[1]; LO, HI = int(sys.argv[2]), int(sys.argv[3]); CHUNK = int(sys.argv[4]); NWF = int(sys.argv[5])
 st = {}

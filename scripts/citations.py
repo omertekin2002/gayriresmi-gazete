@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """Parse RG (date, number) citations and compare them with our list.
-Writes data/citations.json: {"<n>": [{"date": iso, "src": "...", "ref": "..."}]}"""
+Writes data/citations.json: {"<n>": [{"date": iso, "src": "...", "ref": "..."}]}
+kullanım: citations.py <D> <liste.csv>
+
+İlk derleme (15 Kasım 2026) hattının betiği. Yukarıdaki data/, depodaki data/ değil, o derlemenin çalışma dizinidir (<D>) ve
+buradaki dosyaların hiçbiri depoda yok: <D>/tbmm/laws.jsonl ile <D>/tbmm/decisions.jsonl (scripts/tbmm_citations.py çıktısı;
+depoda kanit/tbmm_kanunlar.jsonl.gz ve kanit/tbmm_kararlar.jsonl.gz olarak duruyor) okunur, varsa <D>/citations_extra.json
+eklenir, <D>/citations.json yazılır. Derleme anındaki citations kanit/atiflar.json.gz içinde saklıdır; scripts/atif_dogrula.py
+aynı ayrıştırmayı kanit/ dosyalarına uygular ve sonucun bununla aynı olduğunu denetler."""
 import json, re, sys, os, datetime, collections, csv
 D = sys.argv[1]; LIST = sys.argv[2]
 cit = collections.defaultdict(list)

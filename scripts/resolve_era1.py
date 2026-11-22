@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-"""Resolve dates for arsiv issues (era 1) from noisy OCR text via weighted non-decreasing selection."""
+"""Resolve dates for arsiv issues (era 1) from noisy OCR text via weighted non-decreasing selection.
+kullanım: resolve_era1.py <D> <çıktı.json> [<geçersiz_kılmalar.json>]
+
+İlk derleme (15 Kasım 2026) hattının betiği. <D> o derlemenin çalışma dizinidir ve depoda yoktur: <D>/era1/*.jsonl (paralel
+indirme kayıtları) ve <D>/verify/*.jsonl (sıralı yeniden indirmeler). İkisi de kanit/arsiv_pdf_ilk_sayfa.jsonl.gz'den kurulabilir:
+`sirali_yeniden_indirme: true` olan 106 kayıt verify/'a, kalanı era1/'e. Çıktının ilk derlemedeki hâli
+kanit/arsiv_tarih_cozumleme.json.gz'dir ve `p1` alanları (derleme ortamındaki PDF yolları) dışında birebir yeniden üretilir,
+ama yalnızca geçersiz kılma dosyası belgelenmemiş bir biçimde kurulursa: kanit/gorsel_okumalar.json.gz'den
+scripts/collect_visual.py kurallarıyla kabul edilen 2.428 görsel tarihten 16322, 16406, 16407, 16409 ve 16424 çıkarılarak.
+Bu beşi de verilirse beşi `unresolved` yerine görsel tarihi alır ve 21879 1994-03-19 yerine 1994-03-20 olur (21880 ile aynı gün).
+
+Bilinen zayıflık: haftanın günü (rgdate.candidates → wd) metnin ilk 700 karakterindeki BÜTÜN gün adlarından toplanır, yalnızca
+künyedekinden değil. 21879'da künyede «19 Mart 1994 Cumartesi» basılı; hemen altındaki Bakanlar Kurulu kararında «20 Mart 1994
+Pazar» geçiyor. İki tarih de 4,5 puan alır; eşitliği hangisinin bozacağı adayların sırasına bağlıdır ve ilgisiz adaylar
+(yukarıdaki beş geçersiz kılma gibi) değişince seçim değişebilir. Listedeki tarih doğrudur (1994-03-19); bu hata türü için
+bkz. EKSIKLER.md 3.1 (6126, 10908, 11979) ve yerel_tamamla.py otomatik_karar()'daki "künyedeki ilk gün adı" denetimi."""
 import sys, os, json, glob, re, datetime, bisect
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rgdate import candidates, norm_text, YEAR_RE, to_greg_year

@@ -2,7 +2,15 @@
 """Era-1 (archive PDFs): decide which issue each downloaded file really is, using the printed masthead
 (OCR text + visual reading) instead of trusting the file name. This guards against files paired with the wrong
 number during download (parallel batches did this; such files were later re-downloaded one by one, see verify/*.jsonl).
-After re-verification no file in the official archive was found to be misfiled."""
+After re-verification no file in the official archive was found to be misfiled.
+
+İlk derleme (15 Kasım 2026) hattının betiği; kullanım: identity.py <D>. Buradaki dosya adları (era1/*.jsonl, verify/*.jsonl,
+era1_resolved.json, visual_results.json, visual_dates.json, stale_visual_keys.json) o derlemenin çalışma dizinindedir, depoda
+yoktur. Hepsi kanit/'ten kurulabilir: era1/ ve verify/ kanit/arsiv_pdf_ilk_sayfa.jsonl.gz'den (`sirali_yeniden_indirme: true`
+olan kayıtlar verify/'a), era1_resolved.json kanit/arsiv_tarih_cozumleme.json.gz, visual_results.json
+kanit/gorsel_okumalar.json.gz, visual_dates.json bundan scripts/collect_visual.py kurallarıyla, stale_visual_keys.json
+kanit/README.md'de sayılan 24 geçersiz görsel okuma. Böyle kurulan girdilerle çıktı (<D>/era1_identity.json)
+kanit/arsiv_kimlik_eslestirme.json.gz ile birebir aynıdır."""
 import json, os, sys, glob, re, datetime, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from rgdate import candidates, norm_text

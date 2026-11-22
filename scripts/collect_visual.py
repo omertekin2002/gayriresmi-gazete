@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+"""İlk derlemenin (15 Kasım 2026) görsel künye okumalarını, okumayı yapan iş akışlarının günlüklerinden toplar ve listede
+kullanılabilecek tarihleri ayırır.
+kullanım: collect_visual.py <W> <D>
+
+<W>/*/journal.jsonl içindeki `masthead_found` alanlı okumalardan her anahtar için güveni en yüksek olanı
+<D>/visual_results.json'a yazar. <D>/visual_dates.json'a (anahtar → YYYY-MM-DD) yalnızca künyesi bulunmuş, tarihi geçerli,
+güveni `low` olmayan, basılı sayı numarası dosya adındakiyle ve basılı gün adı tarihle tutan okumaları koyar.
+İş akışı günlükleri ve <D> depoda yok; okumalar aynı biçimde (anahtar → okuma) kanit/gorsel_okumalar.json.gz'dedir ve bu
+kurallar oradaki 2.486 okumadan 2.428 tarih kabul eder. kanit/README.md'de sayılan 24 geçersiz okuma burada değil,
+scripts/identity.py'de (stale_visual_keys.json) ayıklanır."""
 import json, glob, os, sys, re, datetime
 W = sys.argv[1]; D = sys.argv[2]
 res = {}

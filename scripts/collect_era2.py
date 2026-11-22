@@ -1,3 +1,10 @@
+"""İlk derlemenin (15 Kasım 2026) günlük sayfa taramasının (era 2: resmigazete.gov.tr/eskiler/…htm) sonuçlarını, taramayı
+yapan iş akışlarının günlüklerinden tek dosyada toplar.
+kullanım: collect_era2.py <W> <çıktı.json>
+
+<W>/*/journal.jsonl içindeki `type: result` satırlarının `results` listesinden her gün için bir kayıt alır (aynı gün birden
+çok kez varsa main_status'u `ok` olan tercih edilir) ve {gün: kayıt} olarak yazar; çıktı scripts/parse_era2.py'nin girdisidir.
+İş akışı günlükleri depoda yok; günlük sayfa sonuçları aynı biçimde (gün → kayıt) kanit/gunluk_sayfalar.json.gz'dedir."""
 import json, glob, sys, os
 W = sys.argv[1]; OUT = sys.argv[2]
 res = {}

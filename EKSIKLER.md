@@ -56,7 +56,13 @@ Ayrıca belgede açık kalem olarak yer almayan şu sorunlar bulundu ve giderild
   çevriyazısı bu adla duruyor) yüklenmiş bir mükerrer de bulunamaz. Yalnızca TBMM kayıtlarındaki kanun ve kararlar için dolaylı kontrol var: `ek` alanında mükerrer işareti olan 496
   TBMM kaydının («Mükerrer», «2. Mükerrer», «(mük.)» gibi yazılmış 364'ü ve «M.», «M», «2.M» gibi kısaltılmış 132'si) 485'i,
   aynı numaralı sayının listede en az bir mükerreri olduğunu doğruluyor (sayılar `python3 scripts/atif_dogrula.py . --detail`
-  çıktısında `TBMM_MUKERRER_ISARETI` altında yeniden hesaplanır). Kalan 11 kaydın hepsi açıklandı. 7'sinde TBMM
+  çıktısında `TBMM_MUKERRER_ISARETI` altında yeniden hesaplanır). Bunlar ham kayıt adetleri: TBMM verisi aynı kanun ya da
+  karar için kimi zaman birden fazla kayıt veriyor (birebir aynı ya da başlığı, tarihinin yazımı farklı). Sayı numarası ve
+  kanun/karar numarası birlikte sayılınca işaretli 428 ayrı yayım var (296'sı açık yazılmış, 132'si kısaltılmış; 66'sının
+  birden fazla kaydı var); bunların 417'si doğruluyor ve 173 sayı numarasına düşüyor (listede mükerreri olan sayı numarası 1.788). İşaretler 1951'de başlıyor
+  (en eskisi 7746, 28 Şubat 1951); 1951 öncesine tarihli 6.052 TBMM atfının hiçbirinde işaret yok. Yani 1921–1950 için bu
+  kontrol hiçbir şeyi doğrulamıyor: o dönemde (588'inki dışında) mükerrer bulunmadığının dayanağı yalnızca arşiv yoklaması,
+  1–100 arası sayılar için ayrıca İlk 100 Sayı derlemesi (3.2). Kalan 11 kaydın hepsi açıklandı. 7'sinde TBMM
   kaydındaki sayı ya da tarih yanlış yazılmış ve doğru sayının mükerreri listede var: 19237 → 19327, 23792 → 23729,
   274168 → 27418, 30386 → 30836, 21471 ve 21417 → 23417; 7259 sayılı Kanunun kaydındaki «31.10.2020, 31321» ise 31.12.2020
   tarihli 31351'in 2. mükerreri (resmî sitenin `20201231M2.htm` sayfası). 4'ünde mükerrer işareti hatalı, kanun ya da karar
@@ -104,7 +110,18 @@ Ayrıca belgede açık kalem olarak yer almayan şu sorunlar bulundu ve giderild
     adı yanlış basılmış 7 sayı (3.2) dışında, künyedeki gün adıyla tutuyor, ama gün rakamı kırık olup açıklaması düşülmemiş
     başka künyeler olabilir. İkinci turda rastlanıp açıklama düşülmeyenler: 14118'de gün rakamı kırık ama üç okuyucu da doğru
     okudu; 17738'de beş okuyucudan ikisi, 16740, 16758, 17253 ve 17739'da okuyuculardan biri gün rakamını okuyamadı
-    (`gun_rakami`).
+    (`gun_rakami`; 17738'in satırındaki yıl açıklaması, gün rakamının ikinci hanesinin de büyük ölçüde dolu olduğunu
+    geçerken belirtiyor, ama gün için ayrı bir açıklama yok). İlk derlemenin okuyucu notları
+    (`kanit/gorsel_okumalar.json.gz`) bunlardan başkalarını da gösteriyor: tarihi görsel okumadan gelen ve `not`u boş 41
+    künyede okuyucu, gün rakamının baskısı ya da okunuşu için bir çekince yazmış (silik, lekeli, kırık, bulanık; bazılarında
+    iki rakam arasında gün adına göre seçim: ör. 15900 «3 ya da 5», 16470 «5 ya da 6», 9330 «42 gibi»). Tarih kaynağı
+    olan 1.828 okumanın 46'sı da «medium» (orta) güvenle verilmiş; 33'ünün `not`u boş. Bu 41 ve 33 künyenin hepsinde komşu
+    sayılar arasında basılı gün adına uyan tek bir gün var ve liste o günü veriyor. İlk derlemenin görsel okumalarından,
+    geçersiz 24 kayıt (`kanit/README.md`) dışında, satırının `not`u boş üç okuma da listeyle tutmuyor: 6149'un
+    okuması «3 Kasım 1945» (okuyucu, basılı PAZARTESİ'nin 5 Kasım'a uyduğunu not etmiş), 12853'ünkü «20 Mart 1963»
+    (okuyucu, yılın sayı sırasıyla çeliştiğini not etmiş), 18056'nın mükerrerininki sayı numarası olarak «18356».
+    Üçünde de liste doğru: PDF'in metin katmanında «5 K A S I M 1945 PAZARTESİ», «20 MART (1968» ve «Sayı : 18056» var;
+    12853'ün künyesini ikinci turdaki kör okuma da «20 MART 1968» okudu (aşağıda).
   - Yılı yanlış basılmış beş sayı: 81 («7 Kânunusani 1340», doğrusu 1341 = 1925; Osmanlıca aslının arşiv nüshasında basılı
     yıl elle çizilip yanına 1341 yazılmış, çizilen yılın son hanesi mürekkep lekesinin altında, «1340» resmî çevriyazıdaki
     okuma), 8530 («10 Ekim 1952», doğrusu 1953), 8585 («17 Aralık 1593», doğrusu 1953), 12830 («19 Şubat 1969», doğrusu
@@ -208,7 +225,8 @@ metin katmanında («Sayı : 17654») ve dosya adında. Okumalar
   Bu hata türü için arşivdeki bütün asıl sayıların OCR metni (23.828 kayıt) yeniden tarandı: künye metnindeki ilk gün adı
   liste tarihiyle tutmayan, bu üçünden başka yalnızca bilinen 7 sayı (54, 77, 207, 259, 494, 635, 18223: künyede gün adı
   yanlış basılmış) ve 15303 çıktı (gün adı harf aralıklı dizildiği için OCR gövdedeki bir gün adını okumuş; künyede
-  «22 Temmuz 1975 Salı», liste doğru). Artık art arda gelen hiçbir iki asıl sayı aynı tarihi taşımıyor.
+  «22 Temmuz 1975 Salı», liste doğru). Artık art arda gelen hiçbir iki asıl sayı aynı tarihi taşımıyor; araç da bunu
+  listeyi yazmadan önce denetliyor (4.2).
 - **Künyesinde gün rakamı olmayan / ay adı yanlış basılmış dört sayı** (244, 293, 1054, 1056) yeniden indirildi ve
   künyelerine bakıldı; 244 ve 293'ün Osmanlıca asılları da (`arsiv/244.pdf`, `arsiv/293.pdf`) görüldü. Tarihleri değişmedi;
   ne basılı olduğu 2. bölümde ve `not` kolonunda.
@@ -257,19 +275,27 @@ metin katmanında («Sayı : 17654») ve dosya adında. Okumalar
   rakamına rastlandı (aynı ölçütle açıklama düşüldü). Hiçbir liste tarihi değişmedi; yalnızca `not` kolonu değişti. Bütün okumalar ve her künye için
   kaç okuyucunun yılı okuyamadığı [`kanit/yerel_yil_okumalari.json.gz`](kanit/) dosyasında. Sınırları 2. bölümde: yılı
   OCR'da ya da yerel tamamlamanın okumalarında doğru çıkan 23.525 künyeye, tek tek ele alınan birkaçı (5180 ve 23494 dahil)
-  dışında, yıl denetiminde topluca bakılmadı.
+  dışında, yıl denetiminde topluca bakılmadı. Kör okumaların (yukarıdaki 418 künye) ve yıl denetiminin araçları depoda
+  yok: okuyucu oturumları (Claude), ikinci OCR (tesseract), 2600 piksellik künye görüntülerinin üretimi ve hakemlerin
+  gerekçelerinde andığı türetilmiş karşılaştırma görüntüleri (kırpıntı, büyütme) `scripts/` altında bulunmaz; depoda
+  yalnızca sonuçlar (`kanit/`) var. Yıl denetiminden çıkan `not` değişiklikleri CSV elle düzenlenip `yeniden_yaz`
+  çalıştırılarak işlendi.
 - **TBMM kayıtlarındaki «M.» kısaltmalı mükerrer işaretleri.** İlk derlemenin mükerrer karşılaştırması yalnızca açık yazılmış
   «Mükerrer» işaretlerine bakmıştı; kısaltılmış 132 kayıt da eklenince karşılığı listede olmayan 8 kayıt daha çıktı. Beşi
   sayı ya da tarih yazım hatası; üçünde (23920, 27470, 27533) işaret hatalı: karar ve kanunlar asıl sayıda (2. bölüm).
   5946 ve 5957 sayılı Kanunlar için resmî sitenin 22.01.2010 ve 26.03.2010 günlük sayfalarına, 7259 sayılı Kanun için
-  31.12.2020'nin mükerrer sayfalarına 18 Kasım 2026'da bakıldı.
+  31.12.2020'nin mükerrer sayfalarına 18 Kasım 2026'da bakıldı. Bu bakışların kaydı (indirilen sayfalar ve HTTP
+  durumları: iki günün ana sayfası 200, `M1` sayfaları 404; 31.12.2020'nin `M1`–`M5` sayfaları ve 31.10.2020 ana sayfası
+  200) yalnızca git'e girmeyen `yerel/ek_inceleme/` klasöründe; depoda yok.
 - **12 Haziran 2010'daki "27609 Mükerrer" duyurusu.** O günün ana sayfasında «12/6/2010 Tarihli ve 27609 Sayılı Mükerrer
   Resmi Gazete'de, 5996 Sayılı … Kanunu Yayımlanmıştır» notu ve eski sunucuya (rega.basbakanlik.gov.tr) giden bir bağlantı
   var. Resmî sitede `20100612M1.htm` yok (404). 5996 sayılı Kanun, 13 Haziran 2010 tarihli 27610 sayıda yayımlandı (o günün
   resmî sayfası ve TBMM kaydı). Listeye mükerrer eklenmedi. Eski sunucudaki bağlantı ilk derlemede açılmamıştı
   (`kanit/gunluk_sayfalar.json.gz`: «other host, not fetched»); 18 Kasım 2026'da denendi: `rega.basbakanlik.gov.tr` adı artık
   çözülmüyor, Internet Archive'da da bu adresin kaydı yok. Böyle bir mükerrerin hiç çıkmadığı, doğrudan görülmüş bir şey
-  değil, duyurduğu kanunun ertesi günkü 27610 sayıda yayımlanmış olmasından çıkarılan bir sonuçtur.
+  değil, duyurduğu kanunun ertesi günkü 27610 sayıda yayımlanmış olmasından çıkarılan bir sonuçtur. İlk derlemenin aynı
+  kaydının `error` alanı ise tersini söylüyor («A mukerrer for this date likely exists but was not reachable»); listedeki
+  karar o kayda değil, bu çıkarıma dayanıyor.
 - **Mükerrer sayfalarındaki iki yanlış numara.** 29.12.2001 mükerrer sayfasında sayı 27625 (doğrusu 24625), 08.03.2003
   mükerrer sayfasında 25034 (doğrusu 25042) yazıyor. Liste doğruydu; açıklamalar `not` kolonuna ve
   [`data/resmi_site_duzeltmeleri.json`](data/resmi_site_duzeltmeleri.json) dosyasına eklendi.
@@ -308,8 +334,11 @@ metin katmanında («Sayı : 17654») ve dosya adında. Okumalar
 - **"Arşivde yanlış adlandırılmış dosyalar" iddiası geri çekildi.** Bulutta dosyalar paralel indirilirken bazıları yanlış
   sayı numarasıyla eşleştirilmişti. Şüpheli 106 dosya tek tek yeniden indirildi: 73'ü açıldı ve künyeleri dosya adlarıyla
   tuttu, 32'si 404 döndü (o adla dosya yok), 15389 ise 10 MB'ı aştı (yerel tamamlamada okundu). Bu yüzden 22494 ve 23942'nin
-  var sanılan mükerrerleri listeden çıkarıldı, 17 satırın bağlantısı doğru dosyaya döndü (commit `88fbd6b`). Yerel
-  tamamlamada indirilen 420 büyük dosyanın künyeleri de dosya adlarıyla tutuyor (15873'teki baskı hatası dışında).
+  var sanılan mükerrerleri listeden çıkarıldı, başka bir sayının dosyasına bağlanmış 17 satırın bağlantısı doğru dosyaya
+  döndü (commit `88fbd6b`; iletisinde «19 satır» yazıyor, CSV farkı 17 veriyor). Aynı commit'te, `_1` dosyası 10 MB'ı aşan
+  10 sayının (17915, 17949, 18112, 18237, 18267, 21400, 22096, 22880, 24004, 24030; bu dosyalar yeniden indirilen 106
+  dosyanın arasında değil) iki mükerrerinin (20 satır) `_1` ve `_2` bağlantıları da dosya adındaki sıraya göre yer
+  değiştirdi. Yerel tamamlamada indirilen 420 büyük dosyanın künyeleri de dosya adlarıyla tutuyor (15873'teki baskı hatası dışında).
 - **Künyesinde gün adı tarihle tutmayan 7 sayı:** hepsinde basılı tarih doğru çıktı.
   - 54 ve 77: İlk 100 Sayı derlemesiyle doğrulandı.
   - 259 ve 635: TBMM kayıtlarıyla doğrulandı.
@@ -319,6 +348,13 @@ metin katmanında («Sayı : 17654») ve dosya adında. Okumalar
   adları tarihlerle tutuyor (okunan gün adları `not` kolonunda ve `kanit/kunye_duzeltmeleri.json.gz`'de).
 - **Resmî sitedeki hatalar** düzeltildi ve açıklandı (ör. 18.11.2000 sayfasında 24334 yazıyor, doğrusu 24234). Liste
   için [README](README.md#resmî-kaynaktaki-tutarsızlıklar).
+- **İlk derlemenin günlük sayfa kayıtlarındaki hata notları.** `kanit/gunluk_sayfalar.json.gz`'de altı günün kaydında
+  `error` alanı var. Üçü bu belgede ya da README'de anlatılıyor (30.12.2000 ve 22.01.2001'deki yanlış numaralar, 12.06.2010
+  duyurusu). Öbür üçü listeyi etkilemiyor: 26.10.2001'de mükerrerin üç parçalı PDF'inden `20011026M1-2.pdf` 10 MB'ı aştığı
+  için açılamadı (mükerrer `M1` sayfasından okundu); 16.06.2009 ve 25.08.2009 günlük sayfalarının mükerrer satırında, başka
+  bir güne ait `20090506M1.htm`'ye giden ve yerel bir diske (`file:///E:/…`) işaret eden bozuk bir bağlantı var (06.05.2009
+  sayfasında da, `error` notu olmadan). Bu dört günün `M1` sayfası okundu ve asıl sayının numarasını taşıyor; listede her
+  birinin bir mükerreri var, Kasım 2026'daki `mukerrer_tara` yoklaması da her birinde bir mükerrer sayfası buldu.
 - **Lexpera'daki tek fazlalık** (15.03.2018, "30363 1. Mükerrer") yanlış numaralı bir kayıt: o günün resmî mükerrer sayfası
   30361'e ait ve listede öyle yer alıyor.
   2014'ten 31 Ekim 2026'ya asıl sayılar Lexpera'yla aynı (Lexpera'nın 31.10.2026 sayfasında 33416 henüz yoktu; 04.08.2016
@@ -328,7 +364,9 @@ metin katmanında («Sayı : 17654») ve dosya adında. Okumalar
   künyeden ya da günlük sayfadan gelen ve TBMM kaydı bulunan 5.177 sayının 5.081'inde tarih aynı; farklı 96 sayının 84'ünde
   TBMM kaydında tek haneli bir yazım hatası var (15164 ve künyesinde numarası yanlış basılmış 15873 bunların içinde; TBMM
   ikincisini künyedeki yanlış numarayla, 15973 diye anıyor), 12'si
-  sayı sırasıyla bağdaşmıyor. Resmî Gazete metinlerindeki atıflarda (2019–2026 derlemi) 4.234 sayının 4.199'u aynı; arşiv
+  sayı sırasıyla bağdaşmıyor. Resmî Gazete metinlerindeki atıflarda (2019–2026 derlemi) 4.234 sayının 4.199'u aynı; kalan
+  35'in 34'ü sayı sırasıyla bağdaşmıyor, biri (28441) sıraya sığıyor ama resmî günlük sayfanın tarihiyle çelişen bir yazım
+  hatası. Arşiv
   PDF'lerinin ilk sayfalarındaki atıflarda 442 sayının 419'u aynı, kalan 23'ü sayı sırasıyla bağdaşmıyor.
 
 ## 4. Listeyi güncel tutma ve araç
@@ -360,6 +398,13 @@ kanıta bir kez yazar. Geçmiş bir günün ana sayfası sitede hiç yoksa (404;
 günleri işler ama uyarıyla ve sıfırdan farklı çıkış koduyla biter. Listeyi değiştirmediği çalıştırmalarda, önceki bir
 çalışma çıktıları yazarken kesilmişse JSON'u, raporu ve README'yi onarır.
 
+Güncellemeden sonra kendiliğinden değişmeyen, elle yazılmış sayıları yeniden üretilen README.md ile karşılaştırın:
+`site/body.html`'deki elle yazılmış rakamlar (hangileri olduğu dosyanın başındaki HTML yorumunda yazılı; yıl aralığının
+sonu, son sayı ve tarihi, üstteki adetler ve grafiğin y ekseni `site/app.js`'te veriden dolar) ve bu belgedeki o günün
+hâlini veren sayılar (durum satırı ve 2. ile 3. bölümdeki sayımlar). README'nin üretiminde de elle tutulan kısımlar var:
+künyesinde gün ya da ay kusurlu yayınların listesi (`scripts/render_readme.py` → `GUN_AY`; `not` kolonuyla tutmazsa betik
+«UYARI:» yazar) ve yılı yanlış basılmış ya da hiç basılmamış sayıların tek tek anlatımı (`scripts/README.template.md`).
+
 Diğer komutlar (gerekirse):
 
 ```bash
@@ -381,7 +426,9 @@ otomatik karar verilmez). Kalem kapanınca anahtar `KONTROL_KAPATILAN`'a taşın
 kanıt kaydındakinden farklı bir gerekçe metniyle eklendiğinde yeniden açılır. Yeniden açılan kalemde `yerel/gorsel.json`'da
 duran eski okuma yeniden uygulanmaz: dosya yeniden indirilir, künyeye yeniden bakılır ve kayıt güncellenir. `KONTROL`'e
 yazılan anahtar listede hiçbir satırla eşleşmiyorsa (yazım hatası) araç bunu söyler. Kasım 2026'da 6126, 10908, 11979, 244,
-293, 1054, 1056 ve iki büyük mükerrer bu yolla işlendi.
+293, 1054, 1056 ve iki büyük mükerrer bu yolla işlendi. Bu dokuz kalemin kanıt kayıtları (`kanit/yerel_okumalar.jsonl.gz`)
+gerekçe alanı (`kontrol_gerekcesi`) olmadan yazıldı: bu anahtarlardan biri `KONTROL`'e hangi metinle eklenirse eklensin
+(`KONTROL_KAPATILAN`'daki metinle de) kalem yeniden açılır.
 
 `kanit/yerel_okumalar.jsonl.gz` yerinde olmalıdır: kapanan kalemler ve README'deki "künye aynı / farklı" sayıları oradan
 okunur. Dosya eksikse `uygula`, `yeni` ve `yeniden_yaz` hiçbir şey yazmadan durur.
@@ -434,9 +481,11 @@ reddeder. Basılı tarih bir baskı hatasıysa doğru tarih `"zorla": true` ve g
 numarası `"sayi_baski_hatasi": true` ve gerekçeyle girilir; gerekçe nota yazılır. Asıl sayı / mükerrer uyuşmazlığı hiçbir
 biçimde aşılamaz: dosya adının söylediği şey değilse kalem elle incelenmelidir.
 
-Yazmadan önce listenin bütünlüğü denetlenir: numaralar kesintisiz olmalı, tarih geriye gitmemeli, her mükerrerin asıl
-sayısı bulunmalı ve tarihi asıl sayısının tarihi ile bir sonraki asıl sayının tarihi arasında olmalı. Denetim başarısız
-olursa hiçbir dosya (kanıt dosyası dahil) yazılmaz.
+Yazmadan önce listenin bütünlüğü denetlenir: her tarih geçerli bir YYYY-AA-GG tarihi olmalı, numaralar kesintisiz olmalı,
+tarih geriye gitmemeli, art arda iki asıl sayı aynı tarihi taşımamalı, her mükerrerin asıl sayısı bulunmalı ve tarihi asıl
+sayısının tarihi ile bir sonraki asıl sayının tarihi arasında olmalı, aynı sayı ve mükerrer sırası iki kez geçmemeli,
+`tarih_kaynagi` betiğin `ETIKET` sözlüğündeki 12 etiketten biri olmalı. Denetim başarısız olursa hiçbir dosya (kanıt
+dosyası dahil) yazılmaz.
 
 ### 4.3 Kasım 2026'da araçta düzeltilenler
 
@@ -487,6 +536,27 @@ Son bir bağımsız inceleme turunda (18 Kasım 2026) bulunup düzeltilenler:
   dökümüyle bitiyordu; Windows'ta README ve JSON dosyaları CRLF satır sonuyla yazılırdı; README, yoklamada çıkan her
   farkın bu belgede açıklandığını söylüyordu (artık farkın raporun neresinde olduğunu söylüyor).
 
+Belgelerin veriyle karşılaştırıldığı bir denetimde (22 Kasım 2026) bulunup düzeltilenler:
+
+- Bütünlük denetimi, art arda iki asıl sayının aynı tarihi taşımasını (ilk derlemenin 10908 ve 11979 hatalarının izi,
+  3.1) ve tanınmayan bir `tarih_kaynagi` etiketini yakalamıyordu: elle düzeltmedeki bir etiket yazım hatası JSON'a
+  geçiyor, `build_artifact.py` de Python hata dökümüyle duruyordu. İkisi de artık yazmadan önce reddediliyor (4.2).
+- `build_artifact.py` ve `site/app.js`, listede bugün kullanılmayan iki geçerli etiketi («Lexpera günlük listesi»,
+  «başka resmî metinlerde geçen tarih–sayı atfı») tanımıyordu; tanınmayan bir etikette `build_artifact.py` artık satırı
+  söyleyen bir iletiyle duruyor. Sayfa başlığındaki yıl aralığının sonu ve grafiğin üst sınırı elle yazılıydı, artık veriden; giriş metni son
+  sayıyı ve tarihini de veriden gösteriyor. Sayfa karakter kodlamasını (`<meta charset="utf-8">`) belirtmiyordu.
+- README'de TBMM kayıtlarıyla sıraya sığan vakalar için «künye yeniden okundu ya da resmî günlük sayfa kontrol edildi»
+  cümlesi sabit metindi ve depoda bunun kaydı yok; `render_readme.py` artık bu vakaların hangi tek haneli yazım hatasından
+  olduğunu, tarihin nereden geldiğini ve depoda yeniden okuma kaydı olup olmadığını veriden yazıyor. «Aynı» sayılan sayılarda listeyle çelişen atıflar ve karşılaştırmaya girmeyen atıflar da
+  hesaplanıp README'ye yazılıyor. Künyesinde gün ya da ay kusurlu yayınların adedi koda gömülü bir 10'du; artık `GUN_AY`
+  listesinden sayılıyor ve liste `not` kolonuyla tutmazsa betik uyarıyor.
+- İlk derlemenin `build_outputs.py`'si, girdilerinden biri eksik ya da bozuksa `data/`'yı yarı yazılmış bırakabiliyordu;
+  artık bütün girdileri okuyup çıktıları bellekte hesaplamadan hiçbir şey yazmıyor (bir girdi eksik, okunamaz ya da beklenen
+  bir alandan yoksunsa durur). İlk derleme betiklerinin (`adjudicate.py`, `citations.py`, `collect_era2.py`,
+  `collect_visual.py`, `era1_remaining.py`, `find_masthead.py`, `identity.py`, `resolve_era1.py`, `tbmm_citations.py`) belge
+  dizeleri, girdilerinin depoda olmadığını ve `kanit/`'teki karşılıklarını söylüyor; `atif_dogrula.py`'deki, arşiv ilk
+  sayfa atıflarının README'ye girmediğini söyleyen yanlış yorum düzeltildi.
+
 ## 5. Claude Code için bakım istemi
 
 Aşağıdaki metin, depoyu siteye erişebilen bir bilgisayarda açan bir Claude Code oturumuna olduğu gibi verilebilir.
@@ -529,8 +599,13 @@ Steps:
    Mükerrer marker), change nothing: show me the evidence and wait for my decision.
 4. Rebuild the HTML view: `python3 scripts/build_artifact.py data/resmi_gazete_sayilari.csv site`. Its outputs
    site/data.json and site/gayriresmi-gazete.html are gitignored; site/head.html, body.html and app.js are tracked.
-   Tell me if the published page should be updated.
-5. Update the status line at the top of EKSIKLER.md. Commit in small logical commits with Turkish messages. Never commit
+   The year range end, the last issue and its date, the counts and the chart's y axis are filled from the data by
+   site/app.js, but some figures in site/body.html are hand-written (the HTML comment at the top of that file lists
+   them): compare them with the regenerated README.md and fix any that changed. If render_readme.py printed an
+   "UYARI:" line, update GUN_AY in scripts/render_readme.py and the template text together. The HTML view is not
+   published anywhere at the moment; it is only built locally.
+5. Update the status line at the top of EKSIKLER.md and check its other snapshot counts (sections 2 and 3) against the
+   regenerated README.md. Commit in small logical commits with Turkish messages. Never commit
    yerel/, PDFs or image archives. Ask me before pushing.
 
 Finish with a short summary: how many rows were added, the last issue number and date, and anything surprising.

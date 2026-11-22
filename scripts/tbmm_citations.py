@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-"""Collect (law, Resmî Gazete date, number) citations from TBMM's legacy laws database."""
+"""Collect (law, Resmî Gazete date, number) citations from TBMM's legacy laws database.
+kullanım: tbmm_citations.py <çıktı.jsonl> <LO> <HI> [v_anabaslik, varsayılan KANUNLAR]
+
+İlk derleme (15 Kasım 2026) hattının betiği; ağa çıkar. LO–HI arasındaki her numara (q) için TBMM "Kanunlar ve Kararlar Erişim"
+veritabanını sorgular ve dönen bütün kayıtları (aynı numaralı eski ve yeni dizi kanunları/kararları birlikte döner) bir satır
+olarak yazar: {"q", "n_blocks", "recs": [{"law", "kabul", "rg_raw", "title"}]}. Çıktılar depoda:
+  kanit/tbmm_kanunlar.jsonl.gz   q 1–7700 (7.700 satır); son 219 sorgu (7482–7700) hiç kayıt döndürmedi.
+  kanit/tbmm_kararlar.jsonl.gz   q 1–1600 (1.600 satır); hepsi kayıt döndürdü, sonuncular 1948 kararları (1600: kabul
+                                 28/04/1948, RG 04.05.1948 No: 6897). Dosyada 1600'den sonraki karar numaraları yok.
+Kayıtlardaki en son Resmî Gazete bilgisi kanunlarda 28.07.2021, sayı 31551 (Kanun 7333 ve 7334), kararlarda 19.07.2021, sayı
+31546; 7335 ve sonraki yeni dizi kanunların kayıtlarında RG tarihi ve sayısı yok («Kanun Metni»). Bu yüzden TBMM
+karşılaştırması 31551'den sonraki sayıları kapsamaz."""
 import sys, json, re, html, subprocess, time, os
 from concurrent.futures import ThreadPoolExecutor
 OUT = sys.argv[1]; LO, HI = int(sys.argv[2]), int(sys.argv[3]); KIND = sys.argv[4] if len(sys.argv) > 4 else 'KANUNLAR'

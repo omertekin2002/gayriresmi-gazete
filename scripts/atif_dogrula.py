@@ -9,6 +9,15 @@ kullanım:  python3 atif_dogrula.py <depo> [--detail] [--strict]
              kapsam dışı kalan sayıları ve çapraz kontrolleri de yazar
   --strict   çapraz kontrollerden biri tutmazsa çıkış kodu 2
 
+Rapordaki atif_dogrulama bloğunu bu betik değil scripts/yerel_tamamla.py yazar: listeyi yazan her komutta (uygula, yeni,
+yeniden_yaz) yaz_ciktilar() buradaki hesapla()'yı çağırır. Bloğun 22 anahtarından:
+  - dokuzu (ANAHTARLAR: TBMM_* ve HF_*) bu betiğin kendi başına yazdırdığı sayılardır;
+  - yedisi --detail çıktısındaki "detay"dan çıkar: TBMM_SIRAYA_SIGAN, TBMM_DIGER ve HF_SIRAYA_SIGAN (aynı adlı listelerin
+    uzunluğu), ERA1_SAYI / ERA1_AYNI / ERA1_FARK / ERA1_IMKANSIZ (ARSIV_ILK_SAYFA_ATIFLARI);
+  - kalan altısını yalnızca yerel_tamamla.py hesaplar: TBMM_COZ ve RG_COZ listenin tarih_kaynagi dağılımından
+    (scripts/render_readme.py README'yi yazarken bu ikisini aynı yoldan yeniden hesaplar), ATIF_KUNYE_AYNI / ATIF_KUNYE_FARKLI
+    ve TAHMIN_KUNYE_AYNI / TAHMIN_KUNYE_FARKLI kanit/yerel_okumalar.jsonl.gz'den.
+
 Girdiler
   data/resmi_gazete_sayilari.csv     liste (yalnızca mukerrer == 0 satırları karşılaştırılır)
   kanit/tbmm_kanunlar.jsonl.gz       TBMM ham kayıtları → (tarih, sayı) atıfları   [scripts/citations.py ile aynı ayrıştırma]
@@ -324,7 +333,8 @@ def hesapla(repo):
         'HF_IMKANSIZ': [x['sayi'] for x in hf['fark'] if x['sinif'] == 'imkansiz'],
         'HF_SIRAYA_SIGAN': [x['sayi'] for x in hf['fark'] if x['siraya_sigar']],  # README'deki "biri ise …"
         'HF_KAPSAM_DISI': {k: hf[k] for k in ('listede_yok', 'tahmin', 'atif')},
-        # README sayılarına girmez: arşiv PDF'lerinin ilk sayfalarından çıkarılan atıflar (cit_era1), aynı yöntemle
+        # arşiv PDF'lerinin ilk sayfalarından çıkarılan atıflar (cit_era1), aynı yöntemle; dokuz anahtara girmez ama
+        # yerel_tamamla.py bunlardan rapora ERA1_* sayılarını yazar, README'de de görünürler
         'ARSIV_ILK_SAYFA_ATIFLARI': {'SAYI': e1['sayi'], 'AYNI': e1['ayni'], 'FARK': len(e1['fark']),
                                      'IMKANSIZ': sum(1 for x in e1['fark'] if x['sinif'] == 'imkansiz'), 'fark': e1['fark']},
         'capraz_kontrol': capraz,

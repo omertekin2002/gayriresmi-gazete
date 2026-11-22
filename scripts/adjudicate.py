@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Adjudicate TBMM citations vs our list. Output data/citation_decisions.json"""
+"""Adjudicate TBMM citations vs our list. Output data/citation_decisions.json
+kullanım: adjudicate.py <D> <liste.csv>
+
+İlk derleme (15 Kasım 2026) hattının betiği. Yukarıdaki data/, depodaki data/ değil, o derlemenin çalışma dizinidir (<D>):
+<D>/citations.json (scripts/citations.py çıktısı) ve <D>/merge_report.json okunur, <D>/citation_decisions.json yazılır;
+hiçbiri depoda yok. Derleme anındaki citations ve citation_decisions kanit/atiflar.json.gz içinde saklıdır; güncel
+karşılaştırmayı scripts/atif_dogrula.py depodaki dosyalardan yapar."""
 import json, csv, sys, os, datetime, collections
 D, LIST = sys.argv[1], sys.argv[2]
 cit = {int(k): v for k, v in json.load(open(os.path.join(D, 'citations.json'))).items()}
