@@ -27,6 +27,7 @@ T.C. Resmî Gazete'nin bugüne kadar yayımlanmış **bütün sayılarının** k
 | [`data/ilk100_fihrist.json`](data/ilk100_fihrist.json) | Resmî "İlk 100 Sayı" derlemesindeki sayı–tarih eşleşmeleri (karşılaştırmada kullanıldı) |
 | [`kanit/`](kanit/) | Her tarihin dayandığı ham veriler (OCR metinleri, görsel okumalar, günlük sayfalar, atıflar, yerel tamamlama kayıtları) |
 | [`scripts/`](scripts/) | Verileri toplamak, ayrıştırmak ve birleştirmek için kullanılan betikler |
+| [`LICENSE`](LICENSE) | CC0 1.0 Evrensel: depodaki her şey kamu malı, herkes her amaçla kullanabilir (aşağıda «Lisans») |
 
 ### CSV kolonları
 
@@ -268,6 +269,15 @@ Kasım 2026'daki kör okumaların (`kanit/yerel_kor_okumalar.json.gz`), ikinci O
 öbür incelemelerden çıkan `not` değişiklikleri CSV elle düzenlenip `python3 scripts/yerel_tamamla.py yeniden_yaz` çalıştırılarak işlendi (raporda
 `yerel_tamamlama` → `elle_duzeltme`). `data/tbmm_rg_atiflari.csv`, `data/ilk100_fihrist.json` ve
 `data/resmi_site_duzeltmeleri.json`'u üreten betik de depoda yok.
+
+## Lisans
+
+Bu depodaki her şey (liste ve öbür veri dosyaları, kanıt dosyaları, belgeler ve betikler)
+[CC0 1.0 Evrensel](LICENSE) ile kamu malına bırakılmıştır: izin istemeden ve hiçbir koşul olmadan kopyalanabilir,
+değiştirilebilir, dağıtılabilir ve ticari amaçla da kullanılabilir. Kaynak göstermek zorunlu değildir.
+
+CC0 yalnızca derleyicinin kendi haklarından feragattir. Başka kaynaklardan alınmış içerik (Resmî Gazete sayfalarının
+OCR metinleri, TBMM ve Lexpera kayıtlarından alınan bilgiler) kendi hukuki durumunu korur.
 
 ---
 
