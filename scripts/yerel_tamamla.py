@@ -14,7 +14,7 @@ Komutlar (depo kökünden çalıştırın):
   python3 scripts/yerel_tamamla.py durum               # okunanların özeti; görsel kontrol gerekenleri listeler
   python3 scripts/yerel_tamamla.py uygula [--kuru]     # okumaları listeye işler, tüm çıktıları yeniden yazar
   python3 scripts/yerel_tamamla.py yeni [--bitis YYYY-MM-DD]   # listenin son tarihinden bugüne yeni sayılar (+ son günlerin geç gelen mükerrerleri)
-  python3 scripts/yerel_tamamla.py mukerrer_tara --bas 2000-06-27 --son 2013-12-31 [--yeniden]   # günlük sayfa mükerrer yoklaması (rapor)
+  python3 scripts/yerel_tamamla.py mukerrer_tara --bas 2000-06-27 --son 2026-11-17 [--yeniden]   # günlük sayfa mükerrer yoklaması (rapor)
   python3 scripts/yerel_tamamla.py arsiv_mukerrer_tara --bas 1 --son 24095 [--yeniden]         # arsiv/N_k.pdf yoklaması (rapor)
   python3 scripts/yerel_tamamla.py yoklama_ozeti       # yoklama sonuçlarını güncel listeyle karşılaştırır, rapora ve README'ye yazar
   python3 scripts/yerel_tamamla.py yeniden_yaz         # CSV elle düzeltildiyse: sırala, doğrula, JSON/özet/rapor/README'yi yeniden yaz
@@ -93,7 +93,10 @@ BUYUK_NOT = 'sınırını aştığı için indirilemedi'
 # bakılıp yerel/gorsel.json doldurulur ve `uygula` çalıştırılır (kontrol kalemlerinde otomatik karar verilmez). Kalem kapanınca
 # anahtarı KONTROL_KAPATILAN'a taşıyın: kapanmış olması yalnızca kanıt dosyasındaki kayda bağlı kalmasın. Daha önce bu yolla
 # kapatılmış bir anahtar, kanıt kaydındakinden FARKLI bir gerekçe metniyle eklendiğinde yeniden açılır; yerel/gorsel.json'da duran
-# eski okuması yeniden uygulanmaz (künye yeniden indirilip okunur, kayıt güncellenir).
+# eski okuması yeniden uygulanmaz (künye yeniden indirilip okunur, kayıt güncellenir). Kanıt kaydında gerekçe ("kontrol_gerekcesi")
+# yoksa karşılaştırılacak metin de yoktur: anahtar hangi metinle eklenirse eklensin (KONTROL_KAPATILAN'daki metinle de) kalem yeniden
+# açılır. Kasım 2026'da işlenen dokuz kontrol kaleminin (6126, 10908, 11979, 24273_1, 24281_1, 244, 293, 1054, 1056) kanıt
+# kayıtları bu alan eklenmeden önce yazıldı.
 KONTROL = {}
 KONTROL_KAPATILAN = {
     '54': 'künyede basılı tarih ile haftanın günü tutmuyor', '77': 'künyede basılı tarih ile haftanın günü tutmuyor',
@@ -543,6 +546,16 @@ def dogrula(rows):
     ihlal = [(a, b) for a, b in zip(mains, mains[1:]) if b[1] < a[1]]
     if ihlal:
         hatalar.append(f'tarih sırası ihlali: {ihlal[:5]}')
+    # Art arda iki asıl sayı aynı tarihi taşımaz: ilk derlemenin 10908 ve 11979 hatalarında (künye yerine OCR metninin
+    # gövdesindeki tarih seçilmişti) liste tarihi komşu sayınınkiyle aynıydı (EKSIKLER.md 3.1)
+    ayni_gun = [(a, b) for a, b in zip(mains, mains[1:]) if b[1] == a[1]]
+    if ayni_gun:
+        hatalar.append(f'art arda iki asıl sayı aynı tarihte: {ayni_gun[:5]}')
+    # tarih_kaynagi yalnızca ETIKET'teki etiketlerden biri olabilir (elle düzeltmedeki bir yazım hatası JSON'a ve
+    # scripts/build_artifact.py'ye ulaşmasın)
+    etiketsiz = [(r['sayi'], r['mukerrer'], r['tarih_kaynagi']) for r in rows if r['tarih_kaynagi'] not in KOD]
+    if etiketsiz:
+        hatalar.append(f'tanınmayan tarih_kaynagi etiketi (geçerli etiketler: scripts/yerel_tamamla.py ETIKET): {etiketsiz[:5]}')
     mset = {n for n in nums}
     yetim = [r['sayi'] for r in rows if r['mukerrer'] != '0' and int(r['sayi']) not in mset]
     if yetim:
@@ -557,6 +570,18 @@ def dogrula(rows):
         hatalar.append(f'çift kayıt: {cift[:5]}')
     if hatalar:
         raise SystemExit('DOĞRULAMA BAŞARISIZ, hiçbir dosya yazılmadı:\n  ' + '\n  '.join(hatalar))
+
+
+def readme_uyarilari(rr):
+    """render_readme.py çıktısındaki «UYARI: …» satırlarını (ör. GUN_AY listesi `not` kolonuyla tutmuyor) kısaltmadan basar ve
+    çıktının geri kalanını döndürür. README'yi yeniden üreten her yol bunu çağırır: uyarı hiçbir yolda yutulmasın."""
+    kalan = []
+    for l in (rr.stdout or '').splitlines():
+        if l.startswith('UYARI'):
+            print('README:', l)
+        else:
+            kalan.append(l)
+    return '\n'.join(kalan)
 
 
 def yaz_ciktilar(rows, ek_rapor=None):
@@ -643,7 +668,7 @@ def yaz_ciktilar(rows, ek_rapor=None):
     with yaz(RAPOR) as f:
         json.dump(rap, f, ensure_ascii=False, indent=1)
     rr = subprocess.run([sys.executable, os.path.join(HERE, 'render_readme.py'), REPO], capture_output=True, text=True)
-    print('README:', (rr.stdout or rr.stderr).strip()[:300])
+    print('README:', (readme_uyarilari(rr) or rr.stderr).strip()[:300])
     yaz_acik(acik_kalemler(rows))
     os.remove(YAZIM)
     if rr.returncode:
@@ -867,6 +892,7 @@ def cmd_uygula(a):
             print('değişiklik yok')
             # rapor yazıldıktan sonra kesilmiş bir çalışma README'yi / iş listesini eski bırakmış olabilir: ikisi de yeniden üretilir
             rr = subprocess.run([sys.executable, os.path.join(HERE, 'render_readme.py'), REPO], capture_output=True, text=True)
+            readme_uyarilari(rr)
             yaz_acik(acik_kalemler(rows))
             if rr.returncode:
                 raise SystemExit('README.md yeniden üretilemedi: ' + rr.stderr.strip()[-400:])
@@ -900,6 +926,7 @@ def ciktilari_onar(rows):
         yaz_ciktilar(rows, {'tarih': datetime.date.today().isoformat(), 'onarim': True})
         return
     rr = subprocess.run([sys.executable, os.path.join(HERE, 'render_readme.py'), REPO], capture_output=True, text=True)
+    readme_uyarilari(rr)
     if rr.returncode:
         raise SystemExit('README.md yeniden üretilemedi: ' + rr.stderr.strip()[-400:])
 
@@ -1337,7 +1364,7 @@ def cmd_yoklama_ozeti(a=None):
     with yaz(RAPOR) as f:
         json.dump(rap, f, ensure_ascii=False, indent=1)
     rr = subprocess.run([sys.executable, os.path.join(HERE, 'render_readme.py'), REPO], capture_output=True, text=True)
-    print('README:', (rr.stdout or rr.stderr).strip()[:300])
+    print('README:', (readme_uyarilari(rr) or rr.stderr).strip()[:300])
     if rr.returncode:
         raise SystemExit('README.md yeniden üretilemedi: ' + rr.stderr.strip()[-400:])
 
