@@ -84,8 +84,10 @@ Ayrıca belgede açık kalem olarak yer almayan şu sorunlar bulundu ve giderild
   10–27 Eylül 1923 arasında çıkan ve kendi numarası (1–6) olan 6 "Gayr-ı Resmî Kısım (Resmî Ceride'nin İlavesi)" var;
   bunlar arşivde ayrı dosya olarak bulunmadı ve listeye alınmadı. Sonraki yıllarda başka ayrı numaralı ek olup
   olmadığı araştırılmadı.
-- **Yayımlanmayan günler.** Gazetenin çıkmadığı günler listede yer almaz. 2000 sonrası için resmî sayfa "yayımlanmamaktadır"
-  diyor; daha öncesi için yalnızca sayı numarasının kesintisiz olması, hiçbir asıl sayının eksik olmadığını gösteriyor.
+- **Yayımlanmayan günler.** Gazetenin çıkmadığı günler (hafta tatili, bayramlar, bazı resmî tatiller) listede yer almaz:
+  7 Haziran 1935'ten önce hiçbir cuma günü, 26 Mayıs 1935 ile 21 Haziran 1970 arasında da hiçbir pazar günü sayı çıkmadı.
+  2000 sonrası için resmî sayfa "yayımlanmamaktadır" diyor; daha öncesi için yalnızca sayı numarasının kesintisiz olması,
+  hiçbir asıl sayının eksik olmadığını gösteriyor.
 - **Basılı bilgisi eksik ya da hatalı künyeler** (tarihleri gerekçeleriyle `not` kolonunda). Bunlarda tarih künyedeki
   basılı tarihten değil, künyedeki gün adı ile komşu sayılardan çıkıyor; hepsinde tek bir gün mümkün:
   - 244 (14 Aralık 1925): künyede, Osmanlıca aslında da, «Pazartesi, 14 Teşrinievvel 1341 / 27 Rebiülahir 1344» basılı;
